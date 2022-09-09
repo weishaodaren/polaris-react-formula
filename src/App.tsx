@@ -1,7 +1,6 @@
 import 'codemirror/lib/codemirror.css';
 import FormulaEditor from './formula-editor'
 
-
 const schema = {
   type: 'object',
   properties: {

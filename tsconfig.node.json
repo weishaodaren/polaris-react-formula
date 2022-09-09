@@ -1,9 +1,25 @@
 {
   "compilerOptions": {
-    "composite": true,
-    "module": "ESNext",
-    "moduleResolution": "Node",
-    "allowSyntheticDefaultImports": true
+    "sourceMap": false,
+    "target": "es2016",
+    "useDefineForClassFields": false,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "declaration": true,
+    "allowJs": true,
+    "strict": true,
+    "noUnusedLocals": true,
+    "experimentalDecorators": true,
+    "noEmitOnError": true,
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "removeComments": false,
+    "noEmit": false,
+    "jsx": "react",
+    "lib": ["esnext", "dom"],
   },
-  "include": ["vite.config.ts"]
+  "exclude": [
+    "**/node_modules",
+    "**/dist"
+  ]
 }

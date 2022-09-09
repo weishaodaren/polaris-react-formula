@@ -8,6 +8,14 @@
     "build": "tsc && vite build",
     "preview": "vite preview"
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.[jt]s?(x)": "pnpm lint"
+  },
   "dependencies": {
     "@formily/json-schema": "^2.2.3",
     "@formily/shared": "^2.2.3",
@@ -23,9 +31,18 @@
     "@types/codemirror": "^5.60.0",
     "@types/react": "^18.0.17",
     "@types/react-dom": "^18.0.6",
+    "@typescript-eslint/eslint-plugin": "^5.36.2",
+    "@typescript-eslint/parser": "^5.36.2",
     "@vitejs/plugin-react": "^2.1.0",
-    "less-loader": "^11.0.0",
+    "eslint": "^8.23.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-airbnb-typescript": "^17.0.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-react": "^7.31.8",
+    "husky": "^8.0.1",
+    "lint-staged": "^13.0.3",
     "typescript": "^4.6.4",
+    "typescript-plugin-css-modules": "^3.4.0",
     "vite": "^3.1.0"
   }
 }
