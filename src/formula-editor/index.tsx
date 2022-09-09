@@ -34,6 +34,14 @@ export interface FormulaEditorProps {
   metaSchema?: boolean;
 }
 
+// 计算公式表达式
+const FormulaExpression = funs.map(fun =>
+  Array.isArray(fun.functions)
+    ? fun.functions.length
+      && fun.functions.map(({ name }) => name)
+    : []
+);
+
 const cmOptions = {
   mode: 'text/x-spreadsheet',
   line: true,
