@@ -1,5 +1,5 @@
 import { ISchema, SchemaProperties } from '@formily/json-schema';
-import { Variable } from '../types';
+import type { Variable } from '../types';
 
 declare type SchemaProps = SchemaProperties<
   any,

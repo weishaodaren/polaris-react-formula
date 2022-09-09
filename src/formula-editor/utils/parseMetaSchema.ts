@@ -1,6 +1,4 @@
-import type { Variable } from '../types';
-
-import { IFieldMeta } from '@toy-box/meta-schema';
+import type { Variable, IFieldMeta } from '../types';
 
 export function parseMetaSchema(
   schema: IFieldMeta,

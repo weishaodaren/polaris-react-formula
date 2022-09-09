@@ -1,14 +1,13 @@
 import type { FC } from 'react'
 import type { EditorChange, Position } from 'codemirror'
+import type { FunctionGroup, Variable, IFieldMeta } from './types';
 
 import React, { useState, useCallback, useMemo } from 'react';
 import { UnControlled as CodeMirror } from 'react-codemirror2';
 import { Editor as CodemirrorEditor } from 'codemirror';
 import { ISchema } from '@formily/json-schema';
-import { IFieldMeta } from '@toy-box/meta-schema';
 import classNames from 'classnames';
 import { Toolbar } from './components';
-import { FunctionGroup, Variable } from './types';
 import { default as funs } from './functions';
 import {
   parseSchema,
