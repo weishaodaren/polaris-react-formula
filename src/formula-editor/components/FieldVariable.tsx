@@ -1,5 +1,7 @@
+import type { FC } from 'react';
+
 import classNames from 'classnames';
-import React, { FC, useCallback, useMemo } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import '../styles/fieldVariable.less';
 
 export interface IFieldVariableProps {

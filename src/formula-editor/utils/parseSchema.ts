@@ -1,5 +1,4 @@
 import { ISchema, SchemaProperties } from '@formily/json-schema';
-import { isArr } from '@formily/shared';
 import { Variable } from '../types';
 
 declare type SchemaProps = SchemaProperties<
@@ -112,7 +111,7 @@ export function cleanVoidSchema(
       const cleanProperties: CleanSchemaResult[] = [];
       Object.keys(properties).forEach((key) => {
         const result = cleanVoidSchema(properties[key], key);
-        if (isArr(result)) {
+        if (Array.isArray(result)) {
           cleanProperties.push(...result);
         } else if (result) {
           cleanProperties.push(result);
@@ -132,7 +131,7 @@ export function cleanVoidSchema(
     if (itemsProperties) {
       Object.keys(itemsProperties).forEach((key) => {
         const result = cleanVoidSchema(itemsProperties[key] as ISchema, key);
-        if (isArr(result)) {
+        if (Array.isArray(result)) {
           cleanProperties.push(...result);
         } else if (result) {
           cleanProperties.push(result);
@@ -157,7 +156,7 @@ export function cleanVoidSchema(
     if (properties) {
       Object.keys(properties).forEach((key) => {
         const result = cleanVoidSchema(properties[key] as ISchema, key);
-        if (isArr(result)) {
+        if (Array.isArray(result)) {
           cleanProperties.push(...result);
         } else if (result) {
           cleanProperties.push(result);

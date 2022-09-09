@@ -1,11 +1,11 @@
 import type { FC, ReactNode } from 'react'
+import type { FunctionGroup, Variable } from '../types';
 
 import React, { useCallback } from 'react';
 import { Tabs } from 'antd';
 import FunctionStore from './FunctionStore';
 import FxIcon from './FxIcon';
 import VariableIcon from './VariableIcon';
-import { FunctionGroup, Variable } from '../types';
 import FieldTree from './FieldTree';
 
 

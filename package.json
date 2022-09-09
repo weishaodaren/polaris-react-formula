@@ -18,7 +18,6 @@
   },
   "dependencies": {
     "@formily/json-schema": "^2.2.3",
-    "@formily/shared": "^2.2.3",
     "antd": "^4.23.0",
     "classnames": "^2.3.1",
     "codemirror": "^5.6.1",

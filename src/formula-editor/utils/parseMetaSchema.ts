@@ -1,6 +1,6 @@
-import { isArr } from '@formily/shared';
+import type { Variable } from '../types';
+
 import { IFieldMeta } from '@toy-box/meta-schema';
-import { Variable } from '../types';
 
 export function parseMetaSchema(
   schema: IFieldMeta,
@@ -83,7 +83,7 @@ export function cleanVoidMetaSchema(
       const cleanProperties: CleanMetaSchemaResult[] = [];
       Object.keys(properties).forEach((key) => {
         const result = cleanVoidMetaSchema(properties[key], key);
-        if (isArr(result)) {
+        if (Array.isArray(result)) {
           cleanProperties.push(...result);
         } else if (result) {
           cleanProperties.push(result);
@@ -102,7 +102,7 @@ export function cleanVoidMetaSchema(
     if (properties) {
       Object.keys(properties).forEach((key) => {
         const result = cleanVoidMetaSchema(properties[key] as IFieldMeta, key);
-        if (isArr(result)) {
+        if (Array.isArray(result)) {
           cleanProperties.push(...result);
         } else if (result) {
           cleanProperties.push(result);
@@ -126,7 +126,7 @@ export function cleanVoidMetaSchema(
     if (properties) {
       Object.keys(properties).forEach((key) => {
         const result = cleanVoidMetaSchema(properties[key] as IFieldMeta, key);
-        if (isArr(result)) {
+        if (Array.isArray(result)) {
           cleanProperties.push(...result);
         } else if (result) {
           cleanProperties.push(result);

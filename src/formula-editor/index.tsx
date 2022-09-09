@@ -4,7 +4,6 @@ import type { EditorChange, Position } from 'codemirror'
 import React, { useState, useCallback, useMemo } from 'react';
 import { UnControlled as CodeMirror } from 'react-codemirror2';
 import { Editor as CodemirrorEditor } from 'codemirror';
-import { isArr } from '@formily/shared';
 import { ISchema } from '@formily/json-schema';
 import { IFieldMeta } from '@toy-box/meta-schema';
 import classNames from 'classnames';
@@ -87,7 +86,7 @@ const FormulaEditor: FC<FormulaEditorProps> = ({
         ? cleanVoidMetaSchema(schema as IFieldMeta)
         : cleanVoidSchema(schema as ISchema);
       if (result) {
-        return isArr(result)
+        return Array.isArray(result)
           ? (result
               .map((r: CleanSchemaResult | CleanMetaSchemaResult) =>
                 r.schema ? parseSchemaVariables(r.schema, '', path) : null,
