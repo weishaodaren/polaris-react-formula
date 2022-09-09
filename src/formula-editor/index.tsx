@@ -1,10 +1,9 @@
 import type { FC } from 'react'
-import type { EditorChange, Position } from 'codemirror'
+import type { EditorChange, Position, Editor as CodemirrorEditor } from 'codemirror'
 import type { FunctionGroup, Variable, IFieldMeta } from './types';
 
 import React, { useState, useCallback, useMemo } from 'react';
 import { UnControlled as CodeMirror } from 'react-codemirror2';
-import { Editor as CodemirrorEditor } from 'codemirror';
 import { ISchema } from '@formily/json-schema';
 import classNames from 'classnames';
 import { Toolbar } from './components';
@@ -88,11 +87,11 @@ const FormulaEditor: FC<FormulaEditorProps> = ({
         return Array.isArray(result)
           ? (result
               .map((r: CleanSchemaResult | CleanMetaSchemaResult) =>
-                r.schema ? parseSchemaVariables(r.schema, '', path) : null,
+                r.schema ? parseSchemaVariables(r.schema as ISchema, '', path) : null,
               )
               .filter((v) => v != null) as Variable[])
           : result.schema
-          ? parseSchemaVariables(result.schema, '', path).children
+          ? parseSchemaVariables(result.schema as ISchema, '', path).children
           : [];
       }
       return [];

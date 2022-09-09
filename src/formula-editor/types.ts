@@ -51,7 +51,7 @@ export interface IFieldItems<T = IFieldMeta> {
     };
 }
 export interface IFieldMeta {
-    key: string;
+    key?: string;
     name: string;
     type: MetaValueType | string;
     description?: string;
