@@ -1,6 +1,9 @@
-import React, { FC } from 'react';
+
+import type { FC } from 'react'
+import type { FunctionGroup } from '../types';
+
+import React from 'react';
 import { Collapse } from 'antd';
-import { FunctionGroup } from '../types';
 
 import '../styles/functionStore.less';
 
@@ -12,10 +15,9 @@ export interface FunctionStoreProps {
   check?: (name: string) => void;
 }
 
+const prefixCls = 'function-store';
 
 const FunctionStore: FC<FunctionStoreProps> = ({ dataSource = [], check }) => {
-  const prefixCls = 'function-store';
-
   return (
     <Collapse className={prefixCls} bordered={false} defaultActiveKey={[0]} expandIconPosition="start" ghost>
       {

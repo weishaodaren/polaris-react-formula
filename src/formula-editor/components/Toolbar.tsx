@@ -1,4 +1,6 @@
-import React, { FC, ReactNode, useCallback } from 'react';
+import type { FC, ReactNode } from 'react'
+
+import React, { useCallback } from 'react';
 import { Tabs } from 'antd';
 import FunctionStore from './FunctionStore';
 import FxIcon from './FxIcon';

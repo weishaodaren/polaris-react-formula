@@ -1,5 +1,7 @@
-import React, { useState, useCallback, useMemo } from 'react';
 import type { FC } from 'react'
+import type { EditorChange, Position } from 'codemirror'
+
+import React, { useState, useCallback, useMemo } from 'react';
 import { UnControlled as CodeMirror } from 'react-codemirror2';
 import { Editor as CodemirrorEditor } from 'codemirror';
 import { isArr } from '@formily/shared';
@@ -59,18 +61,25 @@ const FormulaEditor: FC<FormulaEditorProps> = ({
 
   /**
    * useCallback
+   * @description 转义变量组
+   * @return object
    */ 
-  const parseSchemaVariables = useCallback(
-    (schema: ISchema, path: string, refPath?: string) => {
-      return metaSchema
+  const parseSchemaVariables = useCallback((
+    schema: ISchema,
+    path: string,
+    refPath?: string
+  ) => 
+      metaSchema
         ? parseMetaSchema(schema as IFieldMeta)
-        : parseSchema(schema);
-    },
+        : parseSchema(schema)
+    ,
     [metaSchema],
   );
 
   /**
    * useMemo
+   * @description 变量组
+   * @return array
    */ 
   const innerVariables = useMemo(() => {
     if (schema) {
@@ -92,31 +101,73 @@ const FormulaEditor: FC<FormulaEditorProps> = ({
     }
   }, []);
 
-  const onReady = (editor: CodemirrorEditor, value: string) => {
+  /**
+   * Callback
+   * @description DOM挂载完执行
+   * @param editor 编辑器配置
+   * @param value 值
+   * @return void 0
+   */ 
+  const onReady = useCallback((
+    editor: CodemirrorEditor,
+    value: string
+  ) => {
     setEditor(editor);
     if (value != null && value !== '') {
       initDocTag(editor, value);
     }
-  };
+  }, []);
 
-  const handleChange = (editor: CodemirrorEditor, data: any, value: any) => {
-    if (value != null || value !== '') {
+  /**
+   * Callback
+   * @see https://github.com/scniro/react-codemirror2
+   * @descritpion 修改编辑器
+   * @param editor 编辑器配置
+   * @param data 编辑器操作参数
+   * @param value 编辑器返回值
+   * @return void 0
+   */ 
+  const handleChange = useCallback((
+    editor: CodemirrorEditor,
+    data: EditorChange,
+    value: string
+  ) => {
+    if (value !== null || value !== '') {
       initDocTag(editor, value);
     }
     onChange && onChange(value);
-  };
+  }, []);
 
-  const initDocTag = (editor: any, code: string) => {
+  /**
+   * Function
+   * @description 初始化文本标签
+   * @param editor 编辑器配置
+   * @param code 值
+   * @return void 0
+   */ 
+  const initDocTag = (
+    editor: CodemirrorEditor,
+    code: string
+  ) => {
     const contents = code.split('\n');
     contents.forEach((content, idx) =>
       initLineTag(editor, content, idx, innerVariables),
     );
   };
 
+  /**
+   * Function
+   * @description 初始化行标签
+   * @param editor 编辑器配置
+   * @param content 当前值
+   * @param line 当前行
+   * @param innerVariables 输入的内部变量组
+   * @return void 0
+   */ 
   const initLineTag = (
-    editor: any,
-    content: any,
-    line: any,
+    editor: CodemirrorEditor,
+    content: string,
+    line: number,
     innerVariables: Variable[] = [],
   ) => {
     (innerVariables || []).forEach((variable) => {
@@ -133,34 +184,57 @@ const FormulaEditor: FC<FormulaEditorProps> = ({
     });
   };
 
-  const insertFun = useCallback(
-    (code: string) => {
-      if (editor == null) return;
-      const doc = editor.getDoc();
+  /**
+   * Callback
+   * @description 插入函数
+   * @param code 当前输入值
+   * @return void 0
+   */ 
+  const insertFun = useCallback((
+    code: string
+  ) => {
+      if (editor === null) return;
+      const doc = editor!.getDoc();
       const pos = doc.getCursor();
       doc.replaceRange(`${code}()`, pos);
       pos.ch += code.length + 1;
       doc.setCursor(pos);
-      editor.focus();
+      editor!.focus();
     },
     [editor],
   );
 
-  const insertVariable = useCallback(
-    (variable: string) => {
-      if (editor == null) return;
-      const doc = editor.getDoc();
+  /**
+   * Callback
+   * @description 插入变量
+   * @param variable 当前输入变量
+   * @return void 0
+   */ 
+  const insertVariable = useCallback((
+    variable: string
+  ) => {
+      if (editor === null) return;
+      const doc = editor!.getDoc();
       const pos = doc.getCursor();
       doc.replaceRange(`{!${variable}}`, pos, pos);
-      editor.focus();
+      editor!.focus();
     },
     [editor],
   );
 
+  /**
+   * Callback
+   * @description 替换变量
+   * @param editor 编辑器配置
+   * @param begin 开始位置
+   * @param end 结束位置
+   * @param val 值信息{label: '', value: '', type: '', fullname: ''}
+   * @return void 0
+   */ 
   const replaceVariable = (
     editor: CodemirrorEditor,
-    begin: any,
-    end: any,
+    begin: Position,
+    end: Position,
     val: Variable,
   ) => {
     const doc = editor.getDoc();
