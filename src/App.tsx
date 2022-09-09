@@ -1,3 +1,4 @@
+import React from 'react';
 import 'codemirror/lib/codemirror.css';
 import FormulaEditor from './formula-editor'
 

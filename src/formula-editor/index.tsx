@@ -1,4 +1,5 @@
-import React, { FC, useState, useCallback, useMemo } from 'react';
+import React, { useState, useCallback, useMemo } from 'react';
+import type { FC } from 'react'
 import { UnControlled as CodeMirror } from 'react-codemirror2';
 import { Editor as CodemirrorEditor } from 'codemirror';
 import { isArr } from '@formily/shared';
@@ -38,6 +39,8 @@ const cmOptions = {
   lineWrapping: true,
 };
 
+const prefixCls = 'formula-editor';
+
 const FormulaEditor: FC<FormulaEditorProps> = ({
   title,
   value = '',
@@ -49,8 +52,14 @@ const FormulaEditor: FC<FormulaEditorProps> = ({
   schema,
   metaSchema,
 }) => {
+  /**
+   * State
+   */ 
   const [editor, setEditor] = useState<CodemirrorEditor>();
-  const prefixCls = 'formula-editor';
+
+  /**
+   * useCallback
+   */ 
   const parseSchemaVariables = useCallback(
     (schema: ISchema, path: string, refPath?: string) => {
       return metaSchema
@@ -60,6 +69,9 @@ const FormulaEditor: FC<FormulaEditorProps> = ({
     [metaSchema],
   );
 
+  /**
+   * useMemo
+   */ 
   const innerVariables = useMemo(() => {
     if (schema) {
       const result = metaSchema
@@ -170,10 +182,7 @@ const FormulaEditor: FC<FormulaEditorProps> = ({
       />
       <div className={`${prefixCls}-main`}>
         <div className={`${prefixCls}-main__code`}>
-          <h1>
-            {title}
-            <span className="equle">=</span>
-          </h1>
+          <h1>{title}</h1>
           <CodeMirror
             autoCursor={false}
             value={value}
@@ -182,7 +191,6 @@ const FormulaEditor: FC<FormulaEditorProps> = ({
             onChange={handleChange}
           />
         </div>
-        <div className={`${prefixCls}-main__panel`}></div>
       </div>
     </div>
   );
