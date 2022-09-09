@@ -17,7 +17,7 @@ const FunctionStore: FC<FunctionStoreProps> = ({ dataSource = [], check }) => {
   const prefixCls = 'function-store';
 
   return (
-    <Collapse className={prefixCls} bordered={false} defaultActiveKey={[0]} expandIconPosition="right" ghost>
+    <Collapse className={prefixCls} bordered={false} defaultActiveKey={[0]} expandIconPosition="start" ghost>
       {
         dataSource.map(
           (fnGroup, index) => (

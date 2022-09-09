@@ -6,7 +6,6 @@ import VariableIcon from './VariableIcon';
 import { FunctionGroup, Variable } from '../types';
 import FieldTree from './FieldTree';
 
-const { TabPane } = Tabs;
 
 export interface ToobarProps {
   functions?: FunctionGroup[];
@@ -39,17 +38,18 @@ const Toolbar: FC<ToobarProps> = ({
 
   return (
     <div className={prefixCls}>
-      <Tabs defaultActiveKey="fx" centered>
-        <TabPane tab={<TabNode name="函数" icon={<FxIcon />} />} key="fx">
-          <FunctionStore dataSource={functions} check={insertFun} />
-        </TabPane>
-        <TabPane
-          tab={<TabNode name="字段" icon={<VariableIcon />} />}
-          key="field"
-        >
-          {<FieldTree dataSource={variables} pick={insertVariable} />}
-        </TabPane>
-      </Tabs>
+      <Tabs defaultActiveKey="fx" centered items={[
+        {
+          label: <TabNode name="函数" icon={<FxIcon />} />,
+          key: 'fx',
+          children: <FunctionStore dataSource={functions} check={insertFun} />
+        },
+        {
+          label: <TabNode name="字段" icon={<VariableIcon />} />,
+          key: 'field',
+          children: <FieldTree dataSource={variables} pick={insertVariable} />
+        }
+      ]} />
     </div>
   );
 };
