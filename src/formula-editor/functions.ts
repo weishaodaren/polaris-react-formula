@@ -1,4 +1,4 @@
-const functions = [
+export default [
   {
     name: '常用',
     functions: [
@@ -327,5 +327,3 @@ const functions = [
     ],
   },
 ];
-
-export default functions;

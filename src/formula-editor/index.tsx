@@ -8,7 +8,7 @@ import { UnControlled as CodeMirror } from 'react-codemirror2';
 import { ISchema } from '@formily/json-schema';
 import classNames from 'classnames';
 import { Toolbar } from './components';
-import { default as funs } from './functions';
+import funs from './functions';
 import {
   parseSchema,
   cleanVoidSchema,
