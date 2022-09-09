@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import 'codemirror/lib/codemirror.css';
 import FormulaEditor from './formula-editor'
 
@@ -205,6 +205,16 @@ const schema = {
 };
 
 function App() {
+/**
+ * Callback
+ * @description 计算结果
+ * @param value 值
+ * @return void 0
+ */ 
+  const onCalc = useCallback((value: string) => { 
+    console.log(`这是最外层的值：`, value);
+  }, [])
+  
   return (
     <FormulaEditor
       title='公式demo'
@@ -213,10 +223,7 @@ function App() {
         border: '1px solid gray',
         wordBreak: 'break-word',
       }}
-      onChange={(a) => {
-        console.log(a);
-        
-      }}
+      onChange={onCalc}
     />
   )
 }

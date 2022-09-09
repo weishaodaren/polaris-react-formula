@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   root: true,
   parser: '@typescript-eslint/parser',
   env: {
@@ -21,14 +21,20 @@ module.exports = {
     sourceType: 'module',
   },
   rules: {
-    'prefer-arrow-callback': 'off',
-    'import/no-unresolved': 'off',
-    'import/prefer-default-export': 'off',
-    // 'import/no-extraneous-dependencies': ["error", {"packageDir": ['./packages/launcher', './packages/react', './']}],
-    'no-nested-ternary': 'off',
-    'no-plusplus': 'off',
+    'prefer-arrow-callback': 0,
+    'import/no-unresolved': 0,
+    'import/prefer-default-export': 1,
+    // 不用嵌套三元 可读性差
+    'no-nested-ternary': 2,
+    'no-plusplus': 2,
     'linebreak-style': ['error', 'unix'],
-    'import/extensions': 0
+    'import/extensions': 0,
+    'no-emprt': 2,
+    'no-eq-null': 2,
+    'no-eval': 2,
+    'no-extra-parens': 2,
+    'no-extra-semi': 2,
+    'yoda': 2
   },
   overrides: [
     {

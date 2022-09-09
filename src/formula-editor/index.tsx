@@ -1,8 +1,9 @@
-import type { FC } from 'react'
-import type { EditorChange, Position, Editor as CodemirrorEditor } from 'codemirror'
+import type { FC } from 'react';
+import type { EditorChange, Position, Editor as CodemirrorEditor } from 'codemirror';
 import type { FunctionGroup, Variable, IFieldMeta } from './types';
 
 import React, { useState, useCallback, useMemo } from 'react';
+import { Button } from 'antd';
 import { UnControlled as CodeMirror } from 'react-codemirror2';
 import { ISchema } from '@formily/json-schema';
 import classNames from 'classnames';
@@ -55,6 +56,8 @@ const FormulaEditor: FC<FormulaEditorProps> = ({
    * State
    */ 
   const [editor, setEditor] = useState<CodemirrorEditor>();
+  const [editorValue, setEditorValue] = useState(value);
+  const [result, setResult] = useState('');
 
   /**
    * useCallback
@@ -100,6 +103,15 @@ const FormulaEditor: FC<FormulaEditorProps> = ({
 
   /**
    * Callback
+   * @description 点击计算公式结果
+   * @return void 0
+   */ 
+  const handleClick = useCallback(() => {
+    console.log(editorValue, `editorValue`);
+  }, [editorValue])
+
+  /**
+   * Callback
    * @description DOM挂载完执行
    * @param editor 编辑器配置
    * @param value 值
@@ -132,6 +144,7 @@ const FormulaEditor: FC<FormulaEditorProps> = ({
     if (value !== null || value !== '') {
       initDocTag(editor, value);
     }
+    setEditorValue(value)
     onChange && onChange(value);
   }, []);
 
@@ -261,6 +274,13 @@ const FormulaEditor: FC<FormulaEditorProps> = ({
             editorDidMount={onReady}
             onChange={handleChange}
           />
+          <code style={{
+            border: '1px dotted #126',
+            display: 'block',
+            width: '100%',
+            height: '100px'
+          }}>{`计算结果：${result}`}</code>
+          <Button type='primary' onClick={handleClick}>Calc it</Button>
         </div>
       </div>
     </div>
