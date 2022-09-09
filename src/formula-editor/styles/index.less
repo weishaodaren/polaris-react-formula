@@ -1,0 +1,41 @@
+@import '../../theme.less';
+
+@toolbarWidth: 240px;
+
+.formula-editor {
+  display: flex;
+  height: 100%;
+  &-toolbar {
+    width: @toolbarWidth;
+    height: 560px;
+    overflow-y: auto;
+    border-right: 1px solid @border-color-base;
+  }
+  &-main {
+    height: 100%;
+    padding: 8px 16px;
+    width: calc(100% - @toolbarWidth);
+    &__code {
+      > h1 {
+        font-size: 28px;
+        color: fade(@black, 75%);
+        margin-bottom: 4px;
+        .equle {
+          color: fade(@black, 45%);
+        }
+      }
+    }
+  }
+  .CodeMirror {
+    height: 120px;
+    font-size: 20px;
+    .formula-tag {
+      background: @primary-6;
+      color: @white;
+      border-radius: 4px;
+      font-size: 0.8em;
+      padding: 2px 4px;
+      margin: 0 2px;
+    }
+  }
+}
