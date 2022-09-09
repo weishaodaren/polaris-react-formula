@@ -2,6 +2,7 @@ lockfileVersion: 5.4
 
 specifiers:
   '@formily/json-schema': ^2.2.3
+  '@formulajs/formulajs': ^3.1.7
   '@types/codemirror': ^5.60.0
   '@types/react': ^18.0.17
   '@types/react-dom': ^18.0.6
@@ -28,6 +29,7 @@ specifiers:
 
 dependencies:
   '@formily/json-schema': 2.2.3_typescript@4.8.3
+  '@formulajs/formulajs': 3.1.7
   antd: 4.23.0_biqbaboplfbrettd7655fr4n2y
   classnames: 2.3.1
   codemirror: 5.65.8
@@ -449,6 +451,14 @@ packages:
     engines: {npm: '>=3.0.0'}
     dependencies:
       '@formily/shared': 2.2.3
+    dev: false
+
+  /@formulajs/formulajs/3.1.7:
+    resolution: {integrity: sha512-1EgN0jSYOhHQUCL/tfiXkqu7h85/Ayv4zmrXXRVaqGywoMkye7gdaWGBky5KiOluihQSwkQul29ly/DYnitauw==}
+    hasBin: true
+    dependencies:
+      bessel: 1.0.2
+      jstat: 1.9.5
     dev: false
 
   /@humanwhocodes/config-array/0.10.4:
@@ -916,6 +926,11 @@ packages:
   /balanced-match/1.0.2:
     resolution: {integrity: sha512-3oSeUO0TMV67hN1AmbXsK4yaqU7tjiHlbxRDZOpH0KW9+CeX4bRAaX0Anxt0tx2MrpRpWwQaPwIlISEJhYU5Pw==}
     dev: true
+
+  /bessel/1.0.2:
+    resolution: {integrity: sha512-Al3nHGQGqDYqqinXhQzmwmcRToe/3WyBv4N8aZc5Pef8xw2neZlR9VPi84Sa23JtgWcucu18HxVZrnI0fn2etw==}
+    engines: {node: '>=0.8'}
+    dev: false
 
   /big.js/3.2.0:
     resolution: {integrity: sha512-+hN/Zh2D08Mx65pZ/4g5bsmNiZUuChDiQfTUQ7qJr4/kuopCr88xZsAXv6mBoZEsUI4OuGHlX59qE94K2mMW8Q==}
@@ -2293,6 +2308,10 @@ packages:
     engines: {node: '>=6'}
     hasBin: true
     dev: true
+
+  /jstat/1.9.5:
+    resolution: {integrity: sha512-cWnp4vObF5GmB2XsIEzxI/1ZTcYlcfNqxQ/9Fp5KFUa0Jf/4tO0ZkGVnqoEHDisJvYgvn5n3eWZbd2xTVJJPUQ==}
+    dev: false
 
   /jsx-ast-utils/3.3.3:
     resolution: {integrity: sha512-fYQHZTZ8jSfmWZ0iyzfwiU4WDX4HpHbMCZ3gPlWYiCl3BoeOTsqKBqnTVfH2rYT7eP5c3sVbeSPHnnJOaTrWiw==}

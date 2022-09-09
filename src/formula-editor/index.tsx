@@ -3,6 +3,7 @@ import type { EditorChange, Position, Editor as CodemirrorEditor } from 'codemir
 import type { FunctionGroup, Variable, IFieldMeta } from './types';
 
 import React, { useState, useCallback, useMemo } from 'react';
+import * as formulajs from '@formulajs/formulajs';
 import { Button } from 'antd';
 import { UnControlled as CodeMirror } from 'react-codemirror2';
 import { ISchema } from '@formily/json-schema';
@@ -108,6 +109,17 @@ const FormulaEditor: FC<FormulaEditorProps> = ({
    */ 
   const handleClick = useCallback(() => {
     console.log(editorValue, `editorValue`);
+    let _result;
+    try {
+      _result = eval(editorValue)
+      console.log(_result, `ssssss`);
+    } catch ({ message }) {
+      console.log(message, `mmmm`);
+      _result = formulajs.SUM(editorValue)
+      console.log(_result, `ooooo`);
+    } finally {
+      setResult(_result)
+    }
   }, [editorValue])
 
   /**
