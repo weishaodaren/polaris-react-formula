@@ -3,7 +3,7 @@ lockfileVersion: 5.4
 specifiers:
   '@formily/json-schema': ^2.2.3
   '@formily/shared': ^2.2.3
-  '@toy-box/meta-schema': ^3.0.17
+  '@types/codemirror': ^5.60.0
   '@types/react': ^18.0.17
   '@types/react-dom': ^18.0.6
   '@vitejs/plugin-react': ^2.1.0
@@ -21,7 +21,6 @@ specifiers:
 dependencies:
   '@formily/json-schema': 2.2.3_typescript@4.8.3
   '@formily/shared': 2.2.3
-  '@toy-box/meta-schema': 3.0.17
   antd: 4.23.0_biqbaboplfbrettd7655fr4n2y
   classnames: 2.3.1
   codemirror: 5.65.8
@@ -31,6 +30,7 @@ dependencies:
   react-dom: 18.2.0_react@18.2.0
 
 devDependencies:
+  '@types/codemirror': 5.60.5
   '@types/react': 18.0.18
   '@types/react-dom': 18.0.6
   '@vitejs/plugin-react': 2.1.0_vite@3.1.0
@@ -456,10 +456,15 @@ packages:
       '@jridgewell/sourcemap-codec': 1.4.14
     dev: true
 
-  /@toy-box/meta-schema/3.0.17:
-    resolution: {integrity: sha512-xzUN2sebimF1b9C47aI+PdeKGjEObFS1wJ1/3PR809YYDCbI3sk4Bzm5aBE6rdtbQYus55QrKA2cDuyoTVt75A==}
-    engines: {npm: '>=3.0.0'}
-    dev: false
+  /@types/codemirror/5.60.5:
+    resolution: {integrity: sha512-TiECZmm8St5YxjFUp64LK0c8WU5bxMDt9YaAek1UqUb9swrSCoJhh92fWu1p3mTEqlHjhB5sY7OFBhWroJXZVg==}
+    dependencies:
+      '@types/tern': 0.23.4
+    dev: true
+
+  /@types/estree/1.0.0:
+    resolution: {integrity: sha512-WulqXMDUTYAXCjZnk6JtIHPigp55cVtDgDrO2gHRwhyJto21+1zbVCtOYB2L1F9w4qCQ0rOGWBnBe0FNTiEJIQ==}
+    dev: true
 
   /@types/prop-types/15.7.5:
     resolution: {integrity: sha512-JCB8C6SnDoQf0cNycqd/35A7MjcnK+ZTqE7judS6o7utxUCg6imJg3QK2qzHKszlTjcj2cn+NwMB2i96ubpj7w==}
@@ -481,6 +486,12 @@ packages:
 
   /@types/scheduler/0.16.2:
     resolution: {integrity: sha512-hppQEBDmlwhFAXKJX2KnWLYu5yMfi91yazPb2l+lbJiwW+wdo1gNeRA+3RgNSO39WYX2euey41KEwnqesU2Jew==}
+    dev: true
+
+  /@types/tern/0.23.4:
+    resolution: {integrity: sha512-JAUw1iXGO1qaWwEOzxTKJZ/5JxVeON9kvGZ/osgZaJImBnyjyn0cjovPsf6FNLmyGY8Vw9DoXZCMlfMkMwHRWg==}
+    dependencies:
+      '@types/estree': 1.0.0
     dev: true
 
   /@vitejs/plugin-react/2.1.0_vite@3.1.0:
