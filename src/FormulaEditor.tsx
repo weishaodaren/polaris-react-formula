@@ -10,7 +10,7 @@ import type { EditorChange, Editor as CodemirrorEditor } from 'codemirror';
 import type { FunctionGroup, Variable, IFieldMeta } from './types';
 
 import { Toolbar } from './components';
-import funs from './functions';
+import funs from './config/functions';
 import {
   parseSchema,
   cleanVoidSchema,
