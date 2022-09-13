@@ -3,12 +3,24 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "main": "./dist/index.js",
+  "style": "./dist/style.css",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build && tsc --emitDeclarationOnly --project ./tsconfig.build.json",
+    "build": "tsc && vite build && tsc --emitDeclarationOnly --project ./tsconfig.json",
     "preview": "vite preview",
     "lint": "eslint --fix --ext .tsx,.ts src"
   },
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.umd.cjs"
+    },
+    "./style.css": "./dist/style.css"
+  },
+  "files": [
+    "dist"
+  ],
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged"
@@ -18,7 +30,6 @@
     "*.[jt]s?(x)": "pnpm lint"
   },
   "dependencies": {
-    "@formily/json-schema": "^2.2.3",
     "@formulajs/formulajs": "^3.1.7",
     "antd": "^4.23.0",
     "classnames": "^2.3.1",
@@ -32,6 +43,7 @@
   "devDependencies": {
     "@types/codemirror": "^5.60.0",
     "@types/lodash-es": "^4.17.6",
+    "@types/node": "^18.7.17",
     "@types/react": "^18.0.17",
     "@types/react-dom": "^18.0.6",
     "@typescript-eslint/eslint-plugin": "^5.36.2",

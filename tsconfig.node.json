@@ -13,21 +13,12 @@
     "noEmitOnError": true,
     "resolveJsonModule": true,
     "esModuleInterop": true,
-    "removeComments": false,
+    "removeComments": true,
     "noEmit": false,
-    "composite": true,
     "jsx": "react",
     "lib": ["esnext", "dom"],
-    "outDir": "./dist",
     "plugins": [
       {"name": "typescript-plugin-css-modules"}
     ]
   },
-  "include": [
-    "src/**/*"
-  ],
-  "exclude": [
-    "**/node_modules",
-    "**/dist"
-  ]
 }

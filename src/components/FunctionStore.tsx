@@ -1,5 +1,6 @@
 import React from 'react';
 import { Collapse } from 'antd';
+import 'antd/lib/collapse/style/index'
 
 import type { FC } from 'react';
 import type { FunctionGroup } from '../types';

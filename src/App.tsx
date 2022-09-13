@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 import 'codemirror/lib/codemirror.css';
-import FormulaEditor from './FormulaEditor';
+import FormulaEditor from './index';
 
 const schema = {
   type: 'object',

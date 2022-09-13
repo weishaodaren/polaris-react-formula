@@ -1,8 +1,8 @@
 import React, { useState, useCallback, useMemo } from 'react';
 import * as formulajs from '@formulajs/formulajs';
 import { Button } from 'antd';
+import 'antd/lib/button/style/index'
 import { UnControlled as CodeMirror } from 'react-codemirror2';
-import { ISchema } from '@formily/json-schema';
 import classNames from 'classnames';
 
 import type { FC } from 'react';
@@ -25,6 +25,9 @@ import './styles';
 
 import 'codemirror/mode/spreadsheet/spreadsheet.js';
 
+// TODO: 暂时使用any 后续使用table的类型
+type ISchema = any;
+
 export interface FormulaEditorProps {
   title?: string;
   value?: string;
@@ -38,12 +41,12 @@ export interface FormulaEditorProps {
 }
 
 // 计算公式表达式
-const FormulaExpression = funs.map((fun) =>
-(Array.isArray(fun.functions)
-  ? fun.functions.length
-  && fun.functions.map(({ name }) =>
-    name)
-  : []));
+// const FormulaExpression = funs.map((fun) =>
+// (Array.isArray(fun.functions)
+//   ? fun.functions.length
+//   && fun.functions.map(({ name }) =>
+//     name)
+//   : []));
 
 const cmOptions = {
   mode: 'text/x-spreadsheet',

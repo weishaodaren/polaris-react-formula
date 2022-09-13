@@ -1,16 +1,9 @@
-import { ISchema, SchemaProperties } from '@formily/json-schema';
 import type { Variable } from '../types';
 
-declare type SchemaProps = SchemaProperties<
-any,
-any,
-any,
-any,
-any,
-any,
-any,
-any
->;
+// TODO: 暂时使用any 后续结合table类型
+type ISchema = any;
+type SchemaProps = any;
+type SchemaProperties = any;
 
 export function parseSchema(
   schema: ISchema,
@@ -35,7 +28,7 @@ export function parseSchema(
     }
   } else if (schema.type === 'array') {
     const itemProperties = schema?.properties as
-      | SchemaProperties<any, any, any, any, any, any, any, any>
+      | SchemaProperties
       | undefined;
     if (itemProperties) {
       const fullName = `${parentFullName || ''}${

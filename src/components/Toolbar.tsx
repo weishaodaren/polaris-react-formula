@@ -1,5 +1,6 @@
 import React, { useCallback } from 'react';
 import { Tabs } from 'antd';
+import 'antd/lib/tabs/style/index'
 
 import type { FC, ReactNode } from 'react';
 import type { FunctionGroup, Variable } from '../types';
