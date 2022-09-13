@@ -13,10 +13,7 @@ import funs from './config/functions';
 import {
   parseSchema,
   cleanVoidSchema,
-  cleanVoidMetaSchema,
-  parseMetaSchema,
   CleanSchemaResult,
-  CleanMetaSchemaResult,
   initDocTag,
   evil,
 } from './utils';
@@ -36,7 +33,6 @@ export interface FormulaEditorProps {
   className?: string;
   style?: React.CSSProperties;
   schema?: ISchema | IFieldMeta;
-  metaSchema?: boolean;
 }
 
 const cmOptions = {
@@ -61,7 +57,6 @@ const FormulaEditor: FC<FormulaEditorProps> = ({
   style,
   className,
   schema,
-  metaSchema,
 }) => {
   /**
    * State
@@ -72,25 +67,6 @@ const FormulaEditor: FC<FormulaEditorProps> = ({
   const [error, setError] = useState<string>(''); // 错误信息
 
   /**
-   * useCallback
-   * @description 转义变量组
-   * @return object
-   */
-  const parseSchemaVariables: (
-    schemaParams: ISchema,
-    pathParams: string,
-    refPathParams?: string
-  ) => Variable = useCallback(
-    (
-      schemaParams,
-    ) =>
-    (metaSchema
-      ? parseMetaSchema(schemaParams as IFieldMeta)
-      : parseSchema(schemaParams)),
-    [metaSchema],
-  );
-
-  /**
    * useMemo
    * @description 变量组
    * @return array
@@ -98,22 +74,19 @@ const FormulaEditor: FC<FormulaEditorProps> = ({
   const innerVariables = useMemo(() => {
     if (!schema) return [];
 
-    const resultValue = metaSchema
-      ? cleanVoidMetaSchema(schema as IFieldMeta)
-      : cleanVoidSchema(schema as ISchema);
-
+    const resultValue = cleanVoidSchema(schema as ISchema);
     if (!resultValue) return [];
 
     if (Array.isArray(resultValue)) {
       return resultValue
-        .map((r: CleanSchemaResult | CleanMetaSchemaResult) =>
-          (r.schema ? parseSchemaVariables(r.schema as ISchema, '', path) : null))
+        .map((r: CleanSchemaResult) =>
+          (r.schema ? parseSchema(r.schema as ISchema, '', path) : null))
         .filter((v) =>
           v !== null) as Variable[];
     }
 
     return resultValue.schema
-      ? parseSchemaVariables(resultValue.schema as ISchema, '', path).children
+      ? parseSchema(resultValue.schema as ISchema, '', path).children
       : [];
   }, []);
 

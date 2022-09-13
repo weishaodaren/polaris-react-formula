@@ -11,7 +11,6 @@ const schema = {
       type: 'string',
       title: '用户名',
       required: true,
-      'x-decorator': 'FormItem',
       'x-component': 'Input',
       'x-reactions': [
         {
@@ -23,7 +22,6 @@ const schema = {
     name: {
       type: 'void',
       title: '姓名',
-      'x-decorator': 'FormItem',
       'x-decorator-props': {
         asterisk: true,
         feedbackLayout: 'none',
@@ -34,7 +32,6 @@ const schema = {
           type: 'string',
           required: true,
           title: '姓',
-          'x-decorator': 'FormItem',
           'x-component': 'Input',
           'x-component-props': {
             placeholder: '姓',
@@ -44,7 +41,6 @@ const schema = {
           type: 'string',
           required: true,
           title: '名',
-          'x-decorator': 'FormItem',
           'x-component': 'Input',
           'x-component-props': {
             placeholder: '名',
@@ -55,7 +51,6 @@ const schema = {
     projects: {
       type: 'array',
       title: 'Projects',
-      'x-decorator': 'FormItem',
       'x-component': 'ArrayTable',
       items: {
         type: 'object',
@@ -101,7 +96,6 @@ const schema = {
                 type: 'number',
                 title: 'Price',
                 default: 0,
-                'x-decorator': 'Editable',
                 'x-component': 'NumberPicker',
                 'x-component-props': {
                   addonafter: '$',
@@ -120,7 +114,6 @@ const schema = {
                 type: 'number',
                 title: 'Count',
                 default: 0,
-                'x-decorator': 'Editable',
                 'x-component': 'NumberPicker',
                 'x-component-props': {
                   addonafter: '$',
@@ -139,7 +132,6 @@ const schema = {
                 type: 'number',
                 title: 'Total',
                 'x-read-pretty': true,
-                'x-decorator': 'FormItem',
                 'x-component': 'NumberPicker',
                 'x-component-props': {
                   addonafter: '$',
@@ -194,7 +186,6 @@ const schema = {
       type: 'number',
       title: '合计',
       required: true,
-      'x-decorator': 'FormItem',
       'x-component': 'NumberPicker',
       'x-reactions': [
         {

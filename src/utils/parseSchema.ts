@@ -94,7 +94,7 @@ export function cleanVoidSchema(
   schema: ISchema,
   key?: string,
 ): CleanSchemaResult | CleanSchemaResult[] | undefined {
-  if (schema?.type === 'object') {
+  if (schema.type === 'object') {
     const { properties } = schema;
     if (typeof properties === 'object') {
       const cleanProperties: CleanSchemaResult[] = [];
@@ -113,7 +113,7 @@ export function cleanVoidSchema(
     }
     return { schema, key };
   }
-  if (schema?.type === 'array') {
+  if (schema.type === 'array') {
     const itemsSchema = schema?.items as ISchema | undefined;
     const itemsProperties = itemsSchema?.properties as SchemaProps | undefined;
     const cleanProperties: CleanSchemaResult[] = [];
@@ -139,7 +139,7 @@ export function cleanVoidSchema(
       key,
     };
   }
-  if (schema?.type === 'void') {
+  if (schema.type === 'void') {
     const properties = schema.properties as SchemaProps | undefined;
     const cleanProperties: CleanSchemaResult[] = [];
     if (properties) {
