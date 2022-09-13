@@ -66,9 +66,10 @@ const FormulaEditor: FC<FormulaEditorProps> = ({
   /**
    * State
    */
-  const [editor, setEditor] = useState<CodemirrorEditor>();
-  const [editorValue, setEditorValue] = useState(value);
-  const [result, setResult] = useState('');
+  const [editor, setEditor] = useState<CodemirrorEditor>(); // 编辑器配置
+  const [editorValue, setEditorValue] = useState<string>(value); // 编辑器值
+  const [result, setResult] = useState<string>(''); // 计算结果
+  const [error, setError] = useState<string>(''); // 错误信息
 
   /**
    * useCallback
@@ -122,17 +123,12 @@ const FormulaEditor: FC<FormulaEditorProps> = ({
    * @return void 0
    */
   const handleClick = useCallback(() => {
-    console.log(editorValue, 'editorValue');
-    let templateResult;
     try {
-      templateResult = evil(editorValue);
-      console.log(templateResult, 'ssssss');
+      setResult(evil(editorValue));
+      setError('');
     } catch ({ message }) {
-      console.log(message, 'mmmm');
-      // templateResult = formulajs.SUM(editorValue);
-      console.log(templateResult, 'ooooo');
-    } finally {
-      setResult(templateResult);
+      setError(editorValue);
+      setResult('');
     }
   }, [editorValue]);
 
@@ -238,6 +234,7 @@ const FormulaEditor: FC<FormulaEditorProps> = ({
             width: '100%',
             height: '100px',
           }}>{`计算结果：${result}`}</code>
+          {error && <h1>{`无效的列或函数名称：${error}`}</h1>}
           <Button type='primary' onClick={handleClick}>Calc it</Button>
         </div>
       </div>

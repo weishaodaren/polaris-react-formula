@@ -28,6 +28,7 @@ module.exports = {
     'prefer-arrow-callback': 0,
     'import/no-unresolved': 0,
     'import/prefer-default-export': 1,
+    'import/no-extraneous-dependencies': 0,
     'implicit-arrow-linebreak':['error', 'below'],
     'no-nested-ternary': 2,
     'no-plusplus': 2,
