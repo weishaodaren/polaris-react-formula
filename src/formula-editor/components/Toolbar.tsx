@@ -16,6 +16,11 @@ export interface ToobarProps {
   insertVariable?: (variable: string) => void;
 }
 
+/**
+ * Component
+ * @description 工具栏
+ * @return {JSX.Element}
+ */
 const Toolbar: FC<ToobarProps> = ({
   functions,
   variables = [],

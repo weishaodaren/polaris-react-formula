@@ -53,6 +53,11 @@ const cmOptions = {
 
 const prefixCls = 'formula-editor';
 
+/**
+ * Component
+ * @description 公式编辑器
+ * @return {JSX.Element}
+ */
 const FormulaEditor: FC<FormulaEditorProps> = ({
   title,
   value = '',
