@@ -1,7 +1,7 @@
-import type { FC } from 'react';
-
 import classNames from 'classnames';
 import React, { useCallback, useMemo } from 'react';
+import type { FC } from 'react';
+
 import '../styles/fieldVariable.less';
 
 export interface IFieldVariableProps {
@@ -21,7 +21,7 @@ const FieldVariable: FC<IFieldVariableProps> = ({
     if (type === 'array' || type === 'object') {
       return;
     }
-    pick && pick(value);
+    pick?.(value);
   }, []);
   const disabled = useMemo(() => type === 'array' || type === 'object', []);
   return (

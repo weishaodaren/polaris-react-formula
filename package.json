@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
+    "build": "tsc && vite build && tsc --emitDeclarationOnly --project ./tsconfig.build.json",
     "preview": "vite preview"
   },
   "husky": {
@@ -30,6 +30,7 @@
   },
   "devDependencies": {
     "@types/codemirror": "^5.60.0",
+    "@types/lodash-es": "^4.17.6",
     "@types/react": "^18.0.17",
     "@types/react-dom": "^18.0.6",
     "@typescript-eslint/eslint-plugin": "^5.36.2",

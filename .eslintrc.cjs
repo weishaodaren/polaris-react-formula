@@ -1,4 +1,4 @@
-export default {
+module.exports = {
   root: true,
   parser: '@typescript-eslint/parser',
   env: {
@@ -21,6 +21,7 @@ export default {
     sourceType: 'module',
   },
   rules: {
+    'react/display-name': 0,
     'prefer-arrow-callback': 0,
     'import/no-unresolved': 0,
     'import/prefer-default-export': 1,

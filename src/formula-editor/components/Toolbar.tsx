@@ -1,13 +1,13 @@
-import type { FC, ReactNode } from 'react'
-import type { FunctionGroup, Variable } from '../types';
-
 import React, { useCallback } from 'react';
 import { Tabs } from 'antd';
+
+import type { FC, ReactNode } from 'react';
+import type { FunctionGroup, Variable } from '../types';
+
 import FunctionStore from './FunctionStore';
 import FxIcon from './FxIcon';
 import VariableIcon from './VariableIcon';
 import FieldTree from './FieldTree';
-
 
 export interface ToobarProps {
   functions?: FunctionGroup[];
@@ -44,13 +44,13 @@ const Toolbar: FC<ToobarProps> = ({
         {
           label: <TabNode name="函数" icon={<FxIcon />} />,
           key: 'fx',
-          children: <FunctionStore dataSource={functions} check={insertFun} />
+          children: <FunctionStore dataSource={functions} check={insertFun} />,
         },
         {
           label: <TabNode name="字段" icon={<VariableIcon />} />,
           key: 'field',
-          children: <FieldTree dataSource={variables} pick={insertVariable} />
-        }
+          children: <FieldTree dataSource={variables} pick={insertVariable} />,
+        },
       ]} />
     </div>
   );

@@ -2,14 +2,14 @@ import { ISchema, SchemaProperties } from '@formily/json-schema';
 import type { Variable } from '../types';
 
 declare type SchemaProps = SchemaProperties<
-  any,
-  any,
-  any,
-  any,
-  any,
-  any,
-  any,
-  any
+any,
+any,
+any,
+any,
+any,
+any,
+any,
+any
 >;
 
 export function parseSchema(
@@ -20,12 +20,12 @@ export function parseSchema(
 ): Variable {
   const children: Variable[] = [];
   if (schema.type === 'object') {
-    if (schema?.properties != null) {
+    if (schema?.properties !== null) {
       const properties = schema.properties as SchemaProps;
       Object.keys(properties).forEach((key) => {
         const fieldSchema = properties[key];
         const fieldPath = `${path ? `${path}.` : ''}${key}`;
-        const fullName = `${parentFullName ? parentFullName : ''}${
+        const fullName = `${parentFullName || ''}${
           parentFullName ? '.' : ''
         }${schema.title ? schema.title : ''}`;
         if (refPath !== fieldPath) {
@@ -38,14 +38,12 @@ export function parseSchema(
       | SchemaProperties<any, any, any, any, any, any, any, any>
       | undefined;
     if (itemProperties) {
-      const fullName = `${parentFullName ? parentFullName : ''}${
+      const fullName = `${parentFullName || ''}${
         parentFullName ? '.' : ''
       }${schema.title ? schema.title : ''}`;
       children.push(
         ...Object.keys(itemProperties)
-          .filter((key) => {
-            return `${path ? `${path}.` : ''}${key}` != refPath;
-          })
+          .filter((key) => `${path ? `${path}.` : ''}${key}` !== refPath)
           .map((key) => {
             const fieldSchema = itemProperties[key];
             const fieldPath = `${path ? `${path}.` : ''}${key}`;
@@ -53,17 +51,15 @@ export function parseSchema(
           }),
       );
     }
-  } else {
-    if (path != refPath) {
-      children.push({
-        label: schema.title as string,
-        value: path,
-        type: schema.type || '',
-        fullName: `${parentFullName ? parentFullName : ''}${
-          parentFullName ? '.' : ''
-        }${schema.title}`,
-      });
-    }
+  } else if (path !== refPath) {
+    children.push({
+      label: schema.title as string,
+      value: path,
+      type: schema.type || '',
+      fullName: `${parentFullName || ''}${
+        parentFullName ? '.' : ''
+      }${schema.title}`,
+    });
   }
   if (schema.type === 'object' || schema.type === 'array') {
     return {
@@ -71,7 +67,7 @@ export function parseSchema(
       value: path,
       type: schema.type?.toString(),
       children,
-      fullName: `${parentFullName ? parentFullName : ''}${
+      fullName: `${parentFullName || ''}${
         parentFullName ? '.' : ''
       }${schema.title}`,
     };
@@ -80,7 +76,7 @@ export function parseSchema(
     label: schema.title as string,
     value: path,
     type: schema.type || '',
-    fullName: `${parentFullName ? parentFullName : ''}${
+    fullName: `${parentFullName || ''}${
       parentFullName ? '.' : ''
     }${schema.title}`,
   };

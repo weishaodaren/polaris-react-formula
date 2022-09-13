@@ -1,7 +1,9 @@
-import React, { FC, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { Tree } from 'antd';
-import { DataNode } from 'rc-tree/lib/interface';
-import { Variable } from '../types';
+
+import type { FC } from 'react';
+import type { Variable } from '../types';
+
 import FieldVariable from './FieldVariable';
 
 export interface FieldTreeProps {
@@ -9,7 +11,7 @@ export interface FieldTreeProps {
   pick?: (value: string) => void;
 }
 
-function convert(variable: Variable, pick?: (value: string) => void): DataNode {
+function convert(variable: Variable, pick?: (value: string) => void): any {
   return {
     title: (
       <FieldVariable
@@ -21,13 +23,11 @@ function convert(variable: Variable, pick?: (value: string) => void): DataNode {
     ),
     key: variable.value,
     children: (variable.children || []).map((child) => convert(child, pick)),
-  } as DataNode;
+  };
 }
 
 const FieldTree: FC<FieldTreeProps> = ({ dataSource, pick }) => {
-  const treeData = useMemo(() => {
-    return dataSource.map((v) => convert(v, pick));
-  }, []);
+  const treeData = useMemo(() => dataSource.map((v) => convert(v, pick)), []);
 
   return <Tree treeData={treeData} selectable={false} />;
 };
