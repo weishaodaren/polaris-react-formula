@@ -19,6 +19,7 @@ import {
   CleanSchemaResult,
   CleanMetaSchemaResult,
   initDocTag,
+  evil,
 } from './utils';
 import './styles';
 
@@ -37,9 +38,11 @@ export interface FormulaEditorProps {
 }
 
 // 计算公式表达式
-const FormulaExpression = funs.map((fun) => (Array.isArray(fun.functions)
+const FormulaExpression = funs.map((fun) =>
+(Array.isArray(fun.functions)
   ? fun.functions.length
-  && fun.functions.map(({ name }) => name)
+  && fun.functions.map(({ name }) =>
+    name)
   : []));
 
 const cmOptions = {
@@ -80,7 +83,8 @@ const FormulaEditor: FC<FormulaEditorProps> = ({
   ) => Variable = useCallback(
     (
       schemaParams,
-    ) => (metaSchema
+    ) =>
+    (metaSchema
       ? parseMetaSchema(schemaParams as IFieldMeta)
       : parseSchema(schemaParams)),
     [metaSchema],
@@ -102,8 +106,10 @@ const FormulaEditor: FC<FormulaEditorProps> = ({
 
     if (Array.isArray(resultValue)) {
       return resultValue
-        .map((r: CleanSchemaResult | CleanMetaSchemaResult) => (r.schema ? parseSchemaVariables(r.schema as ISchema, '', path) : null))
-        .filter((v) => v !== null) as Variable[];
+        .map((r: CleanSchemaResult | CleanMetaSchemaResult) =>
+          (r.schema ? parseSchemaVariables(r.schema as ISchema, '', path) : null))
+        .filter((v) =>
+          v !== null) as Variable[];
     }
 
     return resultValue.schema
@@ -118,16 +124,16 @@ const FormulaEditor: FC<FormulaEditorProps> = ({
    */
   const handleClick = useCallback(() => {
     console.log(editorValue, 'editorValue');
-    let _result;
+    let templateResult;
     try {
-      _result = eval(editorValue);
-      console.log(_result, 'ssssss');
+      templateResult = evil(editorValue);
+      console.log(templateResult, 'ssssss');
     } catch ({ message }) {
       console.log(message, 'mmmm');
-      _result = formulajs.SUM(editorValue);
-      console.log(_result, 'ooooo');
+      templateResult = formulajs.SUM(editorValue);
+      console.log(templateResult, 'ooooo');
     } finally {
-      setResult(_result);
+      setResult(templateResult);
     }
   }, [editorValue]);
 

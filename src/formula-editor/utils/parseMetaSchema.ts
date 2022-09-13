@@ -22,7 +22,8 @@ export function parseMetaSchema(
     if (properties) {
       children.push(
         ...Object.keys(properties)
-          .filter((key) => `${path ? `${path}.` : ''}${key}` !== refPath)
+          .filter((key) =>
+`${path ? `${path}.` : ''}${key}` !== refPath)
           .map((key) => {
             const fieldSchema = properties[key];
             const fieldPath = `${path ? `${path}.` : ''}${key}`;

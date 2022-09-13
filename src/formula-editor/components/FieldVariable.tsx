@@ -23,7 +23,8 @@ const FieldVariable: FC<IFieldVariableProps> = ({
     }
     pick?.(value);
   }, []);
-  const disabled = useMemo(() => type === 'array' || type === 'object', []);
+  const disabled = useMemo(() =>
+    type === 'array' || type === 'object', []);
   return (
     <div
       className={classNames('field-variable', { disabled })}

@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build && tsc --emitDeclarationOnly --project ./tsconfig.build.json",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "lint": "eslint --fix --ext .tsx,.ts src"
   },
   "husky": {
     "hooks": {

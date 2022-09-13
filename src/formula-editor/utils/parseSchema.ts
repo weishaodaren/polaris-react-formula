@@ -43,7 +43,8 @@ export function parseSchema(
       }${schema.title ? schema.title : ''}`;
       children.push(
         ...Object.keys(itemProperties)
-          .filter((key) => `${path ? `${path}.` : ''}${key}` !== refPath)
+          .filter((key) =>
+`${path ? `${path}.` : ''}${key}` !== refPath)
           .map((key) => {
             const fieldSchema = itemProperties[key];
             const fieldPath = `${path ? `${path}.` : ''}${key}`;

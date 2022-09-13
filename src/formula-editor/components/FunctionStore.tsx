@@ -15,15 +15,19 @@ export interface FunctionStoreProps {
 
 const prefixCls = 'function-store';
 
-const FunctionStore: FC<FunctionStoreProps> = ({ dataSource = [], check }) => (
+const FunctionStore: FC<FunctionStoreProps> = ({ dataSource = [], check }) =>
+(
   <Collapse className={prefixCls} bordered={false} defaultActiveKey={[0]} expandIconPosition="start" ghost>
     {
       dataSource.map(
-        (fnGroup, index) => (
+        (fnGroup, index) =>
+        (
           <Panel className={`${prefixCls}-group`} header={fnGroup.name} key={index}>
             {
-              fnGroup.functions.map((fn, fnIndex) => (
-                <div className="function-item" key={fnIndex} onClick={() => check && check(fn.name)}>
+              fnGroup.functions.map((fn, fnIndex) =>
+              (
+                <div className="function-item" key={fnIndex} onClick={() =>
+                  check && check(fn.name)}>
                   <div className="function-item__name">
                     {fn.name}
                   </div>

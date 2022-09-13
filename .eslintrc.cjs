@@ -21,16 +21,16 @@ module.exports = {
     sourceType: 'module',
   },
   rules: {
+    "@typescript-eslint/indent": 0,
     'react/display-name': 0,
     'prefer-arrow-callback': 0,
     'import/no-unresolved': 0,
     'import/prefer-default-export': 1,
-    // 不用嵌套三元 可读性差
+    'implicit-arrow-linebreak':['error', 'below'],
     'no-nested-ternary': 2,
     'no-plusplus': 2,
     'linebreak-style': ['error', 'unix'],
     'import/extensions': 0,
-    'no-emprt': 2,
     'no-eq-null': 2,
     'no-eval': 2,
     'no-extra-parens': 2,
@@ -56,6 +56,5 @@ module.exports = {
       }
     },
   ],
-  globals: {
-  },
+  globals: {},
 };

@@ -25,7 +25,8 @@ const Toolbar: FC<ToobarProps> = ({
   const prefixCls = 'formula-editor-toolbar';
 
   const TabNode = useCallback(
-    (props: { name: string; icon?: ReactNode }) => (
+    (props: { name: string; icon?: ReactNode }) =>
+    (
       <span>
         {props.icon ? (
           <span role="img" className="anticon">

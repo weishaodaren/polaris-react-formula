@@ -67,5 +67,10 @@ export const initDocTag = (
   innerVariables: Variable[] = [],
 ) => {
   const contents = code.split('\n');
-  contents.forEach((content, idx) => initLineTag(editor, content, idx, innerVariables));
+  contents.forEach((content, idx) =>
+    initLineTag(editor, content, idx, innerVariables));
 };
+
+export const evil = (expression: string) =>
+  // eslint-disable-next-line @typescript-eslint/no-implied-eval
+  Function(`"use strict";return (${expression})`)();

@@ -22,12 +22,15 @@ function convert(variable: Variable, pick?: (value: string) => void): any {
       />
     ),
     key: variable.value,
-    children: (variable.children || []).map((child) => convert(child, pick)),
+    children: (variable.children || []).map((child) =>
+      convert(child, pick)),
   };
 }
 
 const FieldTree: FC<FieldTreeProps> = ({ dataSource, pick }) => {
-  const treeData = useMemo(() => dataSource.map((v) => convert(v, pick)), []);
+  const treeData = useMemo(() =>
+    dataSource.map((v) =>
+      convert(v, pick)), []);
 
   return <Tree treeData={treeData} selectable={false} />;
 };
