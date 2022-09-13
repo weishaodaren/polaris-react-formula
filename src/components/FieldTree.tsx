@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { Tree } from 'antd';
-import 'antd/lib/tree/style/index'
+import 'antd/lib/tree/style/index';
 
 import type { FC } from 'react';
 import type { Variable } from '../types';

@@ -4,6 +4,10 @@ import type { Variable } from '../types';
 type ISchema = any;
 type SchemaProps = any;
 type SchemaProperties = any;
+export interface CleanSchemaResult {
+  key?: string;
+  schema?: ISchema;
+}
 
 export function parseSchema(
   schema: ISchema,
@@ -84,11 +88,6 @@ function mapProperties(results: CleanSchemaResult[]) {
     }
   });
   return properties;
-}
-
-export interface CleanSchemaResult {
-  key?: string;
-  schema?: ISchema;
 }
 
 export function cleanVoidSchema(

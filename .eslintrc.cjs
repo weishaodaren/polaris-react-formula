@@ -21,6 +21,8 @@ module.exports = {
     sourceType: 'module',
   },
   rules: {
+    "comma-dangle": 0,
+    "no-underscore-dangle": 0,
     "@typescript-eslint/indent": 0,
     'react/display-name': 0,
     'prefer-arrow-callback': 0,
@@ -35,6 +37,7 @@ module.exports = {
     'no-eval': 2,
     'no-extra-parens': 2,
     'no-extra-semi': 2,
+    'no-use-before-define': 2,
     'yoda': 2
   },
   overrides: [

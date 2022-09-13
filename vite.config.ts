@@ -10,28 +10,31 @@ export default defineConfig({
     lib: {
       entry: resolve(__dirname, 'src/index.tsx'),
       name: 'index',
-      fileName: 'index'
+      fileName: 'index',
     },
     rollupOptions: {
-      external: ["react", "react-dom", "antd", "classnames"],
+      external: ['react', 'react-dom', 'antd', 'classnames'],
       output: {
         globals: {
-          'react': 'React', 
-          'react-dom': 'reactDom', 
-          "antd": "antd",
-          'classnames': 'classnames'
-        }
-      }
+          react: 'React',
+          'react-dom': 'reactDom',
+          antd: 'antd',
+          classnames: 'classnames',
+        },
+      },
     },
   },
   css: {
     preprocessorOptions: {
       less: {
-        javascriptEnabled: true
-      }
-    }
+        javascriptEnabled: true,
+      },
+    },
   },
   define: {
-    global: {}
-  }
-})
+    global: {},
+  },
+  server: {
+    port: 4399,
+  },
+});

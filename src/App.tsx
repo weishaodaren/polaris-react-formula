@@ -1,6 +1,8 @@
 import React, { useCallback } from 'react';
 import 'codemirror/lib/codemirror.css';
-import FormulaEditor from './index';
+
+import FormulaEditor from '.';
+import { injectWindowApi } from './utils/tool';
 
 const schema = {
   type: 'object',
@@ -203,6 +205,8 @@ const schema = {
     },
   },
 };
+
+injectWindowApi();
 
 function App() {
   /**

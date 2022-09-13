@@ -1,7 +1,6 @@
 import React, { useState, useCallback, useMemo } from 'react';
-import * as formulajs from '@formulajs/formulajs';
 import { Button } from 'antd';
-import 'antd/lib/button/style/index'
+import 'antd/lib/button/style/index';
 import { UnControlled as CodeMirror } from 'react-codemirror2';
 import classNames from 'classnames';
 
@@ -9,7 +8,7 @@ import type { FC } from 'react';
 import type { EditorChange, Editor as CodemirrorEditor } from 'codemirror';
 import type { FunctionGroup, Variable, IFieldMeta } from './types';
 
-import { Toolbar } from './components';
+import Toolbar from './components/Toolbar';
 import funs from './config/functions';
 import {
   parseSchema,
@@ -39,14 +38,6 @@ export interface FormulaEditorProps {
   schema?: ISchema | IFieldMeta;
   metaSchema?: boolean;
 }
-
-// 计算公式表达式
-// const FormulaExpression = funs.map((fun) =>
-// (Array.isArray(fun.functions)
-//   ? fun.functions.length
-//   && fun.functions.map(({ name }) =>
-//     name)
-//   : []));
 
 const cmOptions = {
   mode: 'text/x-spreadsheet',
@@ -138,7 +129,7 @@ const FormulaEditor: FC<FormulaEditorProps> = ({
       console.log(templateResult, 'ssssss');
     } catch ({ message }) {
       console.log(message, 'mmmm');
-      templateResult = formulajs.SUM(editorValue);
+      // templateResult = formulajs.SUM(editorValue);
       console.log(templateResult, 'ooooo');
     } finally {
       setResult(templateResult);
