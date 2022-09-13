@@ -99,8 +99,7 @@ export function cleanVoidSchema(
     if (typeof properties === 'object') {
       const cleanProperties: CleanSchemaResult[] = [];
       Object.keys(properties).forEach((propertyKey) => {
-        const keyParam = key ?? propertyKey;
-        const result = cleanVoidSchema(properties[keyParam], keyParam);
+        const result = cleanVoidSchema(properties[propertyKey], propertyKey);
         if (Array.isArray(result)) {
           cleanProperties.push(...result);
         } else if (result) {
@@ -120,8 +119,7 @@ export function cleanVoidSchema(
     const cleanProperties: CleanSchemaResult[] = [];
     if (itemsProperties) {
       Object.keys(itemsProperties).forEach((propertyKey) => {
-        const keyParam = key ?? propertyKey;
-        const result = cleanVoidSchema(itemsProperties[keyParam] as ISchema, keyParam);
+        const result = cleanVoidSchema(itemsProperties[propertyKey] as ISchema, propertyKey);
         if (Array.isArray(result)) {
           cleanProperties.push(...result);
         } else if (result) {
@@ -146,8 +144,7 @@ export function cleanVoidSchema(
     const cleanProperties: CleanSchemaResult[] = [];
     if (properties) {
       Object.keys(properties).forEach((propertyKey) => {
-        const keyParam = key ?? propertyKey;
-        const result = cleanVoidSchema(properties[keyParam] as ISchema, keyParam);
+        const result = cleanVoidSchema(properties[propertyKey] as ISchema, propertyKey);
         if (Array.isArray(result)) {
           cleanProperties.push(...result);
         } else if (result) {

@@ -77,8 +77,7 @@ export function cleanVoidMetaSchema(
     if (typeof properties === 'object') {
       const cleanProperties: CleanMetaSchemaResult[] = [];
       Object.keys(properties).forEach((propertyKey) => {
-        const keyParam = key ?? propertyKey;
-        const result = cleanVoidMetaSchema(properties[keyParam], keyParam);
+        const result = cleanVoidMetaSchema(properties[propertyKey], propertyKey);
         if (Array.isArray(result)) {
           cleanProperties.push(...result);
         } else if (result) {
@@ -97,8 +96,7 @@ export function cleanVoidMetaSchema(
     const cleanProperties: CleanMetaSchemaResult[] = [];
     if (properties) {
       Object.keys(properties).forEach((propertyKey) => {
-        const keyParam = key ?? propertyKey;
-        const result = cleanVoidMetaSchema(properties[keyParam] as IFieldMeta, keyParam);
+        const result = cleanVoidMetaSchema(properties[propertyKey] as IFieldMeta, propertyKey);
         if (Array.isArray(result)) {
           cleanProperties.push(...result);
         } else if (result) {
@@ -121,8 +119,7 @@ export function cleanVoidMetaSchema(
     const cleanProperties: CleanMetaSchemaResult[] = [];
     if (properties) {
       Object.keys(properties).forEach((propertyKey) => {
-        const keyParam = key ?? propertyKey;
-        const result = cleanVoidMetaSchema(properties[keyParam] as IFieldMeta, keyParam);
+        const result = cleanVoidMetaSchema(properties[propertyKey] as IFieldMeta, propertyKey);
         if (Array.isArray(result)) {
           cleanProperties.push(...result);
         } else if (result) {
