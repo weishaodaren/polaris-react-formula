@@ -144,7 +144,7 @@ const FormulaEditor: FC<FormulaEditorProps> = ({
   ) => {
     setEditor(editorConfig);
     if (editorValueParam !== null && editorValueParam !== '') {
-      initDocTag(editorConfig, editorValueParam);
+      initDocTag(editorConfig, editorValueParam, innerVariables);
     }
   }, []);
 
@@ -163,7 +163,7 @@ const FormulaEditor: FC<FormulaEditorProps> = ({
     editorValueParam: string,
   ) => {
     if (editorValueParam !== null || editorValueParam !== '') {
-      initDocTag(editorConfig, editorValueParam);
+      initDocTag(editorConfig, editorValueParam, innerVariables);
     }
     setEditorValue(editorValueParam);
     onChange?.(editorValueParam);

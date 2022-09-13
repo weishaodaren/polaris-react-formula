@@ -1,5 +1,5 @@
 import type { Position, Editor as CodemirrorEditor } from 'codemirror';
-import type { Variable } from './types';
+import type { Variable } from '../types';
 
 /**
    * Function
@@ -64,6 +64,7 @@ export const initLineTag = (
 export const initDocTag = (
   editor: CodemirrorEditor,
   code: string,
+  innerVariables: Variable[] = [],
 ) => {
   const contents = code.split('\n');
   contents.forEach((content, idx) => initLineTag(editor, content, idx, innerVariables));
