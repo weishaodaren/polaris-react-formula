@@ -6,7 +6,7 @@ export function parseMetaSchema(
   refPath?: string,
 ): Variable {
   const children: Variable[] = [];
-  if (schema.type === 'object') {
+  if (schema?.type === 'object') {
     if (schema?.properties !== null) {
       const { properties = {} } = schema;
       Object.keys(properties).forEach((key) => {
@@ -17,13 +17,13 @@ export function parseMetaSchema(
         }
       });
     }
-  } else if (schema.type === 'array') {
+  } else if (schema?.type === 'array') {
     const { properties } = schema;
     if (properties) {
       children.push(
         ...Object.keys(properties)
           .filter((key) =>
-`${path ? `${path}.` : ''}${key}` !== refPath)
+            `${path ? `${path}.` : ''}${key}` !== refPath)
           .map((key) => {
             const fieldSchema = properties[key];
             const fieldPath = `${path ? `${path}.` : ''}${key}`;
@@ -38,7 +38,7 @@ export function parseMetaSchema(
       type: schema.type || '',
     });
   }
-  if (schema.type === 'object' || schema.type === 'array') {
+  if (schema?.type === 'object' || schema?.type === 'array') {
     return {
       label: schema.name,
       value: path,
@@ -76,8 +76,9 @@ export function cleanVoidMetaSchema(
   if (schema.type === 'object') {
     if (typeof properties === 'object') {
       const cleanProperties: CleanMetaSchemaResult[] = [];
-      Object.keys(properties).forEach((key) => {
-        const result = cleanVoidMetaSchema(properties[key], key);
+      Object.keys(properties).forEach((propertyKey) => {
+        const keyParam = key ?? propertyKey;
+        const result = cleanVoidMetaSchema(properties[keyParam], keyParam);
         if (Array.isArray(result)) {
           cleanProperties.push(...result);
         } else if (result) {
@@ -92,11 +93,12 @@ export function cleanVoidMetaSchema(
     return { schema, key };
   }
   if (schema.type === 'array') {
-    const { properties, ...other } = schema;
+    const { ...other } = schema;
     const cleanProperties: CleanMetaSchemaResult[] = [];
     if (properties) {
-      Object.keys(properties).forEach((key) => {
-        const result = cleanVoidMetaSchema(properties[key] as IFieldMeta, key);
+      Object.keys(properties).forEach((propertyKey) => {
+        const keyParam = key ?? propertyKey;
+        const result = cleanVoidMetaSchema(properties[keyParam] as IFieldMeta, keyParam);
         if (Array.isArray(result)) {
           cleanProperties.push(...result);
         } else if (result) {
@@ -116,11 +118,11 @@ export function cleanVoidMetaSchema(
     };
   }
   if (schema.type === 'void') {
-    const { properties } = schema;
     const cleanProperties: CleanMetaSchemaResult[] = [];
     if (properties) {
-      Object.keys(properties).forEach((key) => {
-        const result = cleanVoidMetaSchema(properties[key] as IFieldMeta, key);
+      Object.keys(properties).forEach((propertyKey) => {
+        const keyParam = key ?? propertyKey;
+        const result = cleanVoidMetaSchema(properties[keyParam] as IFieldMeta, keyParam);
         if (Array.isArray(result)) {
           cleanProperties.push(...result);
         } else if (result) {

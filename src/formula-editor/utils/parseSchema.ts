@@ -44,7 +44,7 @@ export function parseSchema(
       children.push(
         ...Object.keys(itemProperties)
           .filter((key) =>
-`${path ? `${path}.` : ''}${key}` !== refPath)
+            `${path ? `${path}.` : ''}${key}` !== refPath)
           .map((key) => {
             const fieldSchema = itemProperties[key];
             const fieldPath = `${path ? `${path}.` : ''}${key}`;
@@ -102,12 +102,13 @@ export function cleanVoidSchema(
   schema: ISchema,
   key?: string,
 ): CleanSchemaResult | CleanSchemaResult[] | undefined {
-  if (schema.type === 'object') {
+  if (schema?.type === 'object') {
     const { properties } = schema;
     if (typeof properties === 'object') {
       const cleanProperties: CleanSchemaResult[] = [];
-      Object.keys(properties).forEach((key) => {
-        const result = cleanVoidSchema(properties[key], key);
+      Object.keys(properties).forEach((propertyKey) => {
+        const keyParam = key ?? propertyKey;
+        const result = cleanVoidSchema(properties[keyParam], keyParam);
         if (Array.isArray(result)) {
           cleanProperties.push(...result);
         } else if (result) {
@@ -121,13 +122,14 @@ export function cleanVoidSchema(
     }
     return { schema, key };
   }
-  if (schema.type === 'array') {
+  if (schema?.type === 'array') {
     const itemsSchema = schema?.items as ISchema | undefined;
     const itemsProperties = itemsSchema?.properties as SchemaProps | undefined;
     const cleanProperties: CleanSchemaResult[] = [];
     if (itemsProperties) {
-      Object.keys(itemsProperties).forEach((key) => {
-        const result = cleanVoidSchema(itemsProperties[key] as ISchema, key);
+      Object.keys(itemsProperties).forEach((propertyKey) => {
+        const keyParam = key ?? propertyKey;
+        const result = cleanVoidSchema(itemsProperties[keyParam] as ISchema, keyParam);
         if (Array.isArray(result)) {
           cleanProperties.push(...result);
         } else if (result) {
@@ -147,12 +149,13 @@ export function cleanVoidSchema(
       key,
     };
   }
-  if (schema.type === 'void') {
+  if (schema?.type === 'void') {
     const properties = schema.properties as SchemaProps | undefined;
     const cleanProperties: CleanSchemaResult[] = [];
     if (properties) {
-      Object.keys(properties).forEach((key) => {
-        const result = cleanVoidSchema(properties[key] as ISchema, key);
+      Object.keys(properties).forEach((propertyKey) => {
+        const keyParam = key ?? propertyKey;
+        const result = cleanVoidSchema(properties[keyParam] as ISchema, keyParam);
         if (Array.isArray(result)) {
           cleanProperties.push(...result);
         } else if (result) {
