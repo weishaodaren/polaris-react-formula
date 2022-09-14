@@ -15,7 +15,7 @@ const schema = {
       'x-reactions': [
         {
           type: 'formula',
-          formula: 'CONCATENATE({!firstName},  " ", {!lastName})',
+          formula: 'CONCATENATE({firstName},  " ", {lastName})',
         },
       ],
     },
@@ -139,7 +139,7 @@ const schema = {
                 'x-reactions': [
                   {
                     type: 'formula',
-                    formula: '{!projects.price} * {!projects.count}',
+                    formula: '{projects.price} * {projects.count}',
                   },
                 ],
               },
@@ -190,7 +190,7 @@ const schema = {
       'x-reactions': [
         {
           type: 'formula',
-          formula: 'SUM({!projects.total})',
+          formula: 'SUM({projects.total})',
         },
       ],
     },

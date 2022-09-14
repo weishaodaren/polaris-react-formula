@@ -19,7 +19,7 @@ const replaceVariable = (
 ) => {
   const doc = editor.getDoc();
   const el = document.createElement('span');
-  el.innerText = val.fullName || val.label || val.value;
+  el.innerText = val.label;
   el.className = 'formula-tag';
   doc.markText(begin, end, {
     replacedWith: el,
@@ -42,7 +42,7 @@ export const initLineTag = (
   innerVariables: Variable[] = [],
 ) => {
   (innerVariables || []).forEach((variable) => {
-    const variableMark = `{!${variable.value}}`;
+    const variableMark = `{${variable.value}}`;
     const regex = new RegExp(variableMark, 'g');
     while (regex.exec(content) !== null) {
       const begin = { line, ch: regex.lastIndex - variableMark.length };

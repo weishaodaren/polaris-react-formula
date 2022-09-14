@@ -177,7 +177,7 @@ const FormulaEditor: FC<FormulaEditorProps> = ({
       if (editor === null) return;
       const doc = editor!.getDoc();
       const pos = doc.getCursor();
-      doc.replaceRange(`{!${variable}}`, pos, pos);
+      doc.replaceRange(`{${variable}}`, pos, pos);
       editor!.focus();
     },
     [editor],
