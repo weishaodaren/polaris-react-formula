@@ -11,6 +11,26 @@ export const parseKey = (key: string) =>
 
 /**
  * Function
+ * @description 匹配字段 替换数据
+ * @param fields 字段组
+ * @param originalField 原始字段
+ * @param replacedFields 替换字段组
+ * @return string
+ */
+export const parseKeyReplaceField = (
+  fields: string[],
+  originalField: string,
+  replacedFields: string[],
+) => {
+  let _originalField = originalField;
+  for (let i = 0; i < fields.length; i += 1) {
+    _originalField = _originalField.replace(fields[i], replacedFields[i]);
+  }
+  return _originalField;
+};
+
+/**
+ * Function
  * @description 解析字段
  * @return array
  */

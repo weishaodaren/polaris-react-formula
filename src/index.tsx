@@ -15,6 +15,7 @@ import {
   parseFormula,
   parseFieldData,
   parseFullFieldData,
+  parseKeyReplaceField,
   initDocTag,
   evil,
 } from './utils';
@@ -124,20 +125,16 @@ const FormulaEditor: FC<FormulaEditorProps> = ({
 
       // 存在有效字段
       if (chunkFields.length) {
-        let _editorValue = editorValue;
-        console.log(_editorValue, '_editorValue');
-
         const resultValue = new Array(callbackDataLength);
         for (let i = 0; i < chunkFields.length; i += 1) {
-          const fieldReg = _editorValue.match(/\{.*?\}/g);
+          const fieldReg = editorValue.match(/\{.*?\}/g);
+          // 不存在可替换字段 直接抛出
           if (!fieldReg) return;
-          for (let k = 0; k < fieldReg.length; k += 1) {
-            _editorValue = _editorValue.replace(fieldReg[k], `${chunkFields[i][k]}`);
-            // _editorValue = _editorValue.replace(fieldReg[k], chunkFields[k][k]);
-          }
-          resultValue[i] = _editorValue;
-          console.log(resultValue, _editorValue);
+          // 替换成有效字段
+          const validFiled = parseKeyReplaceField(fieldReg, editorValue, chunkFields[i]);
+          resultValue[i] = parseFormula(evil(validFiled));
         }
+        console.log(resultValue, 'lsakjdalsjdla');
       } else {
         // 存在用户手动输入表达式可能
         setResult(parseFormula(evil(editorValue)) as any);
