@@ -5,13 +5,13 @@ import { UnControlled as CodeMirror } from 'react-codemirror2';
 
 import type { FC } from 'react';
 import type { EditorChange, Editor as CodemirrorEditor } from 'codemirror';
-import type { FunctionGroup } from './types';
 import type { IColumn } from './config/mock.column';
 
 import Toolbar from './components/Toolbar';
-import funs from './config/functions';
+import functions from './config/functions';
 import {
   parseField,
+  parseFormula,
   initDocTag,
   evil,
 } from './utils';
@@ -20,9 +20,7 @@ import './styles';
 import 'codemirror/mode/spreadsheet/spreadsheet.js';
 
 export interface FormulaEditorProps {
-  title?: string;
   value?: string;
-  functions?: FunctionGroup[];
   onChange?: (value: string) => void;
   className?: string;
   style?: React.CSSProperties;
@@ -44,13 +42,11 @@ const prefixCls = 'formula-editor';
  * @return {JSX.Element}
  */
 const FormulaEditor: FC<FormulaEditorProps> = ({
-  title,
   value = '',
-  functions = funs,
-  onChange,
   style,
   className,
   field,
+  onChange,
 }) => {
   /**
    * State
@@ -91,7 +87,7 @@ const FormulaEditor: FC<FormulaEditorProps> = ({
    */
   const handleClick = useCallback(() => {
     try {
-      setResult(evil(editorValue));
+      setResult(parseFormula(evil(editorValue)) as any);
       setError('');
     } catch ({ message }) {
       setError(editorValue);
@@ -131,7 +127,6 @@ const FormulaEditor: FC<FormulaEditorProps> = ({
     editorValueParam: string,
   ) => {
     if (editorValueParam !== null || editorValueParam !== '') {
-      // initDocTag(editorConfig, editorValueParam, innerVariables);
       initDocTag(editorConfig, editorValueParam, fields);
     }
     setEditorValue(editorValueParam);
@@ -182,14 +177,12 @@ const FormulaEditor: FC<FormulaEditorProps> = ({
     <div className={classnames} style={style}>
       <Toolbar
         functions={functions}
-        // variables={innerVariables}
         variables={fields}
         insertFun={insertFun}
         insertVariable={insertVariable}
       />
       <div className={`${prefixCls}-main`}>
         <div className={`${prefixCls}-main__code`}>
-          <h1>{title}</h1>
           <CodeMirror
             autoCursor={false}
             value={value}

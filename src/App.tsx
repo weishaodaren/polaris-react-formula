@@ -14,13 +14,12 @@ function App() {
    * @param value 值
    * @return void 0
    */
-  const onCalc = useCallback((value?: string) => {
+  const onCalc: (value: string) => void = useCallback(() => {
     // console.log('这是最外层的值：', value);
   }, []);
 
   return (
     <FormulaEditor
-      title='公式demo'
       field={column}
       style={{
         border: '1px solid gray',

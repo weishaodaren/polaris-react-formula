@@ -1,2 +1,2 @@
-export * from './parseField';
+export * from './parse';
 export * from './tool';
