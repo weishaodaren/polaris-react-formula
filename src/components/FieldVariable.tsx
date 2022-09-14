@@ -1,8 +1,5 @@
-import classNames from 'classnames';
-import React, { useCallback, useMemo } from 'react';
-
+import React, { useCallback } from 'react';
 import type { FC } from 'react';
-
 import '../styles/fieldVariable.less';
 
 export interface IFieldVariableProps {
@@ -24,11 +21,9 @@ const FieldVariable: FC<IFieldVariableProps> = ({
     }
     pick?.(value);
   }, []);
-  const disabled = useMemo(() =>
-    type === 'array' || type === 'object', []);
   return (
     <div
-      className={classNames('field-variable', { disabled })}
+      className={'field-variable'}
       onClick={handlePick}
     >
       {label}

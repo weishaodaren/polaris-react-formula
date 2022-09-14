@@ -625,7 +625,9 @@ export const column = [
                 },
             },
         },
-    ];
+];
+
+export type IColumn = typeof column;
 
 export const dataSource = [
         {
@@ -815,3 +817,5 @@ export const dataSource = [
             issueStatusType: 1,
         },
     ];
+
+export type IDataSource = typeof dataSource;

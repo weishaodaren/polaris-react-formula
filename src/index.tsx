@@ -2,15 +2,16 @@ import React, { useState, useCallback, useMemo } from 'react';
 import { Button } from 'antd';
 import 'antd/lib/button/style/index';
 import { UnControlled as CodeMirror } from 'react-codemirror2';
-import classNames from 'classnames';
 
 import type { FC } from 'react';
 import type { EditorChange, Editor as CodemirrorEditor } from 'codemirror';
 import type { FunctionGroup, Variable, IFieldMeta } from './types';
+import type { IColumn } from './config/mock.column';
 
 import Toolbar from './components/Toolbar';
 import funs from './config/functions';
 import {
+  parseField,
   parseSchema,
   cleanVoidSchema,
   CleanSchemaResult,
@@ -33,8 +34,10 @@ export interface FormulaEditorProps {
   className?: string;
   style?: React.CSSProperties;
   schema?: ISchema | IFieldMeta;
+  field: IColumn
 }
 
+// codeMirror 配置
 const cmOptions = {
   mode: 'text/x-spreadsheet',
   line: true,
@@ -57,6 +60,7 @@ const FormulaEditor: FC<FormulaEditorProps> = ({
   style,
   className,
   schema,
+  field,
 }) => {
   /**
    * State
@@ -67,7 +71,31 @@ const FormulaEditor: FC<FormulaEditorProps> = ({
   const [error, setError] = useState<string>(''); // 错误信息
 
   /**
-   * useMemo
+   * Memo
+   * @description 类名集合
+   * @return array
+   */
+  const classnames = useMemo(
+    () =>
+      [prefixCls, className].join(' '),
+    [],
+  );
+
+  /**
+   * Memo
+   * @description 字段组
+   * @return array
+   */
+  const fields = useMemo(
+    () =>
+    (!field || !Array.isArray(field) || !field.length
+      ? []
+      : parseField(field)),
+    [],
+  );
+
+  /**
+   * Memo
    * @description 变量组
    * @return array
    */
@@ -118,7 +146,7 @@ const FormulaEditor: FC<FormulaEditorProps> = ({
   ) => {
     setEditor(editorConfig);
     if (editorValueParam !== null && editorValueParam !== '') {
-      initDocTag(editorConfig, editorValueParam, innerVariables);
+      initDocTag(editorConfig, editorValueParam, fields);
     }
   }, []);
 
@@ -137,7 +165,8 @@ const FormulaEditor: FC<FormulaEditorProps> = ({
     editorValueParam: string,
   ) => {
     if (editorValueParam !== null || editorValueParam !== '') {
-      initDocTag(editorConfig, editorValueParam, innerVariables);
+      // initDocTag(editorConfig, editorValueParam, innerVariables);
+      initDocTag(editorConfig, editorValueParam, fields);
     }
     setEditorValue(editorValueParam);
     onChange?.(editorValueParam);
@@ -153,7 +182,7 @@ const FormulaEditor: FC<FormulaEditorProps> = ({
     (
       code: string,
     ) => {
-      if (editor === null) return;
+      if (!editor) return;
       const doc = editor!.getDoc();
       const pos = doc.getCursor();
       doc.replaceRange(`${code}()`, pos);
@@ -174,7 +203,7 @@ const FormulaEditor: FC<FormulaEditorProps> = ({
     (
       variable: string,
     ) => {
-      if (editor === null) return;
+      if (!editor) return;
       const doc = editor!.getDoc();
       const pos = doc.getCursor();
       doc.replaceRange(`{${variable}}`, pos, pos);
@@ -184,10 +213,11 @@ const FormulaEditor: FC<FormulaEditorProps> = ({
   );
 
   return (
-    <div className={classNames(prefixCls, className)} style={style}>
+    <div className={classnames} style={style}>
       <Toolbar
         functions={functions}
-        variables={innerVariables}
+        // variables={innerVariables}
+        variables={fields}
         insertFun={insertFun}
         insertVariable={insertVariable}
       />
