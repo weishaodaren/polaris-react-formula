@@ -5,16 +5,13 @@ import { UnControlled as CodeMirror } from 'react-codemirror2';
 
 import type { FC } from 'react';
 import type { EditorChange, Editor as CodemirrorEditor } from 'codemirror';
-import type { FunctionGroup, Variable, IFieldMeta } from './types';
+import type { FunctionGroup } from './types';
 import type { IColumn } from './config/mock.column';
 
 import Toolbar from './components/Toolbar';
 import funs from './config/functions';
 import {
   parseField,
-  parseSchema,
-  cleanVoidSchema,
-  CleanSchemaResult,
   initDocTag,
   evil,
 } from './utils';
@@ -22,18 +19,13 @@ import './styles';
 
 import 'codemirror/mode/spreadsheet/spreadsheet.js';
 
-// TODO: 暂时使用any 后续使用table的类型
-type ISchema = any;
-
 export interface FormulaEditorProps {
   title?: string;
   value?: string;
-  path?: string;
   functions?: FunctionGroup[];
   onChange?: (value: string) => void;
   className?: string;
   style?: React.CSSProperties;
-  schema?: ISchema | IFieldMeta;
   field: IColumn
 }
 
@@ -54,12 +46,10 @@ const prefixCls = 'formula-editor';
 const FormulaEditor: FC<FormulaEditorProps> = ({
   title,
   value = '',
-  path,
   functions = funs,
   onChange,
   style,
   className,
-  schema,
   field,
 }) => {
   /**
@@ -93,30 +83,6 @@ const FormulaEditor: FC<FormulaEditorProps> = ({
       : parseField(field)),
     [],
   );
-
-  /**
-   * Memo
-   * @description 变量组
-   * @return array
-   */
-  const innerVariables = useMemo(() => {
-    if (!schema) return [];
-
-    const resultValue = cleanVoidSchema(schema as ISchema);
-    if (!resultValue) return [];
-
-    if (Array.isArray(resultValue)) {
-      return resultValue
-        .map((r: CleanSchemaResult) =>
-          (r.schema ? parseSchema(r.schema as ISchema, '', path) : null))
-        .filter((v) =>
-          v !== null) as Variable[];
-    }
-
-    return resultValue.schema
-      ? parseSchema(resultValue.schema as ISchema, '', path).children
-      : [];
-  }, []);
 
   /**
    * Callback

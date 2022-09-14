@@ -23,8 +23,6 @@ function convert(variable: Variable, pick?: (value: string) => void): any {
       />
     ),
     key: variable.value,
-    children: (variable.children || []).map((child) =>
-      convert(child, pick)),
   };
 }
 

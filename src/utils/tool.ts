@@ -49,9 +49,6 @@ export const initLineTag = (
       const end = { line, ch: regex.lastIndex };
       replaceVariable(editor, begin, end, variable);
     }
-    if (variable.children && variable.children.length > 0) {
-      initLineTag(editor, content, line, variable.children);
-    }
   });
 };
 
