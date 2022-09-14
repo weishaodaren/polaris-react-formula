@@ -12,13 +12,14 @@ export interface FieldTreeProps {
   pick?: (value: string) => void;
 }
 
-function convert(variable: Variable, pick?: (value: string) => void): any {
+function convert(variable: Variable, pick?: FieldTreeProps['pick']): any {
   return {
     title: (
       <FieldVariable
         type={variable.type}
         value={variable.value}
         label={variable.label}
+        _value={variable._value}
         pick={pick}
       />
     ),

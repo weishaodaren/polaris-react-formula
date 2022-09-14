@@ -3,7 +3,7 @@ import 'codemirror/lib/codemirror.css';
 
 import FormulaEditor from '.';
 import { injectWindowApi } from './utils/tool';
-import { column } from './config/mock.column';
+import { column, dataSource } from './config/mock.column';
 
 injectWindowApi();
 
@@ -21,6 +21,7 @@ function App() {
   return (
     <FormulaEditor
       field={column}
+      dataSource={dataSource}
       style={{
         border: '1px solid gray',
         wordBreak: 'break-word',

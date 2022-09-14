@@ -7,6 +7,7 @@ export interface IFieldVariableProps {
   value: string;
   type: string;
   pick?: (id: string) => void;
+  _value?: unknown
 }
 
 const FieldVariable: FC<IFieldVariableProps> = ({
@@ -19,6 +20,7 @@ const FieldVariable: FC<IFieldVariableProps> = ({
     if (type === 'array' || type === 'object') {
       return;
     }
+
     pick?.(value);
   }, []);
   return (

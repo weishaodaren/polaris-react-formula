@@ -1,13 +1,22 @@
-import type { IColumn } from '../config/mock.column';
+import type { IColumn, IDataSource } from '../config/mock.column';
 import type { Variable } from '../types';
+
+/**
+ * Function
+ * @description 解析字段key
+ * @return array | null
+ */
+export const parseKey = (key: string) =>
+  key.match(/(?<=\{)(.+?)(?=\})/g);
 
 /**
  * Function
  * @description 解析字段
  * @return array
  */
-export const parseField: (F: IColumn) => Variable[] = (fields) =>
-  fields.map(({
+export const parseField = (fields: IColumn, dataSource: IDataSource): Variable[] => {
+  // 格式化字段组
+  const formatFields = fields.map(({
       name: value,
       label,
       field: { type },
@@ -16,7 +25,68 @@ export const parseField: (F: IColumn) => Variable[] = (fields) =>
         label,
         value,
         type,
+        _value: [] as any,
   }));
+
+  // 数据字段结合
+  for (let i = 0; i < formatFields.length; i += 1) {
+    for (let j = 0; j < dataSource.length; j += 1) {
+      const { value } = formatFields[i];
+      // eslint-disable-next-line no-extra-parens
+      formatFields[i]._value.push(((dataSource[j] as any)[value]));
+    }
+  }
+
+  return formatFields;
+};
+
+/**
+ * Function
+ * @description 解析字段数据
+ */
+export const parseFieldData = (key: string, sourceData: IDataSource | any) => {
+  const fieldKey = parseKey(key);
+  // 不满足匹配条件直接抛出
+  if (!fieldKey || !Array.isArray(fieldKey)) return null;
+
+  const data = [];
+  for (let i = 0; i < sourceData.length; i += 1) {
+    for (let j = 0; j < fieldKey.length; j += 1) {
+      if (fieldKey[j] in sourceData[i]) {
+        data.push(sourceData[i][fieldKey[j]]);
+      }
+    }
+  }
+  return data;
+};
+
+/**
+ * Function
+ * @description 解析全字段数据
+ */
+export const parseFullFieldData = (fields: Variable[], sourceData: IDataSource | any) => {
+  // 字段组
+  const fieldArray = fields
+    .map(({ value }) =>
+      value)
+    .filter(Boolean);
+
+  // 字段对象，各个字段占位
+  const fieldObject = {} as any;
+  for (let j = 0; j < fieldArray.length; j += 1) {
+    fieldObject[fieldArray[j]] = [];
+  }
+
+  // 所有字段变量统一插入字段key中
+  for (let i = 0; i < sourceData.length; i += 1) {
+    for (let k = 0; k < fields.length; k += 1) {
+      const { value } = fields[k];
+      fieldObject[value].push(sourceData[i][value]);
+    }
+  }
+
+  return fieldObject;
+};
 
 /**
  * Function

@@ -23,6 +23,7 @@ module.exports = {
   rules: {
     "comma-dangle": 0,
     "no-underscore-dangle": 0,
+    "@typescript-eslint/naming-convention": 0,
     "@typescript-eslint/indent": 0,
     'react/display-name': 0,
     'prefer-arrow-callback': 0,

@@ -8,7 +8,7 @@ import type { Variable } from '../types';
  * @param editor 编辑器配置
  * @param begin 开始位置
  * @param end 结束位置
- * @param val 值信息{label: '', value: '', type: '', fullname: ''}
+ * @param val 值信息{label: '', value: '', type: ''}
  * @return void 0
  */
 const replaceVariable = (

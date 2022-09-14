@@ -2,6 +2,7 @@ export interface Variable {
   label: string;
   value: string;
   type: string;
+  _value?: unknown;
 }
 
 export interface FunctionItem {

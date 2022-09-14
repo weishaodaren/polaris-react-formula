@@ -1,17 +1,20 @@
 import React, { useState, useCallback, useMemo } from 'react';
+import { chunk } from 'lodash-es';
 import { Button } from 'antd';
 import 'antd/lib/button/style/index';
 import { UnControlled as CodeMirror } from 'react-codemirror2';
 
 import type { FC } from 'react';
 import type { EditorChange, Editor as CodemirrorEditor } from 'codemirror';
-import type { IColumn } from './config/mock.column';
+import { dataSource, IColumn, IDataSource } from './config/mock.column';
 
 import Toolbar from './components/Toolbar';
 import functions from './config/functions';
 import {
   parseField,
   parseFormula,
+  parseFieldData,
+  parseFullFieldData,
   initDocTag,
   evil,
 } from './utils';
@@ -20,11 +23,12 @@ import './styles';
 import 'codemirror/mode/spreadsheet/spreadsheet.js';
 
 export interface FormulaEditorProps {
-  value?: string;
-  onChange?: (value: string) => void;
-  className?: string;
-  style?: React.CSSProperties;
+  value?: string
+  onChange?: (value: string) => void
+  className?: string
+  style?: React.CSSProperties
   field: IColumn
+  dataSource?: IDataSource
 }
 
 // codeMirror 配置
@@ -69,6 +73,17 @@ const FormulaEditor: FC<FormulaEditorProps> = ({
 
   /**
    * Memo
+   * @description 源数据
+   * @return array
+   */
+  const sourceData = useMemo(
+    () =>
+      parseFieldData(editorValue, dataSource),
+    [editorValue],
+  );
+
+  /**
+   * Memo
    * @description 字段组
    * @return array
    */
@@ -76,7 +91,18 @@ const FormulaEditor: FC<FormulaEditorProps> = ({
     () =>
     (!field || !Array.isArray(field) || !field.length
       ? []
-      : parseField(field)),
+      : parseField(field, dataSource)),
+    [],
+  );
+
+  /**
+   * Memo
+   * @description 字段数据
+   * @return array
+   */
+  const fieldData = useMemo(
+    () =>
+      parseFullFieldData(fields, dataSource),
     [],
   );
 
@@ -85,13 +111,42 @@ const FormulaEditor: FC<FormulaEditorProps> = ({
    * @description 点击计算公式结果
    * @return void 0
    */
+  // TODO: 自身结合自身
   const handleClick = useCallback(() => {
     try {
-      setResult(parseFormula(evil(editorValue)) as any);
-      setError('');
+      // 当前激活的字段组长度
+      const activeFieldLength = document.querySelectorAll('.formula-tag').length;
+
+      // 回调给table的数据长度
+      const callbackDataLength = dataSource.length;
+      const fieldsData = parseFieldData(editorValue, dataSource);
+      const chunkFields = chunk(fieldsData, activeFieldLength);
+
+      // 存在有效字段
+      if (chunkFields.length) {
+        let _editorValue = editorValue;
+        console.log(_editorValue, '_editorValue');
+
+        const resultValue = new Array(callbackDataLength);
+        for (let i = 0; i < chunkFields.length; i += 1) {
+          const fieldReg = _editorValue.match(/\{.*?\}/g);
+          if (!fieldReg) return;
+          for (let k = 0; k < fieldReg.length; k += 1) {
+            _editorValue = _editorValue.replace(fieldReg[k], `${chunkFields[i][k]}`);
+            // _editorValue = _editorValue.replace(fieldReg[k], chunkFields[k][k]);
+          }
+          resultValue[i] = _editorValue;
+          console.log(resultValue, _editorValue);
+        }
+      } else {
+        // 存在用户手动输入表达式可能
+        setResult(parseFormula(evil(editorValue)) as any);
+        setError('');
+      }
     } catch ({ message }) {
       setError(editorValue);
       setResult('');
+      throw message;
     }
   }, [editorValue]);
 
