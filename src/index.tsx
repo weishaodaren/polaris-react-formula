@@ -3,6 +3,7 @@ import { chunk } from 'lodash-es';
 import { Button } from 'antd';
 import 'antd/lib/button/style/index';
 import { UnControlled as CodeMirror } from 'react-codemirror2';
+import 'codemirror/mode/spreadsheet/spreadsheet.js';
 
 import type { FC } from 'react';
 import type { EditorChange, Editor as CodemirrorEditor } from 'codemirror';
@@ -11,17 +12,15 @@ import { dataSource, IColumn, IDataSource } from './config/mock.column';
 import Toolbar from './components/Toolbar';
 import functions from './config/functions';
 import {
+  evil,
+  initDocTag,
   parseField,
   parseFormula,
   parseFieldData,
   parseFullFieldData,
   parseKeyReplaceField,
-  initDocTag,
-  evil,
 } from './utils';
 import './styles';
-
-import 'codemirror/mode/spreadsheet/spreadsheet.js';
 
 export interface FormulaEditorProps {
   value?: string
@@ -112,19 +111,24 @@ const FormulaEditor: FC<FormulaEditorProps> = ({
    * @description 点击计算公式结果
    * @return void 0
    */
-  // TODO: 自身结合自身
   const handleClick = useCallback(() => {
     try {
-      // 当前激活的字段组长度
+      // 当前激活的字段数组长度
       const activeFieldLength = document.querySelectorAll('.formula-tag').length;
-
       // 回调给table的数据长度
       const callbackDataLength = dataSource.length;
+      // 字段数据
       const fieldsData = parseFieldData(editorValue, dataSource);
+      // 单行数据
       const chunkFields = chunk(fieldsData, activeFieldLength);
 
       // 存在有效字段
       if (chunkFields.length) {
+        /**
+         * 创建极星表格sourceData长度的数组
+         * 对应计算公式字段操作
+         * 回调给控制方
+         */
         const resultValue = new Array(callbackDataLength);
         for (let i = 0; i < chunkFields.length; i += 1) {
           const fieldReg = editorValue.match(/\{.*?\}/g);

@@ -4,10 +4,11 @@ import type { Variable } from '../types';
 /**
  * Function
  * @description 解析字段key
+ * @param rawKey 未解析前的字段 {code}
  * @return array | null
  */
-export const parseKey = (key: string) =>
-  key.match(/(?<=\{)(.+?)(?=\})/g);
+export const parseKey = (rawKey: string) =>
+  rawKey.match(/(?<=\{)(.+?)(?=\})/g);
 
 /**
  * Function
@@ -23,20 +24,30 @@ export const parseKeyReplaceField = (
   replacedFields: string[],
 ) => {
   let _originalField = originalField;
+  /**
+   * 字符串对应字段
+   * 替换变量字段
+   */
   for (let i = 0; i < fields.length; i += 1) {
+    console.log(replacedFields[i], fields[i]);
+
     _originalField = _originalField.replace(fields[i], replacedFields[i]);
   }
+  console.log(_originalField, '_originalField');
+
   return _originalField;
 };
 
 /**
  * Function
  * @description 解析字段
+ * @param rawFields 原始字段组(极星表格直传)
+ * @param dataSource 原始数据(极星表格直传)
  * @return array
  */
-export const parseField = (fields: IColumn, dataSource: IDataSource): Variable[] => {
+export const parseField = (rawFields: IColumn, dataSource: IDataSource): Variable[] => {
   // 格式化字段组
-  const formatFields = fields.map(({
+  const formatFields = rawFields.map(({
       name: value,
       label,
       field: { type },
@@ -63,6 +74,9 @@ export const parseField = (fields: IColumn, dataSource: IDataSource): Variable[]
 /**
  * Function
  * @description 解析字段数据
+ * @param key 字段
+ * @param sourceData 源数据
+ * @return array | null
  */
 export const parseFieldData = (key: string, sourceData: IDataSource | any) => {
   const fieldKey = parseKey(key);
@@ -83,6 +97,9 @@ export const parseFieldData = (key: string, sourceData: IDataSource | any) => {
 /**
  * Function
  * @description 解析全字段数据
+ * @param fields 解析后的字段组
+ * @param sourceData 源数据
+ * @return object
  */
 export const parseFullFieldData = (fields: Variable[], sourceData: IDataSource | any) => {
   // 字段组
