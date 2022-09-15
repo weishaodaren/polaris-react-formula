@@ -32,12 +32,8 @@ export const parseKeyReplaceField = (
    * 替换变量字段
    */
   for (let i = 0; i < fields.length; i += 1) {
-    console.log(fields, 'fields');
-    console.log('replacedFields：', replacedFields[i], typeof replacedFields[i], 'fields[i]:', fields[i], typeof fields[i]);
-
     _originalField = _originalField.replace(fields[i], `${replacedFields[i]}`);
   }
-  console.log(_originalField, '_originalField', typeof _originalField);
 
   return _originalField;
 };
@@ -59,8 +55,12 @@ export const parseField = (rawFields: IColumn, dataSource: IDataSource): Variabl
     }) => ({
       label, value, type, _value: [] as any,
     }))
-    // 附件 前后置 编号 暂不考虑
-    .filter(({ type, value }) => ![Fields.Annex, Fields.BaRelating].includes(type as IFields['Annex'])
+    // 附件 前后置 工时 编号 暂不考虑
+    .filter(({ type, value }) => ![
+      Fields.Annex,
+      Fields.BaRelating,
+      Fields.WorkingHours,
+    ].includes(type as IFields['Annex'])
       && value !== FieldName.Code);
 
   // 数据字段结合
@@ -90,8 +90,12 @@ export const parseFieldData = (key: string, sourceData: IDataSource | any) => {
   const data = [];
   for (let i = 0; i < sourceData.length; i += 1) {
     for (let j = 0; j < fieldKey.length; j += 1) {
+      // 如果有当前字段，直接推入数组
       if (fieldKey[j] in sourceData[i]) {
         data.push(sourceData[i][fieldKey[j]]);
+      } else {
+        // 可能出现源数据无数据导致 没有当前字段的问题
+        data.push(undefined);
       }
     }
   }

@@ -9,8 +9,8 @@ import type { IColumn } from '../config/mock.column';
 export const filterFieldData = (fieldData: any[]): any[] => {
   if (!Array.isArray(fieldData) || !fieldData.length) return [];
   for (let i = 0; i < fieldData.length; i += 1) {
-    // 没有数据 默认给字符串
-    if (!fieldData[i]) fieldData[i] = '';
+    // 没有数据 默认给undefined
+    if (!fieldData[i]) fieldData[i] = undefined;
     // 存在数组的情况(成员) 取名称
     if (Array.isArray(fieldData[i]) && fieldData[i].length) {
       const { name } = fieldData[i][0];
