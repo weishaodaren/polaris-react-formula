@@ -55,11 +55,13 @@ export const parseField = (rawFields: IColumn, dataSource: IDataSource): Variabl
     }) => ({
       label, value, type, _value: [] as any,
     }))
-    // 附件 前后置 工时 编号 暂不考虑
+    // 附件 前后置 工时 多选 分组单选 编号 暂不考虑
     .filter(({ type, value }) => ![
       Fields.Annex,
       Fields.BaRelating,
       Fields.WorkingHours,
+      Fields.Checkbox,
+      Fields.GroupSelect,
     ].includes(type as IFields['Annex'])
       && value !== FieldName.Code);
 

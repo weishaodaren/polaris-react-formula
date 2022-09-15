@@ -13,8 +13,9 @@ export const filterFieldData = (fieldData: any[]): any[] => {
     if (!fieldData[i]) fieldData[i] = undefined;
     // 存在数组的情况(成员) 取名称
     if (Array.isArray(fieldData[i]) && fieldData[i].length) {
-      const { name } = fieldData[i][0];
-      fieldData[i] = name;
+      // 考虑存在多成员的情况
+      const memberName = fieldData[i].map(({ name }: { [x:string]: string }) => name).filter(Boolean).join(',');
+      fieldData[i] = memberName;
     }
   }
   return fieldData;
