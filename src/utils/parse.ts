@@ -56,7 +56,7 @@ export const parseField = (rawFields: IColumn, dataSource: IDataSource): Variabl
       label, value, type, _value: [] as any,
     }))
     // 附件暂不考虑
-    .filter(({ type }) => type !== Fields.Document);
+    .filter(({ type }) => type !== Fields.Annex);
 
   // 数据字段结合
   for (let i = 0; i < formatFields.length; i += 1) {
