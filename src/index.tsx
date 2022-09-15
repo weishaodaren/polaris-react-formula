@@ -8,16 +8,16 @@ import 'codemirror/mode/spreadsheet/spreadsheet.js';
 import type { FC } from 'react';
 import type { EditorChange, Editor as CodemirrorEditor } from 'codemirror';
 
-import { dataSource, IColumn, IDataSource } from './config/mock.column';
 import Toolbar from './components/Toolbar';
-import functions from './config/functions';
+import {
+  Functions, CMOptions, dataSource, IColumn, IDataSource,
+} from './config';
 import {
   evil,
   initDocTag,
   parseField,
   parseFormula,
   parseFieldData,
-  parseFullFieldData,
   parseKeyReplaceField,
 } from './utils';
 import './styles';
@@ -30,13 +30,6 @@ export interface FormulaEditorProps {
   field: IColumn
   dataSource?: IDataSource
 }
-
-// codeMirror 配置
-const cmOptions = {
-  mode: 'text/x-spreadsheet',
-  line: true,
-  lineWrapping: true,
-};
 
 const prefixCls = 'formula-editor';
 
@@ -72,16 +65,6 @@ const FormulaEditor: FC<FormulaEditorProps> = ({
 
   /**
    * Memo
-   * @description 源数据
-   * @return array
-   */
-  const sourceData = useMemo(
-    () => parseFieldData(editorValue, dataSource),
-    [editorValue],
-  );
-
-  /**
-   * Memo
    * @description 字段组
    * @return array
    */
@@ -89,16 +72,6 @@ const FormulaEditor: FC<FormulaEditorProps> = ({
     () => (!field || !Array.isArray(field) || !field.length
       ? []
       : parseField(field, dataSource)),
-    [],
-  );
-
-  /**
-   * Memo
-   * @description 字段数据
-   * @return array
-   */
-  const fieldData = useMemo(
-    () => parseFullFieldData(fields, dataSource),
     [],
   );
 
@@ -229,7 +202,7 @@ const FormulaEditor: FC<FormulaEditorProps> = ({
   return (
     <div className={classnames} style={style}>
       <Toolbar
-        functions={functions}
+        functions={Functions}
         variables={fields}
         insertFun={insertFun}
         insertVariable={insertVariable}
@@ -239,7 +212,7 @@ const FormulaEditor: FC<FormulaEditorProps> = ({
           <CodeMirror
             autoCursor={false}
             value={value}
-            options={cmOptions}
+            options={CMOptions}
             editorDidMount={onReady}
             onChange={handleChange}
           />
