@@ -30,7 +30,7 @@ module.exports = {
     'import/no-unresolved': 0,
     'import/prefer-default-export': 1,
     'import/no-extraneous-dependencies': 0,
-    'implicit-arrow-linebreak':['error', 'below'],
+    'implicit-arrow-linebreak':['error', 'beside'],
     'no-nested-ternary': 2,
     'no-plusplus': 2,
     'linebreak-style': ['error', 'unix'],

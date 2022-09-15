@@ -7,8 +7,8 @@ import 'codemirror/mode/spreadsheet/spreadsheet.js';
 
 import type { FC } from 'react';
 import type { EditorChange, Editor as CodemirrorEditor } from 'codemirror';
-import { dataSource, IColumn, IDataSource } from './config/mock.column';
 
+import { dataSource, IColumn, IDataSource } from './config/mock.column';
 import Toolbar from './components/Toolbar';
 import functions from './config/functions';
 import {
@@ -66,8 +66,7 @@ const FormulaEditor: FC<FormulaEditorProps> = ({
    * @return array
    */
   const classnames = useMemo(
-    () =>
-      [prefixCls, className].join(' '),
+    () => [prefixCls, className].join(' '),
     [],
   );
 
@@ -77,8 +76,7 @@ const FormulaEditor: FC<FormulaEditorProps> = ({
    * @return array
    */
   const sourceData = useMemo(
-    () =>
-      parseFieldData(editorValue, dataSource),
+    () => parseFieldData(editorValue, dataSource),
     [editorValue],
   );
 
@@ -88,8 +86,7 @@ const FormulaEditor: FC<FormulaEditorProps> = ({
    * @return array
    */
   const fields = useMemo(
-    () =>
-    (!field || !Array.isArray(field) || !field.length
+    () => (!field || !Array.isArray(field) || !field.length
       ? []
       : parseField(field, dataSource)),
     [],
@@ -101,8 +98,7 @@ const FormulaEditor: FC<FormulaEditorProps> = ({
    * @return array
    */
   const fieldData = useMemo(
-    () =>
-      parseFullFieldData(fields, dataSource),
+    () => parseFullFieldData(fields, dataSource),
     [],
   );
 

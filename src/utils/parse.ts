@@ -1,3 +1,4 @@
+import { Fields } from '../enum';
 import type { IColumn, IDataSource } from '../config/mock.column';
 import type { Variable } from '../types';
 
@@ -7,8 +8,7 @@ import type { Variable } from '../types';
  * @param rawKey 未解析前的字段 {code}
  * @return array | null
  */
-export const parseKey = (rawKey: string) =>
-  rawKey.match(/(?<=\{)(.+?)(?=\})/g);
+export const parseKey = (rawKey: string) => rawKey.match(/(?<=\{)(.+?)(?=\})/g);
 
 /**
  * Function
@@ -47,17 +47,16 @@ export const parseKeyReplaceField = (
  */
 export const parseField = (rawFields: IColumn, dataSource: IDataSource): Variable[] => {
   // 格式化字段组
-  const formatFields = rawFields.map(({
+  const formatFields = rawFields
+    .map(({
       name: value,
       label,
       field: { type },
-    }) =>
-      ({
-        label,
-        value,
-        type,
-        _value: [] as any,
-  }));
+    }) => ({
+      label, value, type, _value: [] as any,
+    }))
+    // 附件暂不考虑
+    .filter(({ type }) => type !== Fields.Document);
 
   // 数据字段结合
   for (let i = 0; i < formatFields.length; i += 1) {
@@ -104,8 +103,7 @@ export const parseFieldData = (key: string, sourceData: IDataSource | any) => {
 export const parseFullFieldData = (fields: Variable[], sourceData: IDataSource | any) => {
   // 字段组
   const fieldArray = fields
-    .map(({ value }) =>
-      value)
+    .map(({ value }) => value)
     .filter(Boolean);
 
   // 字段对象，各个字段占位

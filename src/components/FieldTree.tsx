@@ -28,9 +28,7 @@ function convert(variable: Variable, pick?: FieldTreeProps['pick']): any {
 }
 
 const FieldTree: FC<FieldTreeProps> = ({ dataSource, pick }) => {
-  const treeData = useMemo(() =>
-    dataSource.map((v) =>
-      convert(v, pick)), []);
+  const treeData = useMemo(() => dataSource.map((v) => convert(v, pick)), []);
 
   return <Tree treeData={treeData} selectable={false} />;
 };
