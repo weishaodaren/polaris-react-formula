@@ -1,6 +1,9 @@
-import { Fields } from '../enum';
+import { Fields, FieldName } from '../enum';
+import { filterFieldData } from './filter';
+
 import type { IColumn, IDataSource } from '../config/mock.column';
 import type { Variable } from '../types';
+import type { IFields } from '../enum';
 
 /**
  * Function
@@ -29,11 +32,12 @@ export const parseKeyReplaceField = (
    * 替换变量字段
    */
   for (let i = 0; i < fields.length; i += 1) {
-    console.log(replacedFields[i], fields[i]);
+    console.log(fields, 'fields');
+    console.log('replacedFields：', replacedFields[i], typeof replacedFields[i], 'fields[i]:', fields[i], typeof fields[i]);
 
-    _originalField = _originalField.replace(fields[i], replacedFields[i]);
+    _originalField = _originalField.replace(fields[i], `${replacedFields[i]}`);
   }
-  console.log(_originalField, '_originalField');
+  console.log(_originalField, '_originalField', typeof _originalField);
 
   return _originalField;
 };
@@ -55,8 +59,9 @@ export const parseField = (rawFields: IColumn, dataSource: IDataSource): Variabl
     }) => ({
       label, value, type, _value: [] as any,
     }))
-    // 附件暂不考虑
-    .filter(({ type }) => type !== Fields.Annex);
+    // 附件 前后置 编号 暂不考虑
+    .filter(({ type, value }) => ![Fields.Annex, Fields.BaRelating].includes(type as IFields['Annex'])
+      && value !== FieldName.Code);
 
   // 数据字段结合
   for (let i = 0; i < formatFields.length; i += 1) {
@@ -90,7 +95,7 @@ export const parseFieldData = (key: string, sourceData: IDataSource | any) => {
       }
     }
   }
-  return data;
+  return filterFieldData(data);
 };
 
 /**

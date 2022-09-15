@@ -22,6 +22,7 @@ module.exports = {
   },
   rules: {
     "comma-dangle": 0,
+    "no-param-reassign": ["error", { "props": false }],
     "no-underscore-dangle": 0,
     "@typescript-eslint/naming-convention": 0,
     "@typescript-eslint/indent": 0,

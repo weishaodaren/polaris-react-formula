@@ -51,7 +51,7 @@ const FormulaEditor: FC<FormulaEditorProps> = ({
   className,
   field,
   onChange,
-}) => {
+}): JSX.Element => {
   /**
    * State
    */
@@ -132,6 +132,7 @@ const FormulaEditor: FC<FormulaEditorProps> = ({
           if (!fieldReg) return;
           // 替换成有效字段
           const validFiled = parseKeyReplaceField(fieldReg, editorValue, chunkFields[i]);
+          console.log(validFiled, 'validFiled');
           resultValue[i] = parseFormula(evil(validFiled));
         }
         console.log(resultValue, 'lsakjdalsjdla');

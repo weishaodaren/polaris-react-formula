@@ -204,4 +204,16 @@ export enum Fields {
 
 }
 
-export default Fields;
+export type IFields = typeof Fields;
+
+/**
+ * 字段名称
+ */
+export enum FieldName {
+  /**
+   * 编号
+   */
+  Code = 'code',
+}
+
+export type IFieldName = typeof FieldName;

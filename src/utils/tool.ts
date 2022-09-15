@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-implied-eval */
 import * as formulajs from '@formulajs/formulajs';
 import type { Position, Editor as CodemirrorEditor } from 'codemirror';
 import type { Variable } from '../types';
@@ -74,8 +75,15 @@ export const initDocTag = (
  * @param expression js 表达式
  * @return function
  */
-  // eslint-disable-next-line @typescript-eslint/no-implied-eval
-export const evil = (expression: string) => Function(`"use strict";return (${expression})`)();
+export const evil = (expression: string) => {
+  let _expression;
+  try {
+    _expression = Function(`"use strict";return (${expression})`)();
+  } catch ({ message }) {
+    _expression = Function(`"use strict";return (${JSON.stringify(expression)})`)();
+  }
+  return _expression;
+};
 
 /**
  * Function
