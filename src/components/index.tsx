@@ -26,7 +26,6 @@ import {
   parseKeyReplaceField,
 } from '../utils';
 
-const Toolbar = lazy(() => import('./Toolbar'));
 const Content = lazy(() => import('./Content'));
 
 /**
@@ -78,7 +77,7 @@ const Editor: FC<FormulaEditorProps> = ({
 
   /**
    * Effect
-   * @description 依赖 字段
+   * @description 依赖 极星表单传入的原表头字段 原数据
    */
   useEffect(() => {
     dispatch!({
@@ -226,12 +225,6 @@ const Editor: FC<FormulaEditorProps> = ({
             <h2>选择极星字段或函数</h2>
             <Content />
           </div>
-          {/* <Toolbar
-            functions={Functions}
-            variables={fields}
-            insertFun={insertFun}
-            insertVariable={insertVariable}
-          /> */}
         </div>
       </Suspense>
     </Modal>
