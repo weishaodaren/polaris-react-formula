@@ -4,28 +4,21 @@ import React, {
 import { chunk } from 'lodash-es';
 import { Modal } from 'antd';
 import 'antd/lib/modal/style/index';
-import { UnControlled as CodeMirror } from 'react-codemirror2';
-import 'codemirror/mode/spreadsheet/spreadsheet.js';
 
 import type { FC } from 'react';
-import type { EditorChange, Editor as CodemirrorEditor } from 'codemirror';
-import type { Variable } from '../types';
 import type { FormulaEditorProps } from '../index';
 import type { IActionType } from '../store';
 
 import { store, ActionType } from '../store';
-import {
-  CMOptions, dataSource, prefixCls,
-} from '../config';
+import { dataSource, prefixCls } from '../config';
 import {
   evil,
-  initDocTag,
-  parseMarks,
   parseFormula,
   parseFieldData,
   parseKeyReplaceField,
 } from '../utils';
 
+const Code = lazy(() => import('./Code'));
 const Content = lazy(() => import('./Content'));
 
 /**
@@ -45,7 +38,6 @@ const Editor: FC<FormulaEditorProps> = ({
    */
   const {
     state: {
-      fields,
       editorValue,
       errorText,
       modalVisible,
@@ -150,53 +142,6 @@ const Editor: FC<FormulaEditorProps> = ({
     }
   }, [editorValue]);
 
-  /**
-   * Callback
-   * @description DOM挂载完执行
-   * @param editorConfig 编辑器配置
-   * @param editorValueParam 值
-   * @return void 0
-   */
-  const onReady = useCallback((
-    editorConfig: CodemirrorEditor,
-    editorValueParam: string,
-  ) => {
-    dispatch!({
-      type: ActionType.SetEditor,
-      editor: editorConfig,
-    } as IActionType);
-
-    if (!editorValueParam) {
-      initDocTag(editorConfig, editorValueParam, fields as Variable[]);
-    }
-  }, [fields]);
-
-  /**
-   * Callback
-   * @see https://github.com/scniro/react-codemirror2
-   * @descritpion 修改编辑器
-   * @param editorConfig 编辑器配置
-   * @param data 编辑器操作参数
-   * @param editorValueParam 编辑器返回值
-   * @return void 0
-   */
-  const handleChange = useCallback((
-    editorConfig: CodemirrorEditor,
-    data: EditorChange,
-    editorValueParam: string,
-  ) => {
-    if (!editorValueParam) return;
-
-    // 优先转义标点符号
-    const _editorValue = parseMarks(editorValueParam);
-    initDocTag(editorConfig, _editorValue, fields as Variable[]);
-    dispatch!({
-      type: ActionType.SetEditorValue,
-      editorValue: _editorValue,
-    } as IActionType);
-    onChange?.(_editorValue);
-  }, [fields]);
-
   return useMemo(() => (
     <Modal
       open={modalVisible}
@@ -213,13 +158,9 @@ const Editor: FC<FormulaEditorProps> = ({
         <div className={classnames} style={style}>
           <div className={`${prefixCls}-layout`}>
             <h2>请输入公式</h2>
-            <CodeMirror
-              className={`${prefixCls}-code-mirror`}
-              autoCursor={false}
+            <Code
               value={value}
-              options={CMOptions}
-              editorDidMount={onReady}
-              onChange={handleChange}
+              onChange={onChange}
             />
             <p className={`${prefixCls}-error`}>{errorMsg}</p>
             <h2>选择极星字段或函数</h2>
@@ -228,7 +169,7 @@ const Editor: FC<FormulaEditorProps> = ({
         </div>
       </Suspense>
     </Modal>
-  ), [modalVisible, confirmButtonDisabled, errorText, fields]);
+  ), [modalVisible, confirmButtonDisabled, errorText]);
 };
 
 export default memo(Editor);

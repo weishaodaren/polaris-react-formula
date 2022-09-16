@@ -1,4 +1,5 @@
 import React, { memo } from 'react';
+import 'codemirror/mode/spreadsheet/spreadsheet.js';
 
 import type { FC } from 'react';
 import type { IColumn, IDataSource } from './config';
