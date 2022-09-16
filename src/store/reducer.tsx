@@ -44,6 +44,28 @@ export const Store: FC<IStoreProps> = ({ children }) => {
           currentFieldOrFunction: action.currentFieldOrFunction,
         };
       }
+
+      case ActionType.SetEditor: {
+        return {
+          ...originalState,
+          editor: action.editor,
+        };
+      }
+
+      case ActionType.SetEditorValue: {
+        return {
+          ...originalState,
+          editorValue: action.editorValue,
+        };
+      }
+
+      case ActionType.SetErrorText: {
+        return {
+          ...originalState,
+          errorText: action.errorText,
+        };
+      }
+
       default: {
         return originalState;
       }

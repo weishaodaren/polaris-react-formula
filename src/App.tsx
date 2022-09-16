@@ -22,10 +22,6 @@ function App() {
     <FormulaEditor
       field={column}
       dataSource={dataSource}
-      style={{
-        border: '1px solid gray',
-        wordBreak: 'break-word',
-      }}
       onChange={onCalc}
     />
   );

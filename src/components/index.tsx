@@ -44,6 +44,9 @@ const Editor: FC<FormulaEditorProps> = ({
    */
   const {
     state: {
+      editor,
+      editorValue,
+      errorText,
       modalVisible,
     },
     dispatch,
@@ -58,6 +61,20 @@ const Editor: FC<FormulaEditorProps> = ({
   const confirmButtonDisabled = useMemo(() => true, []);
 
   /**
+   * State
+   * @description 类名集合
+   * @return array
+   */
+  const classnames = [prefixCls, className].join(' ');
+
+  /**
+   * State
+   * @description 错误信息
+   * @return string
+   */
+  const errorMsg = errorText ? `无效的字段或函数名称：${errorText}` : '';
+
+  /**
    * Callback
    * @description 取消Modal操作
    */
@@ -68,21 +85,6 @@ const Editor: FC<FormulaEditorProps> = ({
     } as IActionType),
     [],
   );
-
-  /**
-   * State
-   */
-  const [editor, setEditor] = useState<CodemirrorEditor>(); // 编辑器配置
-  const [editorValue, setEditorValue] = useState<string>(value); // 编辑器值
-  const [result, setResult] = useState<string>(''); // 计算结果
-  const [error, setError] = useState<string>(''); // 错误信息
-
-  /**
-   * State
-   * @description 类名集合
-   * @return array
-   */
-  const classnames = [prefixCls, className].join(' ');
 
   /**
    * Memo
@@ -132,12 +134,17 @@ const Editor: FC<FormulaEditorProps> = ({
         console.log(resultValue, 'resultValue');
       } else {
         // 存在用户手动输入表达式可能
-        setResult(parseFormula(evil(editorValue)) as any);
-        setError('');
+        console.log('用户手动输入：', parseFormula(evil(editorValue)) as any);
+        dispatch!({
+          type: ActionType.SetErrorText,
+          errorText: '',
+        } as IActionType);
       }
     } catch ({ message }) {
-      setError(editorValue);
-      setResult('');
+      dispatch!({
+        type: ActionType.SetErrorText,
+        errorText: editorValue,
+      } as IActionType);
       throw message;
     }
   }, [editorValue]);
@@ -153,7 +160,11 @@ const Editor: FC<FormulaEditorProps> = ({
     editorConfig: CodemirrorEditor,
     editorValueParam: string,
   ) => {
-    setEditor(editorConfig);
+    dispatch!({
+      type: ActionType.SetEditor,
+      editor: editorConfig,
+    } as IActionType);
+
     if (editorValueParam !== null && editorValueParam !== '') {
       initDocTag(editorConfig, editorValueParam, fields);
     }
@@ -178,7 +189,10 @@ const Editor: FC<FormulaEditorProps> = ({
     // 优先转义标点符号
     const _editorValue = parseMarks(editorValueParam);
     initDocTag(editorConfig, _editorValue, fields);
-    setEditorValue(_editorValue);
+    dispatch!({
+      type: ActionType.SetEditorValue,
+      editorValue: _editorValue,
+    } as IActionType);
     onChange?.(_editorValue);
   }, []);
 
@@ -244,7 +258,7 @@ const Editor: FC<FormulaEditorProps> = ({
               editorDidMount={onReady}
               onChange={handleChange}
             />
-            <p className={`${prefixCls}-error`}>无效的维格列或函数名称：</p>
+            <p className={`${prefixCls}-error`}>{errorMsg}</p>
             <h2>选择极星字段或函数</h2>
             <Content />
           </div>
@@ -276,7 +290,7 @@ const Editor: FC<FormulaEditorProps> = ({
         </div>
       </Suspense>
     </Modal>
-  ), [modalVisible, confirmButtonDisabled]);
+  ), [modalVisible, confirmButtonDisabled, errorText]);
 };
 
 export default memo(Editor);

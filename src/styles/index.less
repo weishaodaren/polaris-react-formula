@@ -1,12 +1,10 @@
 @import '../theme.less';
 
-@toolbarWidth: 240px;
-
 .formula-editor {
   display: flex;
   height: 100%;
   &-toolbar {
-    width: @toolbarWidth;
+    width: 240px;
     height: 560px;
     overflow-y: auto;
     border-right: 1px solid red;
@@ -14,10 +12,8 @@
   &-main {
     height: 100%;
     padding: 8px 16px;
-    width: calc(100% - @toolbarWidth);
-   
+    width: calc(100% - 240px);
   }
-
 
   &-layout{
     width: 100%;
