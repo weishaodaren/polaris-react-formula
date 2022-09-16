@@ -37,6 +37,13 @@ export const Store: FC<IStoreProps> = ({ children }) => {
           modalVisible: action.modalVisible,
         };
       }
+
+      case ActionType.SetCurrentFieldOrFunction: {
+        return {
+          ...originalState,
+          currentFieldOrFunction: action.currentFieldOrFunction,
+        };
+      }
       default: {
         return originalState;
       }

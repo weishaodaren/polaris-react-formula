@@ -8,6 +8,8 @@ export interface Variable {
 export interface FunctionItem {
   name: string;
   description: string;
+  useage?: string
+  example?: string | undefined
 }
 
 export interface FunctionGroup {

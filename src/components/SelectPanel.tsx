@@ -1,6 +1,10 @@
-import React, { Fragment } from 'react';
-import type { FC } from 'react';
+import React, { Fragment, useContext, useCallback } from 'react';
 
+import type { FC, MouseEvent } from 'react';
+import type { FunctionItem } from '../types';
+import type { IActionType } from '../store';
+
+import { store, ActionType } from '../store';
 import { prefixCls, Functions } from '../config';
 
 /**
@@ -8,17 +12,40 @@ import { prefixCls, Functions } from '../config';
  * @description 左侧选择面板
  */
 const SelectPanel: FC = (): JSX.Element => {
-  console.log('SelectPanel');
+  /**
+   * Context
+   */
+  const { dispatch } = useContext(store);
+
+  /**
+   * Callback
+   * @description 选择字段 函数项
+   * @param item 单项数据
+   * @return void
+   */
+  const selectItem = useCallback((item: FunctionItem) => (event: MouseEvent<HTMLDivElement>) => {
+    event.stopPropagation();
+    dispatch!({
+      type: ActionType.SetCurrentFieldOrFunction,
+      currentFieldOrFunction: item,
+    } as IActionType);
+  }, []);
 
   return (
     <div className={`${prefixCls}-select-panel-layout`}>
       {Functions.map(({ name, functions }, index) => (
         <Fragment key={index}>
           <h3>{name}</h3>
-          {functions.map(({ name: label }) => <div className={`${prefixCls}-select-panel-layout-list-item`} key={label}>{label}</div>)}
+          {functions.map((item) => <div
+            className={`${prefixCls}-select-panel-layout-list-item`}
+            key={item.name}
+            onMouseEnter={selectItem(item)}
+          >
+            {item.name}</div>)}
         </Fragment>
-      ))}
-    </div>);
+      ))
+      }
+    </div >);
 };
 
 export default SelectPanel;

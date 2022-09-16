@@ -11,6 +11,7 @@ import 'codemirror/mode/spreadsheet/spreadsheet.js';
 import type { FC } from 'react';
 import type { EditorChange, Editor as CodemirrorEditor } from 'codemirror';
 import type { FormulaEditorProps } from '../index';
+import type { IActionType } from '../store';
 
 import { store, ActionType } from '../store';
 import {
@@ -67,7 +68,7 @@ const Editor: FC<FormulaEditorProps> = ({
     () => dispatch!({
       type: ActionType.SetModalVisible,
       modalVisible: false,
-    }),
+    } as IActionType),
     [],
   );
 
