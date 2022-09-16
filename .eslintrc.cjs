@@ -51,7 +51,7 @@ module.exports = {
         'no-var': 'off',
         '@typescript-eslint/naming-convention': [
           'error',
-          { 
+          {
             'selector': 'variableLike',
             'format': ['UPPER_CASE'],
             'leadingUnderscore': 'allowDouble',

@@ -47,7 +47,6 @@ const Editor: FC<FormulaEditorProps> = ({
   const {
     state: {
       fields,
-      editor,
       editorValue,
       errorText,
       modalVisible,
@@ -81,14 +80,13 @@ const Editor: FC<FormulaEditorProps> = ({
    * Effect
    * @description 依赖 字段
    */
-  useEffect(
-    () => dispatch!({
+  useEffect(() => {
+    dispatch!({
       type: ActionType.SetFields,
       fields: field,
       dataSource,
-    } as unknown as IActionType),
-    [field, dataSource],
-  );
+    } as unknown as IActionType);
+  }, [field, dataSource]);
 
   /**
    * Callback
@@ -102,24 +100,12 @@ const Editor: FC<FormulaEditorProps> = ({
     [],
   );
 
-  // /**
-  //  * Memo
-  //  * @description 字段组
-  //  * @return array
-  //  */
-  // const _fields = useMemo(
-  //   () => (!field || !Array.isArray(field) || !field.length
-  //     ? []
-  //     : parseField(field, dataSource)),
-  //   [],
-  // );
-
   /**
    * Callback
-   * @description 点击计算公式结果
+   * @description 模态框确认操作 点击计算公式结果
    * @return void 0
    */
-  const handleClick = useCallback(() => {
+  const confirmModal = useCallback(() => {
     try {
       // 当前激活的字段数组长度
       const activeFieldLength = document.querySelectorAll('.formula-tag').length;
@@ -181,10 +167,10 @@ const Editor: FC<FormulaEditorProps> = ({
       editor: editorConfig,
     } as IActionType);
 
-    if (editorValueParam !== null && editorValueParam !== '') {
+    if (!editorValueParam) {
       initDocTag(editorConfig, editorValueParam, fields as Variable[]);
     }
-  }, []);
+  }, [fields]);
 
   /**
    * Callback
@@ -210,26 +196,7 @@ const Editor: FC<FormulaEditorProps> = ({
       editorValue: _editorValue,
     } as IActionType);
     onChange?.(_editorValue);
-  }, []);
-
-  /**
-   * Callback
-   * @description 插入变量
-   * @param variable 当前输入变量
-   * @return void 0
-   */
-  const insertVariable = useCallback(
-    (
-      variable: string,
-    ) => {
-      if (!editor) return;
-      const doc = editor!.getDoc();
-      const pos = doc.getCursor();
-      doc.replaceRange(`{${variable}}`, pos, pos);
-      editor!.focus();
-    },
-    [editor],
-  );
+  }, [fields]);
 
   return useMemo(() => (
     <Modal
@@ -238,9 +205,10 @@ const Editor: FC<FormulaEditorProps> = ({
       maskClosable={false}
       okText="确认"
       cancelText='取消'
-      onCancel={cancelModal}
       okButtonProps={{ disabled: confirmButtonDisabled }}
       cancelButtonProps={{ type: 'text' }}
+      onCancel={cancelModal}
+      onOk={confirmModal}
     >
       <Suspense fallback={'loading...'}>
         <div className={classnames} style={style}>
@@ -264,29 +232,10 @@ const Editor: FC<FormulaEditorProps> = ({
             insertFun={insertFun}
             insertVariable={insertVariable}
           /> */}
-          {/* <div className={`${prefixCls}-main`}>
-            <div className={`${prefixCls}-main__code`}>
-              <CodeMirror
-                autoCursor={false}
-                value={value}
-                options={CMOptions}
-                editorDidMount={onReady}
-                onChange={handleChange}
-              />
-              <code style={{
-                border: '1px dotted #126',
-                display: 'block',
-                width: '100%',
-                height: '100px',
-              }}>{`计算结果：${result}`}</code>
-              {error && <h1>{`无效的列或函数名称：${error}`}</h1>}
-              <Button type='primary' onClick={handleClick}>Calc it</Button>
-            </div>
-          </div> */}
         </div>
       </Suspense>
     </Modal>
-  ), [modalVisible, confirmButtonDisabled, errorText]);
+  ), [modalVisible, confirmButtonDisabled, errorText, fields]);
 };
 
 export default memo(Editor);
