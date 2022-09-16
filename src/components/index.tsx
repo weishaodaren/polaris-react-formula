@@ -1,9 +1,9 @@
 import React, {
-  useState, useCallback, useMemo, memo, useContext,
+  useState, useCallback, useMemo, memo, useContext, Suspense, lazy,
 } from 'react';
 import { chunk } from 'lodash-es';
-import { Button, Modal } from 'antd';
-import 'antd/lib/button/style/index';
+import { Modal } from 'antd';
+// import 'antd/lib/button/style/index';
 import 'antd/lib/modal/style/index';
 import { UnControlled as CodeMirror } from 'react-codemirror2';
 import 'codemirror/mode/spreadsheet/spreadsheet.js';
@@ -13,8 +13,9 @@ import type { EditorChange, Editor as CodemirrorEditor } from 'codemirror';
 import type { FormulaEditorProps } from '../index';
 
 import { store, ActionType } from '../store';
-import Toolbar from './Toolbar';
-import { Functions, CMOptions, dataSource } from '../config';
+import {
+  Functions, CMOptions, dataSource, prefixCls,
+} from '../config';
 import {
   evil,
   initDocTag,
@@ -25,7 +26,8 @@ import {
   parseKeyReplaceField,
 } from '../utils';
 
-const prefixCls = 'formula-editor';
+const Toolbar = lazy(() => import('./Toolbar'));
+const Content = lazy(() => import('./Content'));
 
 /**
  * Component
@@ -50,15 +52,24 @@ const Editor: FC<FormulaEditorProps> = ({
   } = useContext(store);
 
   /**
+   * TODO: 暂时写死
+   * Memo
+   * @description 确认按钮 禁用状态
+   * @return Boolean
+   */
+  const confirmButtonDisabled = useMemo(() => true, []);
+
+  /**
    * Callback
    * @description 取消Modal操作
    */
-  const cancelModal = useCallback(() => {
-    dispatch!({
+  const cancelModal = useCallback(
+    () => dispatch!({
       type: ActionType.SetModalVisible,
       modalVisible: false,
-    });
-  }, []);
+    }),
+    [],
+  );
 
   /**
    * State
@@ -220,36 +231,54 @@ const Editor: FC<FormulaEditorProps> = ({
       okText="确认"
       cancelText='取消'
       onCancel={cancelModal}
+      okButtonProps={{ disabled: confirmButtonDisabled }}
+      cancelButtonProps={{ type: 'text' }}
     >
-      <div className={classnames} style={style}>
-        <Toolbar
-          functions={Functions}
-          variables={fields}
-          insertFun={insertFun}
-          insertVariable={insertVariable}
-        />
-        <div className={`${prefixCls}-main`}>
-          <div className={`${prefixCls}-main__code`}>
+      <Suspense fallback={'loading...'}>
+        <div className={classnames} style={style}>
+          <div className={`${prefixCls}-layout`}>
+            <h2>请输入公式</h2>
             <CodeMirror
+              className={`${prefixCls}-code-mirror`}
               autoCursor={false}
               value={value}
               options={CMOptions}
               editorDidMount={onReady}
               onChange={handleChange}
             />
-            <code style={{
-              border: '1px dotted #126',
-              display: 'block',
-              width: '100%',
-              height: '100px',
-            }}>{`计算结果：${result}`}</code>
-            {error && <h1>{`无效的列或函数名称：${error}`}</h1>}
-            <Button type='primary' onClick={handleClick}>Calc it</Button>
+            <p className={`${prefixCls}-error`}>无效的维格列或函数名称：</p>
+            <h2>选择极星字段或函数</h2>
+            <Content />
           </div>
+          {/* <Toolbar
+            functions={Functions}
+            variables={fields}
+            insertFun={insertFun}
+            insertVariable={insertVariable}
+          /> */}
+          {/* <div className={`${prefixCls}-main`}>
+            <div className={`${prefixCls}-main__code`}>
+              <CodeMirror
+                autoCursor={false}
+                value={value}
+                options={CMOptions}
+                editorDidMount={onReady}
+                onChange={handleChange}
+              />
+              <code style={{
+                border: '1px dotted #126',
+                display: 'block',
+                width: '100%',
+                height: '100px',
+              }}>{`计算结果：${result}`}</code>
+              {error && <h1>{`无效的列或函数名称：${error}`}</h1>}
+              <Button type='primary' onClick={handleClick}>Calc it</Button>
+            </div>
+          </div> */}
         </div>
-      </div>
+      </Suspense>
     </Modal>
-  ), [modalVisible]);
+  ), [modalVisible, confirmButtonDisabled]);
 };
 
 export default memo(Editor);
