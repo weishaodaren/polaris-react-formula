@@ -1,4 +1,6 @@
-import React, { useState, useCallback, useMemo } from 'react';
+import React, {
+  useState, useCallback, useMemo, memo,
+} from 'react';
 import { chunk } from 'lodash-es';
 import { Button } from 'antd';
 import 'antd/lib/button/style/index';
@@ -16,6 +18,7 @@ import {
   evil,
   initDocTag,
   parseField,
+  parseMarks,
   parseFormula,
   parseFieldData,
   parseKeyReplaceField,
@@ -54,14 +57,11 @@ const FormulaEditor: FC<FormulaEditorProps> = ({
   const [error, setError] = useState<string>(''); // 错误信息
 
   /**
-   * Memo
+   * State
    * @description 类名集合
    * @return array
    */
-  const classnames = useMemo(
-    () => [prefixCls, className].join(' '),
-    [],
-  );
+  const classnames = [prefixCls, className].join(' ');
 
   /**
    * Memo
@@ -152,11 +152,13 @@ const FormulaEditor: FC<FormulaEditorProps> = ({
     data: EditorChange,
     editorValueParam: string,
   ) => {
-    if (editorValueParam !== null || editorValueParam !== '') {
-      initDocTag(editorConfig, editorValueParam, fields);
-    }
-    setEditorValue(editorValueParam);
-    onChange?.(editorValueParam);
+    if (!editorValueParam) return;
+
+    // 优先转义标点符号
+    const _editorValue = parseMarks(editorValueParam);
+    initDocTag(editorConfig, _editorValue, fields);
+    setEditorValue(_editorValue);
+    onChange?.(_editorValue);
   }, []);
 
   /**
@@ -230,4 +232,4 @@ const FormulaEditor: FC<FormulaEditorProps> = ({
   );
 };
 
-export default FormulaEditor;
+export default memo(FormulaEditor);

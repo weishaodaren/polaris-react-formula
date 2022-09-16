@@ -157,3 +157,17 @@ export const parseFormula = (result: unknown) => {
     }
   }
 };
+
+/**
+ * Function
+ * @description 解析标点符号
+ * @param rawString 输入值
+ * @return string
+ */
+export const parseMarks = (rawString: string) => rawString
+  .replace(/，/g, ',')
+  .replace(/【/g, '[')
+  .replace(/】/g, ']')
+  .replace(/（/g, '(')
+  .replace(/）/g, ')')
+  .replace(/：/g, ':');
