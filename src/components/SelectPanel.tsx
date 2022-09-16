@@ -1,4 +1,6 @@
-import React, { Fragment, useContext, useCallback } from 'react';
+import React, {
+  Fragment, useContext, useCallback, useMemo,
+} from 'react';
 
 import type { FC, MouseEvent } from 'react';
 import type { FunctionItem } from '../types';
@@ -31,7 +33,7 @@ const SelectPanel: FC = (): JSX.Element => {
     } as IActionType);
   }, []);
 
-  return (
+  return useMemo(() => (
     <div className={`${prefixCls}-select-panel-layout`}>
       {Functions.map(({ name, functions }, index) => (
         <Fragment key={index}>
@@ -45,7 +47,8 @@ const SelectPanel: FC = (): JSX.Element => {
         </Fragment>
       ))
       }
-    </div >);
+    </div >
+  ), []);
 };
 
 export default SelectPanel;

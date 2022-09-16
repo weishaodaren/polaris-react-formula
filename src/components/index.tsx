@@ -3,7 +3,6 @@ import React, {
 } from 'react';
 import { chunk } from 'lodash-es';
 import { Modal } from 'antd';
-// import 'antd/lib/button/style/index';
 import 'antd/lib/modal/style/index';
 import { UnControlled as CodeMirror } from 'react-codemirror2';
 import 'codemirror/mode/spreadsheet/spreadsheet.js';
@@ -14,9 +13,7 @@ import type { FormulaEditorProps } from '../index';
 import type { IActionType } from '../store';
 
 import { store, ActionType } from '../store';
-import {
-  Functions, CMOptions, dataSource, prefixCls,
-} from '../config';
+import { CMOptions, dataSource, prefixCls } from '../config';
 import {
   evil,
   initDocTag,
