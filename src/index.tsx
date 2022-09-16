@@ -1,6 +1,4 @@
 import React, { memo } from 'react';
-import { Modal } from 'antd';
-import 'antd/lib/modal/style/index';
 
 import type { FC } from 'react';
 import type { IColumn, IDataSource } from './config';
@@ -26,9 +24,7 @@ export interface FormulaEditorProps {
  */
 const FormulaEditor: FC<FormulaEditorProps> = (props): JSX.Element => (
   <Store>
-    <Modal open>
-      <Editor {...props} />
-    </Modal>
+    <Editor {...props} />
   </Store>
 );
 

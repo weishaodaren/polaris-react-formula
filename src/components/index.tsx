@@ -2,19 +2,19 @@ import React, {
   useState, useCallback, useMemo, memo, useContext,
 } from 'react';
 import { chunk } from 'lodash-es';
-import { Button } from 'antd';
+import { Button, Modal } from 'antd';
 import 'antd/lib/button/style/index';
+import 'antd/lib/modal/style/index';
 import { UnControlled as CodeMirror } from 'react-codemirror2';
 import 'codemirror/mode/spreadsheet/spreadsheet.js';
 
 import type { FC } from 'react';
 import type { EditorChange, Editor as CodemirrorEditor } from 'codemirror';
+import type { FormulaEditorProps } from '../index';
 
-import { store } from '../store';
+import { store, ActionType } from '../store';
 import Toolbar from './Toolbar';
-import {
-  Functions, CMOptions, dataSource, IColumn, IDataSource,
-} from '../config';
+import { Functions, CMOptions, dataSource } from '../config';
 import {
   evil,
   initDocTag,
@@ -24,16 +24,6 @@ import {
   parseFieldData,
   parseKeyReplaceField,
 } from '../utils';
-import '../styles';
-
-export interface FormulaEditorProps {
-  value?: string
-  onChange?: (value: string) => void
-  className?: string
-  style?: React.CSSProperties
-  field: IColumn
-  dataSource?: IDataSource
-}
 
 const prefixCls = 'formula-editor';
 
@@ -52,8 +42,23 @@ const Editor: FC<FormulaEditorProps> = ({
   /**
    * Context
    */
-  const { state, dispatch } = useContext(store);
-  console.log(state, dispatch);
+  const {
+    state: {
+      modalVisible,
+    },
+    dispatch,
+  } = useContext(store);
+
+  /**
+   * Callback
+   * @description 取消Modal操作
+   */
+  const cancelModal = useCallback(() => {
+    dispatch!({
+      type: ActionType.SetModalVisible,
+      modalVisible: false,
+    });
+  }, []);
 
   /**
    * State
@@ -208,35 +213,43 @@ const Editor: FC<FormulaEditorProps> = ({
     [editor],
   );
 
-  return (
-    <div className={classnames} style={style}>
-      <Toolbar
-        functions={Functions}
-        variables={fields}
-        insertFun={insertFun}
-        insertVariable={insertVariable}
-      />
-      <div className={`${prefixCls}-main`}>
-        <div className={`${prefixCls}-main__code`}>
-          <CodeMirror
-            autoCursor={false}
-            value={value}
-            options={CMOptions}
-            editorDidMount={onReady}
-            onChange={handleChange}
-          />
-          <code style={{
-            border: '1px dotted #126',
-            display: 'block',
-            width: '100%',
-            height: '100px',
-          }}>{`计算结果：${result}`}</code>
-          {error && <h1>{`无效的列或函数名称：${error}`}</h1>}
-          <Button type='primary' onClick={handleClick}>Calc it</Button>
+  return useMemo(() => (
+    <Modal
+      open={modalVisible}
+      closable={false}
+      okText="确认"
+      cancelText='取消'
+      onCancel={cancelModal}
+    >
+      <div className={classnames} style={style}>
+        <Toolbar
+          functions={Functions}
+          variables={fields}
+          insertFun={insertFun}
+          insertVariable={insertVariable}
+        />
+        <div className={`${prefixCls}-main`}>
+          <div className={`${prefixCls}-main__code`}>
+            <CodeMirror
+              autoCursor={false}
+              value={value}
+              options={CMOptions}
+              editorDidMount={onReady}
+              onChange={handleChange}
+            />
+            <code style={{
+              border: '1px dotted #126',
+              display: 'block',
+              width: '100%',
+              height: '100px',
+            }}>{`计算结果：${result}`}</code>
+            {error && <h1>{`无效的列或函数名称：${error}`}</h1>}
+            <Button type='primary' onClick={handleClick}>Calc it</Button>
+          </div>
         </div>
       </div>
-    </div>
-  );
+    </Modal>
+  ), [modalVisible]);
 };
 
 export default memo(Editor);
