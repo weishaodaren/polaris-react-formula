@@ -5,8 +5,10 @@ import type {
   FC, ReactNode, Dispatch,
 } from 'react';
 import type { InitialState } from './initialState';
+import type { IColumn, IDataSource } from '../config';
 import { initialState } from './initialState';
 import ActionType from './actionType';
+import { parseField } from '../utils';
 
 interface IStoreProps {
   children: ReactNode
@@ -14,6 +16,7 @@ interface IStoreProps {
 
 export interface IActionType extends InitialState {
   type: string
+  [x: string]: unknown
 }
 
 interface IStore {
@@ -63,6 +66,16 @@ export const Store: FC<IStoreProps> = ({ children }) => {
         return {
           ...originalState,
           errorText: action.errorText,
+        };
+      }
+
+      case ActionType.SetFields: {
+        const { fields: field, dataSource } = action;
+        return {
+          ...originalState,
+          fields: !field || !Array.isArray(field) || !field.length
+            ? []
+            : parseField(field as IColumn, dataSource as IDataSource),
         };
       }
 

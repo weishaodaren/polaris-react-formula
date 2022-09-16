@@ -1,5 +1,5 @@
 import React, {
-  useState, useCallback, useMemo, memo, useContext, Suspense, lazy,
+  useCallback, useMemo, memo, useContext, Suspense, lazy, useEffect,
 } from 'react';
 import { chunk } from 'lodash-es';
 import { Modal } from 'antd';
@@ -13,7 +13,9 @@ import type { FormulaEditorProps } from '../index';
 import type { IActionType } from '../store';
 
 import { store, ActionType } from '../store';
-import { CMOptions, dataSource, prefixCls } from '../config';
+import {
+  CMOptions, dataSource, IColumn, prefixCls,
+} from '../config';
 import {
   evil,
   initDocTag,
@@ -44,6 +46,7 @@ const Editor: FC<FormulaEditorProps> = ({
    */
   const {
     state: {
+      fields,
       editor,
       editorValue,
       errorText,
@@ -75,6 +78,19 @@ const Editor: FC<FormulaEditorProps> = ({
   const errorMsg = errorText ? `无效的字段或函数名称：${errorText}` : '';
 
   /**
+   * Effect
+   * @description 依赖 字段
+   */
+  useEffect(
+    () => dispatch!({
+      type: ActionType.SetFields,
+      fields: field,
+      dataSource,
+    } as unknown as IActionType),
+    [field, dataSource],
+  );
+
+  /**
    * Callback
    * @description 取消Modal操作
    */
@@ -86,17 +102,17 @@ const Editor: FC<FormulaEditorProps> = ({
     [],
   );
 
-  /**
-   * Memo
-   * @description 字段组
-   * @return array
-   */
-  const fields = useMemo(
-    () => (!field || !Array.isArray(field) || !field.length
-      ? []
-      : parseField(field, dataSource)),
-    [],
-  );
+  // /**
+  //  * Memo
+  //  * @description 字段组
+  //  * @return array
+  //  */
+  // const _fields = useMemo(
+  //   () => (!field || !Array.isArray(field) || !field.length
+  //     ? []
+  //     : parseField(field, dataSource)),
+  //   [],
+  // );
 
   /**
    * Callback
@@ -198,27 +214,6 @@ const Editor: FC<FormulaEditorProps> = ({
 
   /**
    * Callback
-   * @description 插入函数
-   * @param code 当前输入值
-   * @return void 0
-   */
-  const insertFun = useCallback(
-    (
-      code: string,
-    ) => {
-      if (!editor) return;
-      const doc = editor!.getDoc();
-      const pos = doc.getCursor();
-      doc.replaceRange(`${code}()`, pos);
-      pos.ch += code.length + 1;
-      doc.setCursor(pos);
-      editor!.focus();
-    },
-    [editor],
-  );
-
-  /**
-   * Callback
    * @description 插入变量
    * @param variable 当前输入变量
    * @return void 0
@@ -240,6 +235,7 @@ const Editor: FC<FormulaEditorProps> = ({
     <Modal
       open={modalVisible}
       closable={false}
+      maskClosable={false}
       okText="确认"
       cancelText='取消'
       onCancel={cancelModal}

@@ -17,7 +17,11 @@ const SelectPanel: FC = (): JSX.Element => {
   /**
    * Context
    */
-  const { dispatch } = useContext(store);
+  const {
+    state: {
+      editor,
+    }, dispatch,
+  } = useContext(store);
 
   /**
    * Callback
@@ -33,6 +37,31 @@ const SelectPanel: FC = (): JSX.Element => {
     } as IActionType);
   }, []);
 
+  /**
+   * Callback
+   * @description 点击字段 函数项
+   * @param name 变量 函数字段
+   * @return void
+   */
+  const clickItem = useCallback((name: string) => (event: MouseEvent<HTMLDivElement>) => {
+    event.stopPropagation();
+    if (!editor) return;
+
+    // 插入函数字段
+    const doc = editor!.getDoc();
+    const pos = doc.getCursor();
+    doc.replaceRange(`${name}()`, pos);
+    pos.ch += name.length + 1;
+    doc.setCursor(pos);
+    editor!.focus();
+
+    // 变量字段
+    // const doc = editor!.getDoc();
+    // const pos = doc.getCursor();
+    // doc.replaceRange(`{${variable}}`, pos, pos);
+    // editor!.focus();
+  }, [editor]);
+
   return useMemo(() => (
     <div className={`${prefixCls}-select-panel-layout`}>
       {Functions.map(({ name, functions }, index) => (
@@ -42,13 +71,15 @@ const SelectPanel: FC = (): JSX.Element => {
             className={`${prefixCls}-select-panel-layout-list-item`}
             key={item.name}
             onMouseEnter={selectItem(item)}
+            onClick={clickItem(item.name)}
           >
-            {item.name}</div>)}
+            {item.name}
+          </div>)}
         </Fragment>
       ))
       }
     </div >
-  ), []);
+  ), [editor]);
 };
 
 export default SelectPanel;

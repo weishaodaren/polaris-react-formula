@@ -23,4 +23,10 @@ export default Object.freeze({
    * 设置错误文案
    */
   SetErrorText: 'setErrorText',
+
+  /**
+   * 修改字段
+   */
+  SetFields: 'setFields',
+
 });

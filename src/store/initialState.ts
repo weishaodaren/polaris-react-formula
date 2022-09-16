@@ -1,6 +1,7 @@
 import type { Editor } from 'codemirror';
 import { Functions } from '../config';
-import type { FunctionItem } from '../types';
+import type { IColumn } from '../config';
+import type { FunctionItem, Variable } from '../types';
 
 /**
  * 默认值
@@ -20,6 +21,11 @@ export const initialState = {
    * 错误文案
    */
   errorText: '',
+
+  /**
+   * 字段组
+   */
+  fields: undefined as undefined | Variable[] | IColumn,
 
   /**
    * 模态框显示隐藏状态
