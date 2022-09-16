@@ -9,17 +9,17 @@ import 'codemirror/mode/spreadsheet/spreadsheet.js';
 
 import type { FC } from 'react';
 import type { EditorChange, Editor as CodemirrorEditor } from 'codemirror';
+import type { Variable } from '../types';
 import type { FormulaEditorProps } from '../index';
 import type { IActionType } from '../store';
 
 import { store, ActionType } from '../store';
 import {
-  CMOptions, dataSource, IColumn, prefixCls,
+  CMOptions, dataSource, prefixCls,
 } from '../config';
 import {
   evil,
   initDocTag,
-  parseField,
   parseMarks,
   parseFormula,
   parseFieldData,
@@ -182,7 +182,7 @@ const Editor: FC<FormulaEditorProps> = ({
     } as IActionType);
 
     if (editorValueParam !== null && editorValueParam !== '') {
-      initDocTag(editorConfig, editorValueParam, fields);
+      initDocTag(editorConfig, editorValueParam, fields as Variable[]);
     }
   }, []);
 
@@ -204,7 +204,7 @@ const Editor: FC<FormulaEditorProps> = ({
 
     // 优先转义标点符号
     const _editorValue = parseMarks(editorValueParam);
-    initDocTag(editorConfig, _editorValue, fields);
+    initDocTag(editorConfig, _editorValue, fields as Variable[]);
     dispatch!({
       type: ActionType.SetEditorValue,
       editorValue: _editorValue,

@@ -1,0 +1,7 @@
+root = true
+
+[*]
+indent_style = space                # 空格缩进
+end_of_line = lf                    # 文件换行符是 linux 的 `\n`
+trim_trailing_whitespace = true     # 不保留行末的空格
+quote_type = double                 # 字符串使用双引号
