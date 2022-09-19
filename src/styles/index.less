@@ -40,8 +40,6 @@
       width: 218px;
       border-right: 2px solid @code-background-color;
       overflow: hidden;
-      overflow-x: hidden;
-      overflow-y: auto;
 
       h3{
         color: @third-text-color;
@@ -54,6 +52,7 @@
 
       &-list-item{
         width: 100%;
+        width: 218px;
         font-size: 13px;
         height: 32px;
         line-height: 32px;
@@ -78,7 +77,12 @@
 
         &:hover{
           background-color: @code-background-color;
+          overflow-y: auto;
         }
+      }
+
+      &:hover{
+        overflow-y: auto;
       }
     }
 
