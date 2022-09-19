@@ -31,11 +31,11 @@
     "*.[jt]s?(x)": "pnpm lint"
   },
   "dependencies": {
-    "@ant-design/icons": "^4.7.0",
     "@formulajs/formulajs": "^3.1.7",
     "antd": "^4.23.0",
     "codemirror": "^5.6.1",
     "lodash-es": "^4.17.21",
+    "polaris-react-component": "^0.0.98",
     "react": "^18.2.0",
     "react-codemirror2": "^7.2.1",
     "react-dom": "^18.2.0"
