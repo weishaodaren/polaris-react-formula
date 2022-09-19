@@ -63,13 +63,12 @@ export const Store: FC<IStoreProps> = ({ children }) => {
          */
 
         const { editorValue, fields } = action; // 输入值 原始字段
-        const reg = new RegExp(editorValue, 'i'); // 匹配条件 暂不区分大小写
 
         // 临时字段
         const _fields = [];
         if (fields && fields.length) {
           for (let i = 0; i < fields.length; i += 1) {
-            if (reg.test(fields[i].label)) {
+            if (fields[i].label.indexOf(editorValue) !== -1) {
               _fields.push(fields[i]);
             }
           }
@@ -79,7 +78,8 @@ export const Store: FC<IStoreProps> = ({ children }) => {
         for (let i = 0; i < Functions.length; i += 1) {
           const { functions } = Functions[i];
           for (let k = 0; k < functions.length; k += 1) {
-            if (reg.test(functions[k].name)) {
+            // 函数需改为大写 匹配字段
+            if (functions[k].name.indexOf(editorValue.toUpperCase()) !== -1) {
               const { name } = Functions[i];
               // 优先判断是否存在
               const alreadyName = _functions.findIndex((item: { name: string; }) => {
