@@ -40,7 +40,7 @@ export const initialState = {
   /**
    * 函数字段
    */
-  functions: Functions as unknown | FunctionGroup[],
+  functions: Functions as FunctionGroup[],
 };
 
 export type InitialState = typeof initialState;

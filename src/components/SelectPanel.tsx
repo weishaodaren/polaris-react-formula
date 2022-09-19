@@ -26,6 +26,10 @@ const SelectPanel: FC = (): JSX.Element => {
     }, dispatch,
   } = useContext(store);
 
+  // 所搜内容是否为空
+  // ! 建议少用可选链 会增加打包体积
+  const empty = (!fields || !fields.length) && !functions.length && '暂无搜索结果';
+
   /**
    * Callback
    * @description 选择字段 函数项
@@ -75,33 +79,40 @@ const SelectPanel: FC = (): JSX.Element => {
 
   return useMemo(() => (
     <div className={`${prefixCls}-select-panel-layout`}>
-      <h3>极星字段</h3>
-      {/* 字段 */}
-      {(fields as Variable[])?.map((field) => (
-        <div
-          className={`${prefixCls}-select-panel-layout-list-item`}
-          key={field.value}
-          onMouseEnter={selectItem(field)}
-          onClick={clickItem(field.value, true)}
-        >
-          {field.label}
-        </div>
-      ))
-      }
-      {/* 函数 */}
-      {(functions as FunctionGroup[]).map(({ name, functions: _functions }, index) => (
-        <Fragment key={index}>
-          <h3>{name}</h3>
-          {_functions.map((item) => <div
-            className={`${prefixCls}-select-panel-layout-list-item`}
-            key={item.name}
-            onMouseEnter={selectItem(item)}
-            onClick={clickItem(item.name, false)}
-          >
-            {item.name}
-          </div>)}
-        </Fragment>
-      ))
+      {!empty
+        ? (
+          <>
+            <h3>极星字段</h3>
+            {/* 字段 */}
+            {(fields as Variable[])?.map((field) => (
+              <div
+                className={`${prefixCls}-select-panel-layout-list-item`}
+                key={field.value}
+                onMouseEnter={selectItem(field)}
+                onClick={clickItem(field.value, true)}
+              >
+                {field.label}
+              </div>
+            ))
+            }
+            {/* 函数 */}
+            {(functions as FunctionGroup[]).map(({ name, functions: _functions }, index) => (
+              <Fragment key={index}>
+                <h3>{name}</h3>
+                {_functions.map((item) => <div
+                  className={`${prefixCls}-select-panel-layout-list-item`}
+                  key={item.name}
+                  onMouseEnter={selectItem(item)}
+                  onClick={clickItem(item.name, false)}
+                >
+                  {item.name}
+                </div>)}
+              </Fragment>
+            ))
+            }
+          </>
+        )
+        : <h3>{empty}</h3>
       }
     </div >
   ), [editor, fields, functions]);
