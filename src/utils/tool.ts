@@ -98,3 +98,15 @@ export const injectWindowApi = () => {
     }
   });
 };
+
+/**
+ * Function
+ * @description 获取公式计算异常
+ * @param input 输入值
+ * @return string
+ */
+export const getFormulaError = (input: string) => {
+  console.log(`input: ${input}`);
+
+  return input;
+};

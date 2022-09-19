@@ -20,6 +20,7 @@ import {
 
 const Code = lazy(() => import('./Code'));
 const Content = lazy(() => import('./Content'));
+const ErrorText = lazy(() => import('./ErrorText'));
 
 /**
  * Component
@@ -39,7 +40,6 @@ const Editor: FC<FormulaEditorProps> = ({
   const {
     state: {
       editorValue,
-      errorText,
       modalVisible,
     },
     dispatch,
@@ -59,13 +59,6 @@ const Editor: FC<FormulaEditorProps> = ({
    * @return array
    */
   const classnames = [prefixCls, className].join(' ');
-
-  /**
-   * State
-   * @description 错误信息
-   * @return string
-   */
-  const errorMsg = errorText ? `无效的字段或函数名称：${errorText}` : '';
 
   /**
    * Effect
@@ -163,7 +156,8 @@ const Editor: FC<FormulaEditorProps> = ({
               value={value}
               onChange={onChange}
             />
-            <p className={`${prefixCls}-error`}>{errorMsg}</p>
+            {/* 错误提示 */}
+            <ErrorText />
             <h2>选择极星字段或函数</h2>
             {/* 下方显示内容 */}
             <Content />
@@ -171,7 +165,7 @@ const Editor: FC<FormulaEditorProps> = ({
         </div>
       </Suspense>
     </Modal>
-  ), [modalVisible, confirmButtonDisabled, errorText]);
+  ), [modalVisible, confirmButtonDisabled]);
 };
 
 export default memo(Editor);

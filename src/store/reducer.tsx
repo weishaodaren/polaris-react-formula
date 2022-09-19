@@ -10,7 +10,7 @@ import type { Variable } from '../types';
 import { Functions } from '../config';
 import { initialState } from './initialState';
 import ActionType from './actionType';
-import { parseField } from '../utils';
+import { parseField, getFormulaError } from '../utils';
 
 interface IStoreProps {
   children: ReactNode
@@ -106,6 +106,7 @@ export const Store: FC<IStoreProps> = ({ children }) => {
           editorValue,
           fields: _fields as Variable[],
           functions: _functions,
+          errorText: getFormulaError(editorValue),
         };
       }
 
