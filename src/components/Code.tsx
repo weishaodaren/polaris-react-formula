@@ -74,10 +74,8 @@ const Code: FC<IProps> = ({
     data: EditorChange,
     editorValueParam: string,
   ) => {
-    if (!editorValueParam) return;
-
-    // 优先转义标点符号
-    const _editorValue = parseMarks(editorValueParam);
+    // 优先转义标点符号 无内容不执行转义
+    const _editorValue = editorValueParam ? parseMarks(editorValueParam) : editorValueParam;
     initDocTag(editorConfig, _editorValue, fields as Variable[]);
     dispatch!({
       type: ActionType.SetEditorValue,
