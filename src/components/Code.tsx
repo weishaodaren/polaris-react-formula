@@ -80,6 +80,7 @@ const Code: FC<IProps> = ({
     dispatch!({
       type: ActionType.SetEditorValue,
       editorValue: _editorValue,
+      fields,
     } as IActionType);
     onChange?.(_editorValue);
   }, []);

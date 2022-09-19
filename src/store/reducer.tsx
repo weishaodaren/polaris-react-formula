@@ -62,8 +62,7 @@ export const Store: FC<IStoreProps> = ({ children }) => {
          * 模糊查询
          */
 
-        const { fields } = originalState; // 原始字段
-        const { editorValue } = action; // 输入值
+        const { editorValue, fields } = action; // 输入值 原始字段
         const reg = new RegExp(editorValue, 'i'); // 匹配条件 暂不区分大小写
 
         // 临时字段

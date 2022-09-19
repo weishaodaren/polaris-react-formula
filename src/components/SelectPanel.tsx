@@ -27,8 +27,7 @@ const SelectPanel: FC = (): JSX.Element => {
   } = useContext(store);
 
   // 所搜内容是否为空
-  // ! 建议少用可选链 会增加打包体积
-  const empty = (!fields || !fields.length) && !functions.length && '暂无搜索结果';
+  const empty = !fields?.length && !functions.length && '暂无搜索结果';
 
   /**
    * Callback
