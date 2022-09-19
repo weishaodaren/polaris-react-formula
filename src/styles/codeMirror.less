@@ -1,0 +1,38 @@
+@import '../theme.less';
+
+.CodeMirror {
+  position: relative;
+  width: 100%;
+  height: 38px;
+  max-height: 204px;
+  text-indent: 0;
+  padding: 8px 5px;
+  line-height: 1.5;
+  transition: all .3s 0s;
+  font-size: 13px;
+  background-color: @code-background-color;
+  border-radius: 4px;
+  font-feature-settings: "tnum","tnum","tnum";
+  display: inline-block;
+  font-variant: tabular-nums;
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+  -webkit-user-modify: read-write-plaintext-only;
+
+  .formula-tag {
+    background: red;
+    color: white;
+    border-radius: 4px;
+    font-size: 0.8em;
+    padding: 2px 4px;
+    margin: 0 2px;
+  }
+}
+
+.CodeMirror-focused {
+  background-color: red;
+  box-shadow: none;
+  border-color: #7b67ee !important;
+  outline: none;
+  background-color: @code-background-color;
+}

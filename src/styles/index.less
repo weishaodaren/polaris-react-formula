@@ -3,17 +3,6 @@
 .formula-editor {
   display: flex;
   height: 100%;
-  &-toolbar {
-    width: 240px;
-    height: 560px;
-    overflow-y: auto;
-    border-right: 1px solid red;
-  }
-  &-main {
-    height: 100%;
-    padding: 8px 16px;
-    width: calc(100% - 240px);
-  }
 
   &-layout{
     width: 100%;
@@ -21,41 +10,6 @@
       font-size: 16px;
       line-height: 1.375em;
       color: @first-text-color;
-    }
-    .CodeMirror {
-      position: relative;
-      width: 100%;
-      height: 38px;
-      max-height: 204px;
-      text-indent: 0;
-      padding: 8px 5px;
-      line-height: 1.5;
-      transition: all .3s 0s;
-      font-size: 13px;
-      background-color: @code-background-color;
-      border-radius: 4px;
-      font-feature-settings: "tnum","tnum","tnum";
-      display: inline-block;
-      font-variant: tabular-nums;
-      white-space: pre-wrap;
-      overflow-wrap: break-word;
-      -webkit-user-modify: read-write-plaintext-only;
-
-      &:focus{
-        box-shadow: none;
-        border-color: #7b67ee !important;
-        outline: none;
-        background-color: @code-background-color;
-      }
-    
-      .formula-tag {
-        background: red;
-        color: white;
-        border-radius: 4px;
-        font-size: 0.8em;
-        padding: 2px 4px;
-        margin: 0 2px;
-      }
     }
   }
    &-error{
@@ -73,7 +27,6 @@
       height: 367px;
       display: flex;
       flex-direction: row;
-      // margin: 0 -24px;
     }
 
     &-select-panel-layout{
@@ -137,15 +90,3 @@
       }
     }
 }
-
-  // .CodeMirror {
-  //   border: 1px solid pink;
-  //   height: 120px;
-  //   font-size: 20px;
-  //   .formula-tag {
-  //     border-radius: 4px;
-  //     font-size: 0.8em;
-  //     padding: 2px 4px;
-  //     margin: 0 2px;
-  //   }
-  // }
