@@ -158,12 +158,14 @@ const Editor: FC<FormulaEditorProps> = ({
         <div className={classnames} style={style}>
           <div className={`${prefixCls}-layout`}>
             <h2>请输入公式</h2>
+            {/* 代码编辑器 */}
             <Code
               value={value}
               onChange={onChange}
             />
             <p className={`${prefixCls}-error`}>{errorMsg}</p>
             <h2>选择极星字段或函数</h2>
+            {/* 下方显示内容 */}
             <Content />
           </div>
         </div>
