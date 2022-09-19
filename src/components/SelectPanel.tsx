@@ -4,11 +4,11 @@ import React, {
 } from 'react';
 
 import type { FC, MouseEvent } from 'react';
-import type { FunctionItem, Variable } from '../types';
+import type { FunctionItem, Variable, FunctionGroup } from '../types';
 import type { IActionType } from '../store';
 
 import { store, ActionType } from '../store';
-import { prefixCls, Functions } from '../config';
+import { prefixCls } from '../config';
 
 /**
  * Component
@@ -22,6 +22,7 @@ const SelectPanel: FC = (): JSX.Element => {
     state: {
       editor,
       fields,
+      functions,
     }, dispatch,
   } = useContext(store);
 
@@ -36,12 +37,12 @@ const SelectPanel: FC = (): JSX.Element => {
   ) => (
     event: MouseEvent<HTMLDivElement>,
   ) => {
-    event.stopPropagation();
-    dispatch!({
-      type: ActionType.SetCurrentFieldOrFunction,
-      currentFieldOrFunction: item,
-    } as IActionType);
-  }, []);
+      event.stopPropagation();
+      dispatch!({
+        type: ActionType.SetCurrentFieldOrFunction,
+        currentFieldOrFunction: item,
+      } as IActionType);
+    }, []);
 
   /**
    * Callback
@@ -75,21 +76,23 @@ const SelectPanel: FC = (): JSX.Element => {
   return useMemo(() => (
     <div className={`${prefixCls}-select-panel-layout`}>
       <h3>极星字段</h3>
+      {/* 字段 */}
       {(fields as Variable[])?.map((field) => (
-         <div
-            className={`${prefixCls}-select-panel-layout-list-item`}
-            key={field.value}
-            onMouseEnter={selectItem(field)}
-            onClick={clickItem(field.value, true)}
-          >
-            {field.label}
-          </div>
+        <div
+          className={`${prefixCls}-select-panel-layout-list-item`}
+          key={field.value}
+          onMouseEnter={selectItem(field)}
+          onClick={clickItem(field.value, true)}
+        >
+          {field.label}
+        </div>
       ))
       }
-      {Functions.map(({ name, functions }, index) => (
+      {/* 函数 */}
+      {(functions as FunctionGroup[]).map(({ name, functions: _functions }, index) => (
         <Fragment key={index}>
           <h3>{name}</h3>
-          {functions.map((item) => <div
+          {_functions.map((item) => <div
             className={`${prefixCls}-select-panel-layout-list-item`}
             key={item.name}
             onMouseEnter={selectItem(item)}
@@ -101,7 +104,7 @@ const SelectPanel: FC = (): JSX.Element => {
       ))
       }
     </div >
-  ), [editor]);
+  ), [editor, fields, functions]);
 };
 
 export default SelectPanel;

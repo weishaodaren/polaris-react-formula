@@ -1,7 +1,7 @@
 import type { Editor } from 'codemirror';
 import { Functions } from '../config';
 import type { IColumn } from '../config';
-import type { FunctionItem, Variable } from '../types';
+import type { FunctionItem, Variable, FunctionGroup } from '../types';
 
 /**
  * 默认值
@@ -36,6 +36,11 @@ export const initialState = {
    *  当前默认字段或函数
    */
   currentFieldOrFunction: Functions[0].functions[0] as FunctionItem,
+
+  /**
+   * 函数字段
+   */
+  functions: Functions as unknown | FunctionGroup[],
 };
 
 export type InitialState = typeof initialState;
