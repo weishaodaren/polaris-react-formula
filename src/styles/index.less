@@ -48,18 +48,33 @@
         font-size: 12px;
         line-height: 32px;
         height: 32px;
-        padding: 0 24px;
         margin: 4px 0 0;
+        padding: 0 24px;
       }
 
       &-list-item{
+        width: 100%;
         font-size: 13px;
         height: 32px;
         line-height: 32px;
-        padding: 0 24px;
         cursor: pointer;
+        padding: 0 24px;
         display: flex;
         align-items: center;
+
+        span{
+          display: block;
+          &:nth-child(1){
+            margin: 0 5px 0 0;
+          }
+
+          &span:nth-child(2){
+            flex: 1 1;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+          }
+        }
 
         &:hover{
           background-color: @code-background-color;

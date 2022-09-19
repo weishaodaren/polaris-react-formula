@@ -2,13 +2,15 @@
 import React, {
   Fragment, useContext, useCallback, useMemo,
 } from 'react';
+import { Icon } from 'polaris-react-component';
 
 import type { FC, MouseEvent } from 'react';
 import type { FunctionItem, Variable, FunctionGroup } from '../types';
 import type { IActionType } from '../store';
+import type { CustomFieldIconType } from '../config';
 
 import { store, ActionType } from '../store';
-import { prefixCls } from '../config';
+import { prefixCls, CustomFieldIcon } from '../config';
 
 /**
  * Component
@@ -92,7 +94,8 @@ const SelectPanel: FC = (): JSX.Element => {
                 onMouseEnter={selectItem(field)}
                 onClick={clickItem(field.value, true)}
               >
-                {field.label}
+                <Icon type={(CustomFieldIcon as CustomFieldIconType as any)[field.type]} />
+                <span>{field.label}</span>
               </div>
             ))
             }
@@ -106,7 +109,8 @@ const SelectPanel: FC = (): JSX.Element => {
                   onMouseEnter={selectItem(item)}
                   onClick={clickItem(item.name, false)}
                 >
-                  {item.name}
+                  <Icon type={(CustomFieldIcon as CustomFieldIconType as any)[item.type]} />
+                  <span>{item.name}</span>
                 </div>)}
               </Fragment>
             ))

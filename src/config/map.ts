@@ -14,6 +14,9 @@ export const ErrorMap = new Map()
   .set(ErrorType.Error, '错误的公式：')
   .set(ErrorType.Unknown, '未知的运算符：');
 
+/**
+ * Icon 映射 参照极星表格
+ */
 export const CustomFieldIcon = {
   input: 'iconsingle_line_text', // 文本
   textarea: 'iconlong_text', // 多行文本
@@ -53,3 +56,5 @@ export const CustomFieldIcon = {
   workHour: 'icondetails_hours', // 前后置
   relating: 'iconrelation', // 前后置
 };
+
+export type CustomFieldIconType = typeof CustomFieldIcon;

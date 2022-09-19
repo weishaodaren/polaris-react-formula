@@ -144,7 +144,7 @@ const Editor: FC<FormulaEditorProps> = ({
       onCancel={cancelModal}
       onOk={confirmModal}
     >
-      <Suspense fallback={'loading...'}>
+      <Suspense fallback={'加载中...'}>
         <div className={classnames} style={style}>
           <div className={`${prefixCls}-layout`}>
             <h2>请输入公式</h2>

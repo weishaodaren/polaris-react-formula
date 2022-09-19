@@ -6,6 +6,7 @@ export interface Variable {
 }
 
 export interface FunctionItem {
+  type: string;
   name: string;
   description: string;
   useage?: string

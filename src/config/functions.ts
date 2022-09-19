@@ -14,6 +14,7 @@ export default [
 IF支持嵌套使用，并且可以用于检查单元格是否为空白/为空。`,
         useage: 'IF(logical, value1, value2)',
         example: '',
+        type: 'input',
       },
       {
         name: 'AND',
@@ -21,6 +22,7 @@ IF支持嵌套使用，并且可以用于检查单元格是否为空白/为空�
 
 【logical】是逻辑参数，可以是逻辑值、数组或引用的维格列`,
         useage: 'AND(logical1, [logical2, ...])',
+        type: 'multiselect',
       },
       {
         name: 'OR',
@@ -28,6 +30,7 @@ IF支持嵌套使用，并且可以用于检查单元格是否为空白/为空�
 
 【logical】是逻辑参数，可以是逻辑值、数组或引用的维格列。`,
         useage: 'OR(logical1, [logical2, ...])',
+        type: 'multiselect',
       },
       {
         name: 'NOT',
@@ -40,6 +43,7 @@ IF支持嵌套使用，并且可以用于检查单元格是否为空白/为空�
 如例子一：2>3输出值是假，但经过反转后函数输出值的是真。
 如例子二：NOT({年纪} > 18)经过NOT函数反转后，其实相当于判断{年纪} ≤ 18`,
         useage: 'NOT(boolean)',
+        type: 'multiselect',
       },
       {
         name: 'SWITCH',
@@ -52,6 +56,7 @@ IF支持嵌套使用，并且可以用于检查单元格是否为空白/为空�
 
 比如例子一，{国家}是引用的一列数据，其输出值可能是成千上万个国家名称，它是该函数中的表达式。“中国”和“中文”分别为其中一条分支和返回值，它表示如果{国家}的输出值为“中国”时，则返回“中文”。而“通用英语”为默认值，它表示{国家}的输出值没有匹配任何分支时，则输出“通用英语”`,
         useage: 'SWITCH(expression, [pattern, result...], [default])',
+        type: 'input',
       },
     ],
   },
@@ -67,6 +72,7 @@ IF支持嵌套使用，并且可以用于检查单元格是否为空白/为空�
 请用双引号将你要串联的文本值引起来，数字和引用列除外。
 特例：如果要串联双引号，你需要使用反斜杠（\\）作为转义字符。`,
         useage: 'CONCATENATE(text1, [text2, ...])',
+        type: 'input',
       },
       {
         name: 'LEFT',
@@ -75,6 +81,7 @@ IF支持嵌套使用，并且可以用于检查单元格是否为空白/为空�
 【string】是要被提取字符的文本。
 【howMany】是提取的字符数量。用数字表示，比如"3"，代表从左到右提取3个字符。`,
         useage: 'LEFT(string, howMany)',
+        type: 'input',
       },
       {
         name: 'RIGHT',
@@ -83,6 +90,7 @@ IF支持嵌套使用，并且可以用于检查单元格是否为空白/为空�
 【string】是要被提取字符的文本。
 【howMany】是提取的字符数量。用数字表示，比如"5"，代表从右到左提取5个字符。`,
         useage: 'RIGHT(string, howMany)',
+        type: 'input',
       },
       {
         name: 'MID',
@@ -92,6 +100,7 @@ IF支持嵌套使用，并且可以用于检查单元格是否为空白/为空�
 【whereToSearch】是你指定从哪儿提取文本，用数字表示。比如数字"3"表示从内容的第3个字符开始提取。
 【count】是提取的文本长度，用数字表示。比如数字"2"表示从指定位置提取2个字符。`,
         useage: 'MID(string, whereToStart, count)',
+        type: 'input',
       },
       {
         name: 'REPLACE',
@@ -104,6 +113,7 @@ IF支持嵌套使用，并且可以用于检查单元格是否为空白/为空�
 
 （如果你想将内容中所有出现的原文本替换为新文本，请参见SUBSTITUTE。）`,
         useage: 'REPLACE(string, whereToStart, count, replacement)',
+        type: 'input',
       },
       {
         name: 'TRIM',
@@ -111,6 +121,7 @@ IF支持嵌套使用，并且可以用于检查单元格是否为空白/为空�
 
 【value】是需要被处理的文本。`,
         useage: 'TRIM(string)',
+        type: 'input',
       },
       {
         name: 'LEN',
@@ -118,6 +129,7 @@ IF支持嵌套使用，并且可以用于检查单元格是否为空白/为空�
 
 【string】是要计算长度的文本；标点符号、空格等也会占一个字符。`,
         useage: 'LEN(string)',
+        type: 'inputnumber',
       },
       {
         name: 'LOWER',
@@ -125,6 +137,7 @@ IF支持嵌套使用，并且可以用于检查单元格是否为空白/为空�
 
 【string】是被转换的文本。`,
         useage: 'LOWER(string)',
+        type: 'input',
       },
       {
         name: 'UPPER',
@@ -132,6 +145,7 @@ IF支持嵌套使用，并且可以用于检查单元格是否为空白/为空�
 
 【string】是被转换的文本。`,
         useage: 'UPPER(string)',
+        type: 'input',
       },
       // {
       //   // TODO: useless
@@ -152,6 +166,7 @@ IF支持嵌套使用，并且可以用于检查单元格是否为空白/为空�
 
 其效果与SEARCH()类似，但是未找到匹配项时，SEARCH()返回值为空而不是0。`,
         useage: 'FIND(stringToFind, whereToSearch, [startFromPosition])',
+        type: 'inputnumber',
       },
       {
         name: 'NUMBERVALUE',
@@ -161,6 +176,7 @@ IF支持嵌套使用，并且可以用于检查单元格是否为空白/为空�
 
 本函数可以将文本内的数字提取出来。`,
         useage: 'NUMBERVALUE(text)',
+        type: 'inputnumber',
       },
       // {
       //   // TODO: useless
@@ -174,6 +190,7 @@ IF支持嵌套使用，并且可以用于检查单元格是否为空白/为空�
 【string】是需要重复的文本。
 【mumber】是指定的重复次数。用数字表示，比如”2“，表示重复2次。`,
         useage: 'REPT(string, number)',
+        type: 'input',
       },
       {
         name: 'SEARCH',
@@ -183,12 +200,13 @@ IF支持嵌套使用，并且可以用于检查单元格是否为空白/为空�
 【whereToSearch】指定从哪段内容搜索文本。可以输入文本参数或者引用维格列。
 【startFromPosition】非必填，指定从内容的哪个位置开始搜索（用数字表示第几个字符）。
 
-本函数可以在一大段内容中快速搜索特定文本出现的位置。 
+本函数可以在一大段内容中快速搜索特定文本出现的位置。
 如果返回数字3，表示文本出现在该内容的第3个字符。
 如果未找到匹配的文本，则结果将为空值。
 
 其效果与FIND()类似，但是未找到匹配项时，FIND()返回值为0而不是空值。`,
         useage: 'SEARCH(stringToFind, whereToSearch, [startFromPosition])',
+        type: 'inputnumber',
       },
       // {
       //   // TODO: useless
@@ -208,6 +226,7 @@ IF支持嵌套使用，并且可以用于检查单元格是否为空白/为空�
 
 （如果你想替换指定起点位置和终点位置之间的字符，请参见REPLACE。）`,
         useage: 'SUBSTITUTE(string, oldText, newText, [index])',
+        type: 'input',
       },
     ],
   },
@@ -223,6 +242,7 @@ IF支持嵌套使用，并且可以用于检查单元格是否为空白/为空�
 value：是要对其求绝对值的数值。
 绝对值：正数的绝对值是本身，负数的绝对值是去掉负号。`,
         useage: 'ABS(value)',
+        type: 'inputnumber',
       },
       {
         name: 'AVERAGE',
@@ -232,6 +252,7 @@ value：是要对其求绝对值的数值。
 
 如果其中某个参数是文本值，比如"八"，在运算时会被当做0。`,
         useage: 'AVERAGE(number1, [number2, ...])',
+        type: 'inputnumber',
       },
       {
         name: 'CEILING',
@@ -241,6 +262,7 @@ value：是要对其求绝对值的数值。
 【significance】非必填，是用于向上舍入的基数，返回值为基数的倍数。如果未提供，默认取1。
 【向上舍入】即它返回值是大于或等于原数值,且为最接近的基数的倍数。`,
         useage: 'CEILING(value, [significance])',
+        type: 'inputnumber',
       },
       // {
       //   // TODO: useless
@@ -255,10 +277,11 @@ value：是要对其求绝对值的数值。
 
 本函数可以计算输入的参数或单元格内包含了多少个数值（数字、货币、百分比、评分都为数值）。`,
         useage: 'COUNT(number1, [number2, ...])',
+        type: 'inputnumber',
       },
       {
         name: 'COUNTA',
-        description: `统计非空值的数量。 
+        description: `统计非空值的数量。
 
 【textOrNumber】可以是输入的参数或引用的列。
 
@@ -266,6 +289,7 @@ value：是要对其求绝对值的数值。
 比如，可以统计一个单元格内有多少个选项，多少个图片。多少个成员等。
 还可以统计神奇引用的单元格内的数组非空值。`,
         useage: 'COUNTA(textOrNumber1, [number2, ...])',
+        type: 'inputnumber',
       },
       {
         name: 'EXP',
@@ -274,6 +298,7 @@ value：是要对其求绝对值的数值。
 【e】是自然数，约为2.718282
 【power】是幂。即指定e的多少次方。`,
         useage: 'EXP(power)',
+        type: 'inputnumber',
       },
       {
         name: 'FLOOR',
@@ -283,6 +308,7 @@ value：是要对其求绝对值的数值。
 【significance】非必填，是用于向下舍入的基数，返回值为基数的倍数。如果未提供，默认取1。
 【向下舍入】即它返回值是小于或等于原数值,且为最接近基数的倍数。`,
         useage: 'FLOOR(value, [significance])',
+        type: 'inputnumber',
       },
       // {
       //   // TODO: useless
@@ -297,6 +323,7 @@ value：是要对其求绝对值的数值。
 
 另外，本函数的输入值都为日期格式时，可以比较多个日期中最晚的日期。`,
         useage: 'MAX(number1, [number2, ...])',
+        type: 'inputnumber',
       },
       {
         name: 'MIN',
@@ -306,6 +333,7 @@ value：是要对其求绝对值的数值。
 
 另外，本函数的输入值都为日期格式时，可以比较多个日期中最晚的日期。`,
         useage: 'MIN(number1, [number2, ...])',
+        type: 'inputnumber',
       },
       {
         name: 'INT',
@@ -314,6 +342,7 @@ value：是要对其求绝对值的数值。
 【value】是要向下舍入的值。
 【向下舍入】即它返回值是小于或等于原数值。`,
         useage: 'INT(value)',
+        type: 'inputnumber',
       },
       {
         name: 'MOD',
@@ -324,6 +353,7 @@ value：是要对其求绝对值的数值。
 
 返回结果的符号与除数的符号相同。`,
         useage: 'MOD(value, divisor)',
+        type: 'inputnumber',
       },
       // {
       //   // TODO: useless
@@ -337,6 +367,7 @@ value：是要对其求绝对值的数值。
 【number...】是进行运算的数值参数，可以输入数字或引用数值类型的列。数值类型的列包括数字、货币、百分比、评分等。`,
         usage: 'SUM(number1, [number2, ...])',
         example: '',
+        type: 'inputnumber',
       },
       // {
       //   // TODO: useless
@@ -359,6 +390,7 @@ value：是要对其求绝对值的数值。
 如果位数等于 0，则四舍五入到最接近的整数。　
 如果位数小于 0，则在小数点左侧进行四舍五入。`,
         useage: 'ROUND(value, [precision])',
+        type: 'inputnumber',
       },
       {
         name: 'ROUNDUP',
@@ -372,6 +404,7 @@ value：是要对其求绝对值的数值。
 如果位数等于 0，则四舍五入到最接近的整数。　
 如果位数小于 0，则在小数点左侧进行四舍五入。`,
         useage: 'ROUNDUP(value, [precision])',
+        type: 'inputnumber',
       },
       {
         name: 'ROUNDDOWN',
@@ -385,6 +418,7 @@ value：是要对其求绝对值的数值。
 如果位数等于 0，则四舍五入到最接近的整数。　
 如果位数小于 0，则在小数点左侧进行四舍五入。`,
         useage: 'ROUNDDOWN(value, [precision])',
+        type: 'inputnumber',
       },
       {
         name: 'POWER',
@@ -393,6 +427,7 @@ value：是要对其求绝对值的数值。
 【base】是基数。
 【power】是幂。`,
         useage: 'POWER(base, power)',
+        type: 'inputnumber',
       },
       // {
       //   // TODO
@@ -406,6 +441,7 @@ value：是要对其求绝对值的数值。
 【number】是想要计算其对数的数值。
 【base】是对数的基数（底数），如果未指定基数，则默认为10。`,
         useage: 'LOG(number, base=10))',
+        type: 'inputnumber',
       },
       // {
       //   // TODO
@@ -420,6 +456,7 @@ value：是要对其求绝对值的数值。
 
 如果数值为负数，则 SQRT 返回 Nan`,
         useage: 'SQRT(value)',
+        type: 'inputnumber',
       },
     ],
   },
@@ -439,6 +476,7 @@ value：是要对其求绝对值的数值。
 【date】是指定的日期。
 比如，数字1表示日期属于当月的第1号。`,
         useage: 'DAY(date)',
+        type: 'inputnumber',
       },
       {
         name: 'DAYS',
@@ -461,6 +499,7 @@ value：是要对其求绝对值的数值。
 
 点击下方链接可查看全部计时单位。`,
         useage: 'DAYS(date1, date2, [units])',
+        type: 'inputnumber',
       },
       // {
       //   // TODO
@@ -483,6 +522,7 @@ value：是要对其求绝对值的数值。
 
 【date】是指定的日期。`,
         useage: 'YEAR(date)',
+        type: 'inputnumber',
       },
       {
         name: 'MONTH',
@@ -492,6 +532,7 @@ value：是要对其求绝对值的数值。
 
 本函数输出值为1（一月）至12（十二月）之间的整数。`,
         useage: 'MONTH(date)',
+        type: 'inputnumber',
       },
       {
         name: 'HOUR',
@@ -500,12 +541,14 @@ value：是要对其求绝对值的数值。
 【date】是指定的日期。
 比如，18表示18:00`,
         useage: 'HOUR(date)',
+        type: 'inputnumber',
       },
       {
         name: 'MINUTE',
         description: `返回指定日期的分钟数，输出格式为0到59之间的整数。
 `,
         useage: 'MINUTE(date)',
+        type: 'inputnumber',
       },
       {
         name: 'SECOND',
@@ -513,6 +556,7 @@ value：是要对其求绝对值的数值。
 
 【date】是指定的日期。`,
         useage: 'SECOND(date)',
+        type: 'inputnumber',
       },
       {
         name: 'TODAY',
@@ -523,10 +567,11 @@ value：是要对其求绝对值的数值。
 
 注意：仅当重新刷新计算公式或刷新表格时，这个函数返回的结果才会更新。`,
         useage: 'TODAY()',
+        type: 'datepicker',
       },
       {
         name: 'NOW',
-        description: `返回今天的日期和时间，会精确到时分秒。 
+        description: `返回今天的日期和时间，会精确到时分秒。
 
 可以直接使用此函数返回年月日，见例子一；
 
@@ -534,6 +579,7 @@ value：是要对其求绝对值的数值。
 
  注意：仅当重新刷新计算公式或刷新表格时，这个函数返回的结果才会更新。`,
         useage: 'NOW()',
+        type: 'datepicker',
       },
       {
         name: 'WEEKDAY',
@@ -544,6 +590,7 @@ value：是要对其求绝对值的数值。
 
 本函数输出值为0到6之间的整数。 `,
         useage: 'WEEKDAY(date, [startDayOfWeek])',
+        type: 'inputnumber',
       },
       {
         name: 'WEEKNUM',
@@ -554,6 +601,7 @@ value：是要对其求绝对值的数值。
 
 本函数输出值为整数。比如6，代表该日期属于一年中的第6个星期。`,
         useage: 'WEEKNUM(date, [startDayOfWeek])',
+        type: 'inputnumber',
       },
     ],
   },
