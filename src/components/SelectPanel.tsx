@@ -26,8 +26,8 @@ const SelectPanel: FC = (): JSX.Element => {
     }, dispatch,
   } = useContext(store);
 
-  // 所搜内容是否为空
-  const empty = !fields?.length && !functions.length && '暂无搜索结果';
+  const emptyField = !fields?.length; // 空字段
+  const emptyFunctions = !functions.length; // 空函数
 
   /**
    * Callback
@@ -78,10 +78,12 @@ const SelectPanel: FC = (): JSX.Element => {
 
   return useMemo(() => (
     <div className={`${prefixCls}-select-panel-layout`}>
-      {!empty
+      {/* 全字段为空 */}
+      {!emptyFunctions || !emptyField
         ? (
           <>
-            <h3>极星字段</h3>
+            {/* 只有字段为空 函数不为空 */}
+            {!emptyField && <h3>极星字段</h3>}
             {/* 字段 */}
             {(fields as Variable[])?.map((field) => (
               <div
@@ -111,7 +113,7 @@ const SelectPanel: FC = (): JSX.Element => {
             }
           </>
         )
-        : <h3>{empty}</h3>
+        : <h3>暂无搜索结果</h3>
       }
     </div >
   ), [editor, fields, functions]);
