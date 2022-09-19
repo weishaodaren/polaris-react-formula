@@ -101,12 +101,16 @@ export const Store: FC<IStoreProps> = ({ children }) => {
           }
         }
 
+        // 获取错误信息
+        const [errorCode, errorText] = getFormulaError(editorValue) as string[];
+
         return {
           ...originalState,
           editorValue,
           fields: _fields as Variable[],
           functions: _functions,
-          errorText: getFormulaError(editorValue),
+          errorText,
+          errorCode,
         };
       }
 

@@ -1,7 +1,7 @@
 import React, { useMemo, useContext } from 'react';
 import type { FC } from 'react';
 import { store } from '../store';
-import { prefixCls } from '../config';
+import { prefixCls, ErrorMap } from '../config';
 
 /**
  * Component
@@ -14,6 +14,7 @@ const ErrorText: FC = (): JSX.Element => {
    */
   const {
     state: {
+      errorCode,
       errorText,
     },
   } = useContext(store);
@@ -23,11 +24,11 @@ const ErrorText: FC = (): JSX.Element => {
    * @description 错误信息
    * @return string
    */
-  const errorMsg = errorText ? `无效的字段或函数名称：${errorText}` : '';
+  const errorMsg = errorText ? ErrorMap.get(errorCode) + errorText : '';
 
   return useMemo(() => (
     <p className={`${prefixCls}-error`}>{errorMsg}</p >
-  ), [errorText]);
+  ), [errorCode]);
 };
 
 export default ErrorText;

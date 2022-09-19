@@ -2,6 +2,7 @@
 import * as formulajs from '@formulajs/formulajs';
 import type { Position, Editor as CodemirrorEditor } from 'codemirror';
 import type { Variable } from '../types';
+import { ErrorType } from '../enum';
 
 /**
  * Function
@@ -101,12 +102,28 @@ export const injectWindowApi = () => {
 
 /**
  * Function
- * @description 获取公式计算异常
+ * @description 获取公式计算异常 抛出错误提示
  * @param input 输入值
  * @return string
  */
 export const getFormulaError = (input: string) => {
-  console.log(`input: ${input}`);
-
-  return input;
+  if (/^[\x\\÷\\+\-\\*\\/]/.test(input)) {
+    return [ErrorType.Error, '开头错误'];
+  }
+  if (/[\x\\÷\\+\-\\*\\/]$/.test(input)) {
+    return [ErrorType.Error, '结尾错误'];
+  }
+  if (/[\x\\÷\\+\-\\*\\/]{2,}/.test(input)) {
+    return [ErrorType.Error, '连续运算'];
+  }
+  if (/\([\x\\÷\\+\-\\*\\/]/.test(input)) {
+    return [ErrorType.Error, '( 后非法运算'];
+  }
+  if (/[\x\\÷\\+\-\\*\\/]\)/.test(input)) {
+    return [ErrorType.Error, ') 后非法运算'];
+  }
+  if (/[@#\\$%\\^&\\]+/g.test(input)) {
+    return [ErrorType.Unknown, input];
+  }
+  return [ErrorType.Pass, ''];
 };

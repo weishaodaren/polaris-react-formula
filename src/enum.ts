@@ -217,3 +217,15 @@ export enum FieldName {
 }
 
 export type IFieldName = typeof FieldName;
+
+/**
+ * 错误类型
+ */
+export enum ErrorType {
+  Pass = -1,
+  Invalid,
+  Error,
+  Unknown,
+}
+
+export type IErrorType = typeof ErrorType;

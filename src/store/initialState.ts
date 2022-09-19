@@ -2,6 +2,7 @@ import type { Editor } from 'codemirror';
 import { Functions } from '../config';
 import type { IColumn } from '../config';
 import type { FunctionItem, Variable, FunctionGroup } from '../types';
+import type { IErrorType } from '../enum';
 
 /**
  * 默认值
@@ -21,6 +22,11 @@ export const initialState = {
    * 错误文案
    */
   errorText: '',
+
+  /**
+   * 错误码
+   */
+  errorCode: undefined as IErrorType | unknown,
 
   /**
    * 字段组
