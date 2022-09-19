@@ -31,6 +31,7 @@
     "*.[jt]s?(x)": "pnpm lint"
   },
   "dependencies": {
+    "@ant-design/icons": "^4.7.0",
     "@formulajs/formulajs": "^3.1.7",
     "antd": "^4.23.0",
     "codemirror": "^5.6.1",

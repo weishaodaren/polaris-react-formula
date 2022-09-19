@@ -2,7 +2,9 @@ import React, {
   useCallback, useMemo, memo, useContext, Suspense, lazy, useEffect,
 } from 'react';
 import { chunk } from 'lodash-es';
-import { Modal } from 'antd';
+import { Modal, Tooltip } from 'antd';
+import QuestionCircleOutlined from '@ant-design/icons/QuestionCircleOutlined';
+import 'antd/lib/tooltip/style/index';
 import 'antd/lib/modal/style/index';
 
 import type { FC } from 'react';
@@ -139,7 +141,6 @@ const Editor: FC<FormulaEditorProps> = ({
       okText="确认"
       cancelText='取消'
       okButtonProps={{ disabled }}
-      cancelButtonProps={{ type: 'text' }}
       onCancel={cancelModal}
       onOk={confirmModal}
     >
@@ -147,6 +148,9 @@ const Editor: FC<FormulaEditorProps> = ({
         <div className={classnames} style={style}>
           <div className={`${prefixCls}-layout`}>
             <h2>请输入公式</h2>
+            <Tooltip title="点击了解公式技巧">
+              <QuestionCircleOutlined />
+            </Tooltip>
             {/* 代码编辑器 */}
             <Code
               value={value}

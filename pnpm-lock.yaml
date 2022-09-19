@@ -1,6 +1,7 @@
 lockfileVersion: 5.4
 
 specifiers:
+  '@ant-design/icons': ^4.7.0
   '@formulajs/formulajs': ^3.1.7
   '@types/codemirror': ^5.60.0
   '@types/lodash-es': ^4.17.6
@@ -29,6 +30,7 @@ specifiers:
   vite: ^3.1.0
 
 dependencies:
+  '@ant-design/icons': 4.7.0_biqbaboplfbrettd7655fr4n2y
   '@formulajs/formulajs': 3.1.7
   antd: 4.23.1_biqbaboplfbrettd7655fr4n2y
   codemirror: 5.65.8
