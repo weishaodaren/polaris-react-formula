@@ -10,6 +10,7 @@ import type { FormulaEditorProps } from '../index';
 import type { IActionType } from '../store';
 
 import { store, ActionType } from '../store';
+import { ErrorType } from '../enum';
 import { dataSource, prefixCls } from '../config';
 import {
   evil,
@@ -39,19 +40,12 @@ const Editor: FC<FormulaEditorProps> = ({
    */
   const {
     state: {
+      disabled,
       editorValue,
       modalVisible,
     },
     dispatch,
   } = useContext(store);
-
-  /**
-   * TODO: 暂时写死
-   * Memo
-   * @description 确认按钮 禁用状态
-   * @return Boolean
-   */
-  const confirmButtonDisabled = useMemo(() => true, []);
 
   /**
    * State
@@ -123,12 +117,14 @@ const Editor: FC<FormulaEditorProps> = ({
         console.log('用户手动输入：', parseFormula(evil(editorValue)) as any);
         dispatch!({
           type: ActionType.SetErrorText,
+          errorCode: ErrorType.Pass,
           errorText: '',
         } as IActionType);
       }
     } catch ({ message }) {
       dispatch!({
         type: ActionType.SetErrorText,
+        errorCode: ErrorType.Error,
         errorText: editorValue,
       } as IActionType);
       throw message;
@@ -142,7 +138,7 @@ const Editor: FC<FormulaEditorProps> = ({
       maskClosable={false}
       okText="确认"
       cancelText='取消'
-      okButtonProps={{ disabled: confirmButtonDisabled }}
+      okButtonProps={{ disabled }}
       cancelButtonProps={{ type: 'text' }}
       onCancel={cancelModal}
       onOk={confirmModal}
@@ -165,7 +161,7 @@ const Editor: FC<FormulaEditorProps> = ({
         </div>
       </Suspense>
     </Modal>
-  ), [modalVisible, confirmButtonDisabled]);
+  ), [modalVisible, disabled]);
 };
 
 export default memo(Editor);

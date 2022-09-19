@@ -111,6 +111,7 @@ export const Store: FC<IStoreProps> = ({ children }) => {
           functions: _functions,
           errorText,
           errorCode,
+          disabled: Number(errorCode) > -1,
         };
       }
 
@@ -118,6 +119,7 @@ export const Store: FC<IStoreProps> = ({ children }) => {
         return {
           ...originalState,
           errorText: action.errorText,
+          errorCode: action.errorCode,
         };
       }
 

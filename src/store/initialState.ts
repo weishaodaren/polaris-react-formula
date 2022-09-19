@@ -19,6 +19,11 @@ export const initialState = {
   editorValue: '',
 
   /**
+   * 禁用状态
+   */
+  disabled: true,
+
+  /**
    * 错误文案
    */
   errorText: '',

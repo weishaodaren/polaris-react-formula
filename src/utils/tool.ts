@@ -104,7 +104,7 @@ export const injectWindowApi = () => {
  * Function
  * @description 获取公式计算异常 抛出错误提示
  * @param input 输入值
- * @return string
+ * @return [number, string]
  */
 export const getFormulaError = (input: string) => {
   if (/^[\x\\÷\\+\-\\*\\/]/.test(input)) {
