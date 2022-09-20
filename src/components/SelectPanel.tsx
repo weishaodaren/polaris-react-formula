@@ -76,6 +76,11 @@ const SelectPanel: FC = (): JSX.Element => {
       doc.setCursor(pos);
       editor!.focus();
     }
+
+    dispatch!({
+      type: ActionType.SetEditorValue,
+      isSelected: true,
+    } as IActionType);
   }, [editor]);
 
   return useMemo(() => (

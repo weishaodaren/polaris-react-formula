@@ -39,6 +39,11 @@ export const initialState = {
   fields: undefined as undefined | Variable[] | IColumn,
 
   /**
+   * 字段组(原始)
+   */
+  originalFields: undefined as undefined | Variable[] | IColumn,
+
+  /**
    * 模态框显示隐藏状态
    */
   modalVisible: true,
@@ -52,6 +57,11 @@ export const initialState = {
    * 函数字段
    */
   functions: Functions as FunctionGroup[],
+
+  /**
+   * 是否从选择面板选中
+   */
+  isSelected: false,
 };
 
 export type InitialState = typeof initialState;

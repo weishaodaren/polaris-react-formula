@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-implied-eval */
 import * as formulajs from '@formulajs/formulajs';
 import type { Position, Editor as CodemirrorEditor } from 'codemirror';
-import type { Variable } from '../types';
+import type { Variable, FunctionGroup } from '../types';
 import { ErrorType } from '../enum';
 
 /**
@@ -126,4 +126,62 @@ export const getFormulaError = (input: string) => {
     return [ErrorType.Unknown, input];
   }
   return [ErrorType.Pass, ''];
+};
+
+/**
+ * Function
+ * @description 模糊查询 字段
+ * 因性能问题，不使用效率更高的filter, 使用for循环
+ * @param fields 字段组
+ * @param inputValue 输入值
+ * @return array
+ */
+export const fuzzySearchField = (fields: Variable[], inputValue: string) => {
+  const _fields = [];
+  if (fields && fields.length) {
+    for (let i = 0; i < fields.length; i += 1) {
+      if (fields[i].label.indexOf(inputValue) !== -1) {
+        _fields.push(fields[i]);
+      }
+    }
+  }
+  return _fields;
+};
+
+/**
+ * Function
+ * @description 模糊查询 函数
+ * 因性能问题，不使用效率更高的filter, 使用for循环
+ * @param functionArray 函数组
+ * @param inputValue 输入值
+ * @return array
+ */
+export const fuzzySearchFunctions = (functionArray: FunctionGroup[], inputValue: string) => {
+    const _functions = [];
+    for (let i = 0; i < functionArray.length; i += 1) {
+      const { functions } = functionArray[i];
+      for (let k = 0; k < functions.length; k += 1) {
+        // 函数需改为大写 匹配字段
+        if (functions[k].name.indexOf(inputValue.toUpperCase()) !== -1) {
+          const { name } = functionArray[i];
+          // 优先判断是否存在
+          const alreadyName = _functions.findIndex((item: { name: string; }) => {
+            if ('name' in item) {
+              return item.name === name;
+            }
+            return false;
+          });
+
+          if (alreadyName !== -1) {
+            _functions[alreadyName].functions.push(functions[k]);
+          } else {
+            _functions.push({
+              name,
+              functions: [functions[k]],
+            });
+          }
+        }
+      }
+    }
+  return _functions;
 };

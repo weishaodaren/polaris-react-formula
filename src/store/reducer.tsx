@@ -10,7 +10,9 @@ import type { Variable } from '../types';
 import { Functions } from '../config';
 import { initialState } from './initialState';
 import ActionType from './actionType';
-import { parseField, getFormulaError } from '../utils';
+import {
+  parseField, getFormulaError, fuzzySearchField, fuzzySearchFunctions,
+} from '../utils';
 
 interface IStoreProps {
   children: ReactNode
@@ -58,57 +60,70 @@ export const Store: FC<IStoreProps> = ({ children }) => {
       }
 
       case ActionType.SetEditorValue: {
-        /**
-         * 模糊查询
-         */
-
-        const { editorValue, fields } = action; // 输入值 原始字段
-
-        // 临时字段
-        const _fields = [];
-        if (fields && fields.length) {
-          for (let i = 0; i < fields.length; i += 1) {
-            if (fields[i].label.indexOf(editorValue) !== -1) {
-              _fields.push(fields[i]);
-            }
-          }
-        }
-        // 临时函数
-        const _functions = [];
-        for (let i = 0; i < Functions.length; i += 1) {
-          const { functions } = Functions[i];
-          for (let k = 0; k < functions.length; k += 1) {
-            // 函数需改为大写 匹配字段
-            if (functions[k].name.indexOf(editorValue.toUpperCase()) !== -1) {
-              const { name } = Functions[i];
-              // 优先判断是否存在
-              const alreadyName = _functions.findIndex((item: { name: string; }) => {
-                if ('name' in item) {
-                  return item.name === name;
-                }
-                return false;
-              });
-
-              if (alreadyName !== -1) {
-                _functions[alreadyName].functions.push(functions[k]);
-              } else {
-                _functions.push({
-                  name,
-                  functions: [functions[k]],
-                });
-              }
-            }
-          }
-        }
-
+        // 输入值
+        const { editorValue, isSelected } = action;
+        // 原始字段
+        const { originalFields: fields } = originalState;
         // 获取错误信息
         const [errorCode, errorText] = getFormulaError(editorValue) as string[];
 
+        // 从面板中选中 原封不动返回值
+        if (isSelected) {
+          return {
+            ...originalState,
+            editorValue,
+            fields,
+            functions: Functions,
+            errorText,
+            errorCode,
+            disabled: Number(errorCode) > -1,
+          };
+        }
+
+        /**
+         * 匹配 逗号 空格，之后的输入值，继续模糊查询
+         */
+        const reg = /[\\ \\,\\，]/g;
+        if (reg.test(editorValue)) {
+          const result = [...editorValue.matchAll(reg)];
+          // 匹配搜索结果，对应字段 模糊查询
+          if (result) {
+            // 默认找最后一位
+            const lastResult = result.at(-1);
+            if (lastResult) {
+              const { index } = lastResult;
+              const _editorValue = editorValue.slice(Number(index) + 1);
+
+              return {
+                ...originalState,
+                editorValue,
+                fields: fuzzySearchField(fields as Variable[], _editorValue),
+                functions: fuzzySearchFunctions(Functions, _editorValue),
+                errorText,
+                errorCode,
+                disabled: Number(errorCode) > -1,
+              };
+            }
+          }
+
+          // 匹配不到 返回所有值
+          return {
+            ...originalState,
+            editorValue,
+            fields,
+            functions: Functions,
+            errorText,
+            errorCode,
+            disabled: Number(errorCode) > -1,
+          };
+        }
+
+        // 无条件 模糊查询
         return {
           ...originalState,
           editorValue,
-          fields: _fields as Variable[],
-          functions: _functions,
+          fields: fuzzySearchField(fields as Variable[], editorValue),
+          functions: fuzzySearchFunctions(Functions, editorValue),
           errorText,
           errorCode,
           disabled: Number(errorCode) > -1,
@@ -124,12 +139,15 @@ export const Store: FC<IStoreProps> = ({ children }) => {
       }
 
       case ActionType.SetFields: {
-        const { fields: field, dataSource } = action;
+        const { fields, dataSource } = action;
+        const _fields = !fields?.length
+          ? []
+          : parseField(fields as IColumn, dataSource as IDataSource);
+
         return {
           ...originalState,
-          fields: !field || !Array.isArray(field) || !field.length
-            ? []
-            : parseField(field as IColumn, dataSource as IDataSource),
+          fields: _fields,
+          originalFields: _fields.slice(0),
         };
       }
 
