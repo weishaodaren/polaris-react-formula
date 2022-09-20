@@ -66,15 +66,19 @@ export const Store: FC<IStoreProps> = ({ children }) => {
         // 输入值
         const { editorValue, isSelected } = action;
         // 原始字段
-        const { originalFields: fields } = originalState;
+        const { originalFields: fields, editorValue: originalEditorValue } = originalState;
         // 获取错误信息
         const [errorCode, errorText] = getFormulaError(editorValue) as string[];
 
-        // 从面板中选中 原封不动返回值
+        /**
+         * 从面板中选中 原封不动返回值
+         * 因为两个事件都在codemirror触发
+         * 所以当选中时，返回内存中的旧的编辑值
+         */
         if (isSelected) {
           return {
             ...originalState,
-            editorValue,
+            editorValue: originalEditorValue,
             fields,
             functions: Functions,
             errorText,
@@ -121,6 +125,7 @@ export const Store: FC<IStoreProps> = ({ children }) => {
           };
         }
 
+        console.log('fuzzysearch =====>', 'editorValue:', editorValue, 'originalEditorValue:', originalEditorValue);
         // 无条件 模糊查询
         return {
           ...originalState,
