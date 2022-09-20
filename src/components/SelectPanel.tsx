@@ -79,6 +79,7 @@ const SelectPanel: FC = (): JSX.Element => {
 
     dispatch!({
       type: ActionType.SetEditorValue,
+      editorValue: isField ? `{${name}}` : `${name}()`,
       isSelected: true,
     } as IActionType);
   }, [editor]);

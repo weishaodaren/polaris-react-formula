@@ -112,11 +112,12 @@ const Editor: FC<FormulaEditorProps> = ({
           const validFiled = parseKeyReplaceField(fieldReg, editorValue, chunkFields[i]);
           resultValue[i] = parseFormula(evil(validFiled));
         }
-        // TODO: callback resultValue
-        console.log(resultValue, 'resultValue');
+        onChange?.(resultValue);
       } else {
         // 存在用户手动输入表达式可能
-        console.log('用户手动输入：', parseFormula(evil(editorValue)) as any);
+        const calcResult = parseFormula(evil(editorValue)) as string | string[];
+        onChange?.(calcResult);
+
         dispatch!({
           type: ActionType.SetErrorText,
           errorCode: ErrorType.Pass,
@@ -127,11 +128,11 @@ const Editor: FC<FormulaEditorProps> = ({
       dispatch!({
         type: ActionType.SetErrorText,
         errorCode: ErrorType.Error,
-        errorText: editorValue,
+        errorText: message,
       } as IActionType);
       throw message;
     }
-  }, [editorValue]);
+  }, [editorValue, dataSource]);
 
   return useMemo(() => (
     <Modal
@@ -151,21 +152,15 @@ const Editor: FC<FormulaEditorProps> = ({
             <Tooltip title="点击了解公式技巧">
               <Icon type="icondoubt" />
             </Tooltip>
-            {/* 代码编辑器 */}
-            <Code
-              value={value}
-              onChange={onChange}
-            />
-            {/* 错误提示 */}
+            <Code value={value} />
             <ErrorText />
             <h2>选择极星字段或函数</h2>
-            {/* 下方显示内容 */}
             <Content />
           </div>
         </div>
       </Suspense>
     </Modal>
-  ), [modalVisible, disabled]);
+  ), [modalVisible, disabled, editorValue, dataSource]);
 };
 
 export default memo(Editor);
