@@ -1,14 +1,14 @@
 {
-  "name": "formula",
-  "private": true,
+  "name": "polaris-react-formula",
+  "private": false,
   "auther": "weishaodaren@gmail.com",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "type": "module",
   "main": "./dist/index.js",
   "style": "./dist/style.css",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build && tsc --emitDeclarationOnly --project ./tsconfig.json",
+    "build": "vite build && tsc --emitDeclarationOnly --project ./tsconfig.json",
     "preview": "vite preview",
     "lint": "eslint --fix --ext .tsx,.ts src"
   },
@@ -30,15 +30,16 @@
   "lint-staged": {
     "*.[jt]s?(x)": "pnpm lint"
   },
+  "peerDependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
   "dependencies": {
     "@formulajs/formulajs": "^3.1.7",
-    "antd": "^4.23.0",
     "codemirror": "^5.6.1",
     "lodash-es": "^4.17.21",
     "polaris-react-component": "^0.0.98",
-    "react": "^18.2.0",
-    "react-codemirror2": "^7.2.1",
-    "react-dom": "^18.2.0"
+    "react-codemirror2": "^7.2.1"
   },
   "devDependencies": {
     "@types/codemirror": "^5.60.0",
@@ -49,6 +50,7 @@
     "@typescript-eslint/eslint-plugin": "^5.36.2",
     "@typescript-eslint/parser": "^5.36.2",
     "@vitejs/plugin-react": "^2.1.0",
+    "antd": "^4.23.0",
     "eslint": "^8.23.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-config-airbnb-typescript": "^17.0.0",
@@ -59,6 +61,8 @@
     "lint-staged": "^13.0.3",
     "typescript": "^4.6.4",
     "typescript-plugin-css-modules": "^3.4.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "vite": "^3.1.0"
   }
 }
