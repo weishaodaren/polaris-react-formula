@@ -91,7 +91,7 @@ const Code: FC<IProps> = ({
       editorDidMount={onReady}
       onChange={handleChange}
     />
-  ), []);
+  ), [value]);
 };
 
 export default Code;

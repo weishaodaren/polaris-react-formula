@@ -1,11 +1,7 @@
 import React, { useCallback } from 'react';
-import 'codemirror/lib/codemirror.css';
-
+import { OnChangeCallback } from './types';
 import FormulaEditor from '.';
-import { injectWindowApi } from './utils/tool';
-import { column, dataSource } from './config/mock.column';
-
-injectWindowApi();
+import { column, dataSource } from './config';
 
 function App() {
   /**
@@ -14,12 +10,13 @@ function App() {
    * @param value 值
    * @return void 0
    */
-  const onCalc: (value: string | string[]) => void = useCallback((v) => {
-    console.log('这是最外层的值：', v);
+  const onCalc: (v: OnChangeCallback) => void = useCallback(({ value, formula }) => {
+    console.log('这是最外层的值：', value, formula);
   }, []);
 
   return (
     <FormulaEditor
+      value=''
       field={column}
       dataSource={dataSource}
       onChange={onCalc}

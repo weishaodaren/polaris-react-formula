@@ -4,6 +4,7 @@ import React, {
 import { chunk } from 'lodash-es';
 import { Icon } from 'polaris-react-component';
 import { Modal, Tooltip } from 'antd';
+import 'codemirror/lib/codemirror.css';
 import 'antd/lib/tooltip/style/index';
 import 'antd/lib/modal/style/index';
 
@@ -13,7 +14,7 @@ import type { IActionType } from '../store';
 
 import { store, ActionType } from '../store';
 import { ErrorType } from '../enum';
-import { dataSource, prefixCls } from '../config';
+import { prefixCls } from '../config';
 import {
   evil,
   parseFormula,
@@ -35,6 +36,7 @@ const Editor: FC<FormulaEditorProps> = ({
   style,
   className,
   field,
+  dataSource,
   onChange,
 }): JSX.Element => {
   /**
@@ -90,7 +92,7 @@ const Editor: FC<FormulaEditorProps> = ({
       // 当前激活的字段数组长度
       const activeFieldLength = document.querySelectorAll('.formula-tag').length;
       // 回调给table的数据长度
-      const callbackDataLength = dataSource.length;
+      const callbackDataLength = dataSource?.length;
       // 字段数据
       const fieldsData = parseFieldData(editorValue, dataSource);
       // 单行数据
@@ -112,11 +114,17 @@ const Editor: FC<FormulaEditorProps> = ({
           const validFiled = parseKeyReplaceField(fieldReg, editorValue, chunkFields[i]);
           resultValue[i] = parseFormula(evil(validFiled));
         }
-        onChange?.(resultValue);
+        onChange?.({
+          value: resultValue,
+          formula: editorValue,
+        });
       } else {
         // 存在用户手动输入表达式可能
         const calcResult = parseFormula(evil(editorValue)) as string | string[];
-        onChange?.(calcResult);
+        onChange?.({
+          value: calcResult,
+          formula: editorValue,
+        });
 
         dispatch!({
           type: ActionType.SetErrorText,
