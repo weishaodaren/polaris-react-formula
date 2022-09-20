@@ -11,7 +11,7 @@ import './styles';
 
 export interface FormulaEditorProps {
   value?: string
-  onChange?: (value: string) => void
+  onChange?: (value: string | string[]) => void
   className?: string
   style?: React.CSSProperties
   field: IColumn

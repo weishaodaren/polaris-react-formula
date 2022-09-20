@@ -1,12 +1,15 @@
 import React, {
   createContext, useReducer, useMemo,
 } from 'react';
+
 import type {
   FC, ReactNode, Dispatch,
 } from 'react';
 import type { InitialState } from './initialState';
 import type { IColumn, IDataSource } from '../config';
 import type { Variable } from '../types';
+
+import { ErrorType } from '../enum';
 import { Functions } from '../config';
 import { initialState } from './initialState';
 import ActionType from './actionType';
@@ -135,6 +138,7 @@ export const Store: FC<IStoreProps> = ({ children }) => {
           ...originalState,
           errorText: action.errorText,
           errorCode: action.errorCode,
+          disabled: action.errorCode !== ErrorType.Pass,
         };
       }
 

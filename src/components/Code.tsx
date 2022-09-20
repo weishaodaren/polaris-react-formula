@@ -18,7 +18,7 @@ import {
   parseMarks,
 } from '../utils';
 
-type IProps = Pick<FormulaEditorProps, 'value' | 'onChange'>;
+type IProps = Pick<FormulaEditorProps, 'value'>;
 
 /**
  * Component
@@ -27,7 +27,6 @@ type IProps = Pick<FormulaEditorProps, 'value' | 'onChange'>;
  */
 const Code: FC<IProps> = ({
   value = '',
-  onChange,
 }): JSX.Element => {
   /**
    * Context
@@ -81,7 +80,6 @@ const Code: FC<IProps> = ({
       type: ActionType.SetEditorValue,
       editorValue: _editorValue,
     } as IActionType);
-    onChange?.(_editorValue);
   }, []);
 
   return useMemo(() => (

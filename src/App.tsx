@@ -14,8 +14,8 @@ function App() {
    * @param value 值
    * @return void 0
    */
-  const onCalc: (value: string) => void = useCallback(() => {
-    // console.log('这是最外层的值：', value);
+  const onCalc: (value: string | string[]) => void = useCallback((v) => {
+    console.log('这是最外层的值：', v);
   }, []);
 
   return (
