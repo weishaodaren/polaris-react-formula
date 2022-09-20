@@ -1,4 +1,5 @@
 import React, { useMemo, useContext } from 'react';
+import { Icon } from 'polaris-react-component';
 import type { FC } from 'react';
 import { store } from '../store';
 import { prefixCls, ErrorMap } from '../config';
@@ -27,7 +28,14 @@ const ErrorText: FC = (): JSX.Element => {
   const errorMsg = errorText ? ErrorMap.get(errorCode) + errorText : '';
 
   return useMemo(() => (
-    <p className={`${prefixCls}-error`}>{errorMsg}</p >
+    <p className={`${prefixCls}-error`}>
+      {errorMsg && (
+        <>
+          <Icon type="icontips" />
+          <span>{errorMsg}</span>
+        </>
+      )}
+    </p >
   ), [errorCode]);
 };
 
