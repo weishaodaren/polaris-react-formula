@@ -36,8 +36,8 @@ const Editor: FC<FormulaEditorProps> = ({
   value = '',
   style,
   className,
-  field,
-  dataSource,
+  field = [],
+  dataSource = [],
   onChange,
   onClose,
 }): JSX.Element => {

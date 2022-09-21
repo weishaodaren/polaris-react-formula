@@ -42,7 +42,7 @@ export interface FormulaEditorProps {
   /**
    * 数据
    */
-  dataSource?: IDataSource
+  dataSource: IDataSource
 
   /**
    * 关闭Modal
