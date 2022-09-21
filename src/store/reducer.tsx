@@ -41,13 +41,6 @@ const { Provider } = store;
 export const Store: FC<IStoreProps> = ({ children }) => {
   const [state, dispatch] = useReducer((originalState: InitialState, action: IActionType) => {
     switch (action.type) {
-      case ActionType.SetModalVisible: {
-        return {
-          ...originalState,
-          modalVisible: action.modalVisible,
-        };
-      }
-
       case ActionType.SetCurrentFieldOrFunction: {
         return {
           ...originalState,

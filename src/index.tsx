@@ -14,12 +14,45 @@ import './styles';
 injectWindowApi();
 
 export interface FormulaEditorProps {
+  /**
+   * 控制Modal显示隐藏
+   */
+  visible: boolean
+
+  /**
+   * 公式值
+   */
   value?: string
-  onChange?: ((params: OnChangeCallback) => void)
+
+  /**
+   * 传递类名
+   */
   className?: string
+
+  /**
+   * 传递行内样式 尽量使用className
+   */
   style?: React.CSSProperties
+
+  /**
+   * 字段 列
+   */
   field: IColumn
+
+  /**
+   * 数据
+   */
   dataSource?: IDataSource
+
+  /**
+   * 关闭Modal
+   */
+  onClose: () => void
+
+  /**
+   * 获取计算值 回调
+   */
+  onChange?: ((params: OnChangeCallback) => void)
 }
 
 /**

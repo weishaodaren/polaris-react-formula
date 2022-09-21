@@ -32,12 +32,14 @@ const ErrorText = lazy(() => import('./ErrorText'));
  * @return {JSX.Element}
  */
 const Editor: FC<FormulaEditorProps> = ({
+  visible,
   value = '',
   style,
   className,
   field,
   dataSource,
   onChange,
+  onClose,
 }): JSX.Element => {
   /**
    * Context
@@ -46,7 +48,6 @@ const Editor: FC<FormulaEditorProps> = ({
     state: {
       disabled,
       editorValue,
-      modalVisible,
     },
     dispatch,
   } = useContext(store);
@@ -69,18 +70,6 @@ const Editor: FC<FormulaEditorProps> = ({
       dataSource,
     } as unknown as IActionType);
   }, [field, dataSource]);
-
-  /**
-   * Callback
-   * @description 取消Modal操作
-   */
-  const cancelModal = useCallback(
-    () => dispatch!({
-      type: ActionType.SetModalVisible,
-      modalVisible: false,
-    } as IActionType),
-    [],
-  );
 
   /**
    * Callback
@@ -118,7 +107,14 @@ const Editor: FC<FormulaEditorProps> = ({
           value: resultValue,
           formula: editorValue,
         });
+        onClose();
       } else {
+        dispatch!({
+          type: ActionType.SetErrorText,
+          errorCode: ErrorType.Pass,
+          errorText: '',
+        } as IActionType);
+
         // 存在用户手动输入表达式可能
         const calcResult = parseFormula(evil(editorValue)) as string | string[];
         onChange?.({
@@ -126,11 +122,7 @@ const Editor: FC<FormulaEditorProps> = ({
           formula: editorValue,
         });
 
-        dispatch!({
-          type: ActionType.SetErrorText,
-          errorCode: ErrorType.Pass,
-          errorText: '',
-        } as IActionType);
+        onClose();
       }
     } catch ({ message }) {
       dispatch!({
@@ -144,13 +136,13 @@ const Editor: FC<FormulaEditorProps> = ({
 
   return useMemo(() => (
     <Modal
-      open={modalVisible}
+      open={visible}
       closable={false}
       maskClosable={false}
       okText="确认"
       cancelText='取消'
       okButtonProps={{ disabled }}
-      onCancel={cancelModal}
+      onCancel={onClose}
       onOk={confirmModal}
     >
       <Suspense fallback={'加载中...'}>
@@ -168,7 +160,7 @@ const Editor: FC<FormulaEditorProps> = ({
         </div>
       </Suspense>
     </Modal>
-  ), [modalVisible, disabled, editorValue, dataSource]);
+  ), [visible, disabled, editorValue, dataSource]);
 };
 
 export default memo(Editor);
