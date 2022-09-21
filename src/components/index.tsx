@@ -2,7 +2,6 @@ import React, {
   useCallback, useMemo, memo, useContext, Suspense, lazy, useEffect,
 } from 'react';
 import { chunk } from 'lodash-es';
-import { Icon } from 'polaris-react-component';
 import { Modal, Tooltip } from 'antd';
 import 'codemirror/lib/codemirror.css';
 import 'antd/lib/tooltip/style/index';
@@ -12,6 +11,7 @@ import type { FC } from 'react';
 import type { FormulaEditorProps } from '../index';
 import type { IActionType } from '../store';
 
+import Icon from './Icon';
 import { store, ActionType } from '../store';
 import { ErrorType } from '../enum';
 import { prefixCls } from '../config';

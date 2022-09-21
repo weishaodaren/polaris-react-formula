@@ -15,7 +15,7 @@ export default defineConfig({
       fileName: 'index',
     },
     rollupOptions: {
-      external: ['react', 'react-dom', 'antd', 'polaris-react-component'],
+      external: ['react', 'react-dom', 'antd', '@ant-design/icons'],
       output: {
         globals: {
           react: 'React',

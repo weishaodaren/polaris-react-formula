@@ -1,6 +1,7 @@
 lockfileVersion: 5.4
 
 specifiers:
+  '@ant-design/icons': ^4.7.0
   '@formulajs/formulajs': ^3.1.7
   '@types/codemirror': ^5.60.0
   '@types/lodash-es': ^4.17.6
@@ -37,6 +38,7 @@ dependencies:
   react-codemirror2: 7.2.1_eiehkizmzu7r6pwmpnc34ijk3e
 
 devDependencies:
+  '@ant-design/icons': 4.7.0_biqbaboplfbrettd7655fr4n2y
   '@types/codemirror': 5.60.5
   '@types/lodash-es': 4.17.6
   '@types/node': 18.7.17
