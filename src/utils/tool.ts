@@ -3,6 +3,7 @@ import * as formulajs from '@formulajs/formulajs';
 import type { Position, Editor as CodemirrorEditor } from 'codemirror';
 import type { Variable, FunctionGroup } from '../types';
 import { ErrorType } from '../enum';
+import { parseFieldData, parseKeyReplaceField, parseFormula } from './parse';
 
 /**
  * Function
@@ -81,8 +82,20 @@ export const evil = (expression: string) => {
   try {
     _expression = Function(`"use strict";return (${expression})`)();
   } catch ({ message }) {
+    // TODO: 拦截message 查看错误变量，替换字符串，暂时在`parseKeyReplaceField`解决
+    // if (typeof message === 'string') {
+    //   const errorIndex = message.indexOf(' is not defined');
+    //   const errorVariable = message.slice(0, errorIndex);
+    //   console.log(errorVariable, 'expression');
+
+    //   const expressionIndex = expression.indexOf(errorVariable);
+    //   console.log(expressionIndex, 'expressionIndex');
+
+      // _expression = Function(`"use strict";return (${expression})`)();
+    console.error(`欸嘿 又给我整活${message} !`);
     _expression = Function(`"use strict";return (${JSON.stringify(expression)})`)();
   }
+
   return _expression;
 };
 
@@ -184,4 +197,37 @@ export const fuzzySearchFunctions = (functionArray: FunctionGroup[], inputValue:
       }
     }
   return _functions;
+};
+
+/**
+ * Function
+ * @description 使用公式计算
+ * @param value 单元格公式值
+ * @param dataSourceItem 单元格数据
+ * @return string
+ */
+export const useFormula = (
+  value: string,
+  dataSourceItem: {},
+): string | string[] | undefined => {
+  try {
+    // 字段数据
+    const fieldsData = parseFieldData(value, dataSourceItem);
+
+    // 存在用户手动输入的可能
+    if (fieldsData === null) return parseFormula(evil(value)) as string;
+    // 匹配不到 抛出
+    if (!fieldsData?.length) return undefined;
+
+    // 替换 {} 内的值
+    const fieldReg = value.match(/\{.*?\}/g);
+    // 不存在可替换字段 可能存在用户手输的情况
+    if (!fieldReg) return undefined;
+
+    // 替换成有效字段
+    const validFiled = parseKeyReplaceField(fieldReg, value, fieldsData);
+    return parseFormula(evil(validFiled)) as string;
+    } catch ({ message }) {
+      throw message;
+    }
 };

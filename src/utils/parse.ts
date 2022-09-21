@@ -32,7 +32,9 @@ export const parseKeyReplaceField = (
    * 替换变量字段
    */
   for (let i = 0; i < fields.length; i += 1) {
-    _originalField = _originalField.replace(fields[i], `${replacedFields[i]}`);
+    // TODO: 暂时使用此方法减少变量产生
+    // _originalField = _originalField.replace(fields[i], `${replacedFields[i]}`);
+    _originalField = _originalField.replace(fields[i], JSON.stringify(replacedFields[i]));
   }
 
   return _originalField;
@@ -86,22 +88,37 @@ export const parseField = (rawFields: IColumn, dataSource: IDataSource): Variabl
  */
 export const parseFieldData = (key: string, sourceData: IDataSource | any) => {
   const fieldKey = parseKey(key);
+
   // 不满足匹配条件直接抛出
   if (!fieldKey || !Array.isArray(fieldKey)) return null;
 
-  const data = [];
-  for (let i = 0; i < sourceData.length; i += 1) {
-    for (let j = 0; j < fieldKey.length; j += 1) {
-      // 如果有当前字段，直接推入数组
-      if (fieldKey[j] in sourceData[i]) {
-        data.push(sourceData[i][fieldKey[j]]);
-      } else {
-        // 可能出现源数据无数据导致 没有当前字段的问题
-        data.push(undefined);
+  const data: any[] = [];
+  // 数组 sourceData
+  if (Array.isArray(sourceData)) {
+    for (let i = 0; i < sourceData.length; i += 1) {
+      for (let j = 0; j < fieldKey.length; j += 1) {
+        // 如果有当前字段，直接推入数组
+        if (fieldKey[j] in sourceData[i]) {
+          data.push(sourceData[i][fieldKey[j]]);
+        } else {
+          // 可能出现源数据无数据导致 没有当前字段的问题
+          data.push(undefined);
+        }
       }
     }
+    return filterFieldData(data);
   }
-  return filterFieldData(data);
+
+    // 对象 sourceData
+  Object.entries(sourceData).forEach(([_key, value]) => {
+    for (let j = 0; j < fieldKey.length; j += 1) {
+        if (fieldKey[j] === _key) {
+          data.push(value);
+        }
+      }
+    });
+
+    return filterFieldData(data);
 };
 
 /**

@@ -11,6 +11,8 @@ import Editor from './components';
 
 import './styles';
 
+export * from './utils';
+
 injectWindowApi();
 
 export interface FormulaEditorProps {
