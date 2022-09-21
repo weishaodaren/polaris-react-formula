@@ -1,6 +1,6 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { OnChangeCallback } from './types';
-import FormulaEditor, { useFormula } from '.';
+import FormulaEditor from '.';
 import { column, dataSource } from './config';
 
 function App() {
@@ -16,7 +16,7 @@ function App() {
 
   // TODO: 调试数据
   // useEffect(() => {
-  //   const value = 'SUM({code}, {title})';
+  //   const value = 'SUM(1, 2, SUM(2, 5))';
   //   const A = useFormula(value, dataSource[0]);
   //   console.log(A);
   // }, []);
