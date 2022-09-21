@@ -5,9 +5,7 @@ import { resolve } from 'path';
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
-    react({
-      jsxRuntime: 'classic',
-    }),
+    react(),
   ],
   build: {
     target: 'chrome63',

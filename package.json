@@ -2,7 +2,7 @@
   "name": "polaris-react-formula",
   "private": false,
   "auther": "weishaodaren@gmail.com",
-  "version": "1.2.6",
+  "version": "1.2.82",
   "type": "module",
   "license": "MIT",
   "main": "./dist/index.js",
@@ -37,10 +37,11 @@
   },
   "dependencies": {
     "@formulajs/formulajs": "^3.1.7",
+    "antd": "^4.23.0",
     "codemirror": "^5.6.1",
     "lodash-es": "^4.17.21",
-    "polaris-react-component": "^0.0.98",
-    "react-codemirror2": "^7.2.1"
+    "react-codemirror2": "^7.2.1",
+    "polaris-react-component": "^0.0.98"
   },
   "devDependencies": {
     "@types/codemirror": "^5.60.0",
@@ -51,7 +52,6 @@
     "@typescript-eslint/eslint-plugin": "^5.36.2",
     "@typescript-eslint/parser": "^5.36.2",
     "@vitejs/plugin-react": "^2.1.0",
-    "antd": "^4.23.0",
     "eslint": "^8.23.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-config-airbnb-typescript": "^17.0.0",
