@@ -2,13 +2,13 @@
 import React, {
   Fragment, useContext, useCallback, useMemo,
 } from 'react';
+import { Icon } from 'polaris-react-component';
 
 import type { FC, MouseEvent } from 'react';
 import type { FunctionItem, Variable, FunctionGroup } from '../types';
 import type { IActionType } from '../store';
 import type { CustomFieldIconType } from '../config';
 
-import Icon from './Icon';
 import { store, ActionType } from '../store';
 import { prefixCls, CustomFieldIcon } from '../config';
 

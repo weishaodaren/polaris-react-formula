@@ -4,9 +4,11 @@ import { resolve } from 'path';
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react({
+  plugins: [
+    react({
       jsxRuntime: 'classic',
-    })],
+    }),
+  ],
   build: {
     target: 'chrome63',
     lib: {
@@ -15,7 +17,7 @@ export default defineConfig({
       fileName: 'index',
     },
     rollupOptions: {
-      external: ['react', 'react-dom', 'antd', '@ant-design/icons'],
+      external: ['react', 'react-dom', 'antd', 'polaris-react-component'],
       output: {
         globals: {
           react: 'React',
