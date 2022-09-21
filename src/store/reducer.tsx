@@ -118,7 +118,6 @@ export const Store: FC<IStoreProps> = ({ children }) => {
           };
         }
 
-        console.log('fuzzysearch =====>', 'editorValue:', editorValue, 'originalEditorValue:', originalEditorValue);
         // 无条件 模糊查询
         return {
           ...originalState,
