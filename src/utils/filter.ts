@@ -21,8 +21,9 @@ export const filterFieldData = (fieldData: any[]): any[] => {
 
 /**
  * Function
- * @description 过来加减乘除符号
+ * @description 过滤加减乘除符号
  * @param input 输入值
+ * @return string
  */
 export const filterMarks = (input: string) => input
   .replace(/[\\+\-\\*/]/g, '')

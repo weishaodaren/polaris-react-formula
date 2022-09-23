@@ -1,9 +1,13 @@
 import React, {
-  createContext, useReducer, useMemo,
+  createContext,
+  useReducer,
+  useMemo,
 } from 'react';
 
 import type {
-  FC, ReactNode, Dispatch,
+  FC,
+  ReactNode,
+  Dispatch,
 } from 'react';
 import type { InitialState } from './initialState';
 import type { IColumn } from '../config';
@@ -19,6 +23,8 @@ import {
   fuzzySearchField,
   fuzzySearchFunctions,
   filterMarks,
+  blockReg,
+  isValidField,
 } from '../utils';
 
 interface IStoreProps {
@@ -67,7 +73,6 @@ export const Store: FC<IStoreProps> = ({ children }) => {
           originalFields: fields,
           editorValue: originalEditorValue,
           fieldValues,
-          FunctionNames,
         } = originalState;
 
         // 获取错误信息
@@ -93,7 +98,7 @@ export const Store: FC<IStoreProps> = ({ children }) => {
         /**
          * 匹配 逗号 空格，之后的输入值，继续模糊查询
          */
-        const reg = /[\\ \\,\\，]/g;
+        const reg = blockReg;
         if (reg.test(editorValue)) {
           const result = [...editorValue.matchAll(reg)];
           // 匹配搜索结果，对应字段 模糊查询
@@ -134,13 +139,16 @@ export const Store: FC<IStoreProps> = ({ children }) => {
         const isValidFields = _fields.length;
         const isValidFunctions = _functions.length;
 
-        // console.log(FunctionNames, 'FunctionNames');
+        // 是否是有效字段
+        const isValidFieldValue = isValidField(editorValue, fieldValues);
 
         // 过滤加减乘除括号后的值
         const filterValue = filterMarks(editorValue);
+        // 默认输入数字不提示错误
+        const isValidFilterValue = Number.isNaN(+filterValue);
 
         // 搜索不到有效内容，禁用按钮，给出提示
-        if (!isValidFields && !isValidFunctions && Number.isNaN(+filterValue)) {
+        if (!isValidFields && !isValidFunctions && isValidFilterValue && !isValidFieldValue) {
          return {
           ...originalState,
           editorValue,

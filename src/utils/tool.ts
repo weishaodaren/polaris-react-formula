@@ -7,8 +7,12 @@ import { parseFieldData, parseKeyReplaceField, parseFormula } from './parse';
 
 // 匹配加减乘除
 export const calcWayReg = /(?:[+]|[-]|[*]|[/]|[(]|[)]){1}$/g;
-// 匹配圆括号
+// 匹配小括号
 export const braketReg = /\((.+?)\)/g;
+// 匹配大括号
+export const braceReg = /\{.*?\}/g;
+// 匹配空格 逗号
+export const blockReg = /[\\ \\,\\，]/g;
 
 /**
  * Function
@@ -251,7 +255,7 @@ export const useFormula = (
     if (!fieldsData?.length) return undefined;
 
     // 替换 {} 内的值
-    const fieldReg = value.match(/\{.*?\}/g);
+    const fieldReg = value.match(braceReg);
     // 不存在可替换字段 可能存在用户手输的情况
     if (!fieldReg) return undefined;
 
@@ -261,4 +265,29 @@ export const useFormula = (
   } catch ({ message }) {
     throw message;
   }
+};
+
+/**
+ * Function
+ * @description 是否是有效字段
+ * @param input 输入值
+ * @param fields 字段组
+ * @return boolean
+ */
+export const isValidField = (input: string, fields: string[]): boolean => {
+  const matchValue = input.match(braceReg);
+  if (matchValue) {
+    /**
+     * 匹配到数据
+     * 存在有效字段+1,与最终长度比对
+     */
+    let validFiledNums = 0;
+    for (let j = 0; j < matchValue.length; j += 1) {
+      if (fields.includes(matchValue[j])) {
+        validFiledNums += 1;
+      }
+    }
+    return validFiledNums === matchValue.length;
+  }
+  return false;
 };
