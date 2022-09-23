@@ -4,6 +4,7 @@ import { column } from './config';
 
 function App() {
   const [visible, setVisible] = useState(true);
+  const value = 'SUM({title})';
 
   const onCalc: (v: string) => void = useCallback((formula) => {
     console.log('这是最外层的值：', formula);
@@ -23,7 +24,7 @@ function App() {
   return (
     <FormulaEditor
       visible={visible}
-      value=''
+      value={value}
       field={column}
       onChange={onCalc}
       onClose={onClose}

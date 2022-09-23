@@ -49,14 +49,12 @@ const Code: FC<IProps> = ({
     editorConfig: CodemirrorEditor,
     editorValueParam: string,
   ) => {
+    initDocTag(editorConfig, editorValueParam, fields as Variable[]);
+
     dispatch!({
       type: ActionType.SetEditor,
       editor: editorConfig,
     } as IActionType);
-
-    if (!editorValueParam) {
-      initDocTag(editorConfig, editorValueParam, fields as Variable[]);
-    }
   }, []);
 
   /**
