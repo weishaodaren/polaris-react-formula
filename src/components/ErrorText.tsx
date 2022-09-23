@@ -36,7 +36,7 @@ const ErrorText: FC = (): JSX.Element => {
         </>
       )}
     </p >
-  ), [errorCode]);
+  ), [errorMsg]);
 };
 
 export default ErrorText;

@@ -1,6 +1,9 @@
 /* eslint-disable no-extra-parens */
 import React, {
-  Fragment, useContext, useCallback, useMemo,
+  Fragment,
+  useContext,
+  useCallback,
+  useMemo,
 } from 'react';
 import { Icon } from 'polaris-react-component';
 

@@ -121,12 +121,30 @@ export const Store: FC<IStoreProps> = ({ children }) => {
           };
         }
 
+        const _fields = fuzzySearchField(fields as Variable[], editorValue);
+        const _functions = fuzzySearchFunctions(Functions, editorValue);
+        const isValidFields = _fields.length;
+        const isValidFunctions = _functions.length;
+
+        // 搜索不到有效内容，禁用按钮，给出提示
+        if (!isValidFields && !isValidFunctions) {
+         return {
+          ...originalState,
+          editorValue,
+          fields: _fields,
+          functions: _functions,
+          errorText: editorValue,
+          errorCode: ErrorType.Invalid,
+          disabled: true,
+        };
+        }
+
         // 无条件 模糊查询
         return {
           ...originalState,
           editorValue,
-          fields: fuzzySearchField(fields as Variable[], editorValue),
-          functions: fuzzySearchFunctions(Functions, editorValue),
+          fields: _fields,
+          functions: _functions,
           errorText,
           errorCode,
           disabled: Number(errorCode) > -1,
