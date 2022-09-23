@@ -14,7 +14,10 @@ import { Functions } from '../config';
 import { initialState } from './initialState';
 import ActionType from './actionType';
 import {
-  parseField, getFormulaError, fuzzySearchField, fuzzySearchFunctions,
+  parseField,
+  getFormulaError,
+  fuzzySearchField,
+  fuzzySearchFunctions,
 } from '../utils';
 
 interface IStoreProps {

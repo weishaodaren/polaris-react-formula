@@ -91,8 +91,7 @@ export const evil = (expression: string) => {
     //   const expressionIndex = expression.indexOf(errorVariable);
     //   console.log(expressionIndex, 'expressionIndex');
 
-      // _expression = Function(`"use strict";return (${expression})`)();
-    console.error(`欸嘿 又给我整活${message} !`);
+    // _expression = Function(`"use strict";return (${expression})`)();
     _expression = Function(`"use strict";return (${JSON.stringify(expression)})`)();
   }
 
@@ -115,11 +114,38 @@ export const injectWindowApi = () => {
 
 /**
  * Function
+ * @description 公式括号是否对称
+ * @param input 输入值
+ * @return boolean
+ */
+export const isBracketError = (input: string): boolean => {
+  const bracket = [];
+  for (let i = 0, j = ''; i < input.length; i += 1) {
+    j = input.charAt(i);
+    if (j === '(') {
+      bracket.push('(');
+    } else if (j === ')') {
+      if (bracket.length) {
+        bracket.pop();
+      } else {
+        return false;
+      }
+    }
+  }
+
+  return !!bracket.length;
+};
+
+/**
+ * Function
  * @description 获取公式计算异常 抛出错误提示
  * @param input 输入值
  * @return [number, string]
  */
 export const getFormulaError = (input: string) => {
+  if (isBracketError(input)) {
+    return [ErrorType.Error, '( ) 不对称'];
+  }
   if (/^[\x\\÷\\+\-\\*\\/]/.test(input)) {
     return [ErrorType.Error, '开头错误'];
   }
@@ -170,32 +196,32 @@ export const fuzzySearchField = (fields: Variable[], inputValue: string) => {
  * @return array
  */
 export const fuzzySearchFunctions = (functionArray: FunctionGroup[], inputValue: string) => {
-    const _functions = [];
-    for (let i = 0; i < functionArray.length; i += 1) {
-      const { functions } = functionArray[i];
-      for (let k = 0; k < functions.length; k += 1) {
-        // 函数需改为大写 匹配字段
-        if (functions[k].name.indexOf(inputValue.toUpperCase()) !== -1) {
-          const { name } = functionArray[i];
-          // 优先判断是否存在
-          const alreadyName = _functions.findIndex((item: { name: string; }) => {
-            if ('name' in item) {
-              return item.name === name;
-            }
-            return false;
-          });
-
-          if (alreadyName !== -1) {
-            _functions[alreadyName].functions.push(functions[k]);
-          } else {
-            _functions.push({
-              name,
-              functions: [functions[k]],
-            });
+  const _functions = [];
+  for (let i = 0; i < functionArray.length; i += 1) {
+    const { functions } = functionArray[i];
+    for (let k = 0; k < functions.length; k += 1) {
+      // 函数需改为大写 匹配字段
+      if (functions[k].name.indexOf(inputValue.toUpperCase()) !== -1) {
+        const { name } = functionArray[i];
+        // 优先判断是否存在
+        const alreadyName = _functions.findIndex((item: { name: string; }) => {
+          if ('name' in item) {
+            return item.name === name;
           }
+          return false;
+        });
+
+        if (alreadyName !== -1) {
+          _functions[alreadyName].functions.push(functions[k]);
+        } else {
+          _functions.push({
+            name,
+            functions: [functions[k]],
+          });
         }
       }
     }
+  }
   return _functions;
 };
 
@@ -227,7 +253,7 @@ export const useFormula = (
     // 替换成有效字段
     const validFiled = parseKeyReplaceField(fieldReg, value, fieldsData);
     return parseFormula(evil(validFiled)) as string;
-    } catch ({ message }) {
-      throw message;
-    }
+  } catch ({ message }) {
+    throw message;
+  }
 };

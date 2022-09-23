@@ -55,7 +55,7 @@ const Code: FC<IProps> = ({
       type: ActionType.SetEditor,
       editor: editorConfig,
     } as IActionType);
-  }, []);
+  }, [value]);
 
   /**
    * Callback
