@@ -6,7 +6,7 @@ import type {
   FC, ReactNode, Dispatch,
 } from 'react';
 import type { InitialState } from './initialState';
-import type { IColumn, IDataSource } from '../config';
+import type { IColumn } from '../config';
 import type { Variable } from '../types';
 
 import { ErrorType } from '../enum';
@@ -140,10 +140,10 @@ export const Store: FC<IStoreProps> = ({ children }) => {
       }
 
       case ActionType.SetFields: {
-        const { fields, dataSource } = action;
+        const { fields } = action;
         const _fields = !fields?.length
           ? []
-          : parseField(fields as IColumn, dataSource as IDataSource);
+          : parseField(fields as IColumn);
 
         return {
           ...originalState,

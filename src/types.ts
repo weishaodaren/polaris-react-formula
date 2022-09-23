@@ -17,8 +17,3 @@ export interface FunctionGroup {
   name: string;
   functions: FunctionItem[];
 }
-
-export type OnChangeCallback = {
-  value: string | string[]
-  formula: string
-};

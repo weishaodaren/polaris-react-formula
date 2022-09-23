@@ -1,7 +1,6 @@
 import React, {
   useCallback, useMemo, memo, useContext, Suspense, lazy, useEffect,
 } from 'react';
-import { chunk } from 'lodash-es';
 import { Modal, Tooltip } from 'antd';
 import { Icon } from 'polaris-react-component';
 import 'codemirror/lib/codemirror.css';
@@ -15,12 +14,6 @@ import type { IActionType } from '../store';
 import { store, ActionType } from '../store';
 import { ErrorType } from '../enum';
 import { prefixCls } from '../config';
-import {
-  evil,
-  parseFormula,
-  parseFieldData,
-  parseKeyReplaceField,
-} from '../utils';
 
 const Code = lazy(() => import('./Code'));
 const Content = lazy(() => import('./Content'));
@@ -37,7 +30,6 @@ const Editor: FC<FormulaEditorProps> = ({
   style,
   className,
   field = [],
-  dataSource = [],
   onChange,
   onClose,
 }): JSX.Element => {
@@ -67,9 +59,8 @@ const Editor: FC<FormulaEditorProps> = ({
     dispatch!({
       type: ActionType.SetFields,
       fields: field,
-      dataSource,
     } as unknown as IActionType);
-  }, [field, dataSource]);
+  }, [field]);
 
   /**
    * Callback
@@ -78,52 +69,13 @@ const Editor: FC<FormulaEditorProps> = ({
    */
   const confirmModal = useCallback(() => {
     try {
-      // 当前激活的字段数组长度
-      const activeFieldLength = document.querySelectorAll('.formula-tag').length;
-      // 回调给table的数据长度
-      const callbackDataLength = dataSource?.length;
-      // 字段数据
-      const fieldsData = parseFieldData(editorValue, dataSource);
-      // 单行数据
-      const chunkFields = chunk(fieldsData, activeFieldLength);
-
-      // 存在有效字段
-      if (chunkFields.length) {
-        /**
-         * 创建极星表格sourceData长度的数组
-         * 对应计算公式字段操作
-         * 回调给控制方
-         */
-        const resultValue = new Array(callbackDataLength);
-        for (let i = 0; i < chunkFields.length; i += 1) {
-          const fieldReg = editorValue.match(/\{.*?\}/g);
-          // 不存在可替换字段 直接抛出
-          if (!fieldReg) return;
-          // 替换成有效字段
-          const validFiled = parseKeyReplaceField(fieldReg, editorValue, chunkFields[i]);
-          resultValue[i] = parseFormula(evil(validFiled));
-        }
-        onChange?.({
-          value: resultValue,
-          formula: editorValue,
-        });
-        onClose();
-      } else {
+        onChange?.(editorValue);
+        onClose?.();
         dispatch!({
           type: ActionType.SetErrorText,
           errorCode: ErrorType.Pass,
           errorText: '',
         } as IActionType);
-
-        // 存在用户手动输入表达式可能
-        const calcResult = parseFormula(evil(editorValue)) as string | string[];
-        onChange?.({
-          value: calcResult,
-          formula: editorValue,
-        });
-
-        onClose();
-      }
     } catch ({ message }) {
       dispatch!({
         type: ActionType.SetErrorText,
@@ -132,7 +84,7 @@ const Editor: FC<FormulaEditorProps> = ({
       } as IActionType);
       throw message;
     }
-  }, [editorValue, dataSource]);
+  }, [editorValue]);
 
   return useMemo(() => (
     <Modal
@@ -160,7 +112,7 @@ const Editor: FC<FormulaEditorProps> = ({
         </div>
       </Suspense>
     </Modal>
-  ), [visible, disabled, editorValue, dataSource]);
+  ), [visible, disabled, editorValue]);
 };
 
 export default memo(Editor);

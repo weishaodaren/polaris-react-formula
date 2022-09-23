@@ -39,9 +39,8 @@
     "@formulajs/formulajs": "^3.1.7",
     "antd": "^4.23.0",
     "codemirror": "^5.6.1",
-    "lodash-es": "^4.17.21",
-    "react-codemirror2": "^7.2.1",
-    "polaris-react-component": "^0.0.98"
+    "polaris-react-component": "^0.0.98",
+    "react-codemirror2": "^7.2.1"
   },
   "devDependencies": {
     "@types/codemirror": "^5.60.0",

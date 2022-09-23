@@ -1,13 +1,12 @@
 import React, { useCallback, useState } from 'react';
-import { OnChangeCallback } from './types';
 import FormulaEditor from '.';
-import { column, dataSource } from './config';
+import { column } from './config';
 
 function App() {
   const [visible, setVisible] = useState(true);
 
-  const onCalc: (v: OnChangeCallback) => void = useCallback(({ value, formula }) => {
-    console.log('这是最外层的值：', value, formula);
+  const onCalc: (v: string) => void = useCallback((formula) => {
+    console.log('这是最外层的值：', formula);
   }, []);
 
   const onClose = useCallback(() => {
@@ -26,7 +25,6 @@ function App() {
       visible={visible}
       value=''
       field={column}
-      dataSource={dataSource}
       onChange={onCalc}
       onClose={onClose}
     />

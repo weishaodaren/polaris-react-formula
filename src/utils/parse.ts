@@ -44,10 +44,9 @@ export const parseKeyReplaceField = (
  * Function
  * @description 解析字段
  * @param rawFields 原始字段组(极星表格直传)
- * @param dataSource 原始数据(极星表格直传)
  * @return array
  */
-export const parseField = (rawFields: IColumn, dataSource: IDataSource): Variable[] => {
+export const parseField = (rawFields: IColumn): Variable[] => {
   // 格式化字段组
   const formatFields = rawFields
     .map(({
@@ -55,7 +54,7 @@ export const parseField = (rawFields: IColumn, dataSource: IDataSource): Variabl
       label,
       field: { type },
     }) => ({
-      label, value, type, _value: [] as any,
+      label, value, type,
     }))
     // 附件 前后置 工时 多选 分组单选 编号 暂不考虑
     .filter(({ type, value }) => ![
@@ -66,15 +65,6 @@ export const parseField = (rawFields: IColumn, dataSource: IDataSource): Variabl
       Fields.GroupSelect,
     ].includes(type as IFields['Annex'])
       && value !== FieldName.Code);
-
-  // 数据字段结合
-  for (let i = 0; i < formatFields.length; i += 1) {
-    for (let j = 0; j < dataSource.length; j += 1) {
-      const { value } = formatFields[i];
-      // eslint-disable-next-line no-extra-parens
-      formatFields[i]._value.push(((dataSource[j] as any)[value]));
-    }
-  }
 
   return formatFields;
 };

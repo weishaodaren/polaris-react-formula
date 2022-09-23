@@ -2,8 +2,7 @@ import React, { memo } from 'react';
 import 'codemirror/mode/spreadsheet/spreadsheet.js';
 
 import type { FC } from 'react';
-import type { IColumn, IDataSource } from './config';
-import type { OnChangeCallback } from './types';
+import type { IColumn } from './config';
 
 import { injectWindowApi } from './utils';
 import { Store } from './store';
@@ -42,11 +41,6 @@ export interface FormulaEditorProps {
   field: IColumn
 
   /**
-   * 数据
-   */
-  dataSource: IDataSource
-
-  /**
    * 关闭Modal
    */
   onClose: () => void
@@ -54,7 +48,7 @@ export interface FormulaEditorProps {
   /**
    * 获取计算值 回调
    */
-  onChange?: ((params: OnChangeCallback) => void)
+  onChange?: ((formula: string) => void)
 }
 
 /**
