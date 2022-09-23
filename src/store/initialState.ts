@@ -1,8 +1,15 @@
 import type { Editor } from 'codemirror';
-import { Functions } from '../config';
 import type { IColumn } from '../config';
 import type { FunctionItem, Variable, FunctionGroup } from '../types';
 import type { IErrorType } from '../enum';
+import { Functions } from '../config';
+
+const FunctionNames = [];
+for (let i = 0; i < Functions.length; i += 1) {
+  for (let j = 0; j < Functions[i].functions.length; j += 1) {
+    FunctionNames.push(Functions[i].functions[j].name);
+  }
+}
 
 /**
  * 默认值
@@ -57,6 +64,16 @@ export const initialState = {
    * 是否从选择面板选中
    */
   isSelected: false,
+
+  /**
+   * 字段值 [{code}..]
+   */
+  fieldValues: [] as string[],
+
+  /**
+   * 函数值
+   */
+  FunctionNames,
 };
 
 export type InitialState = typeof initialState;

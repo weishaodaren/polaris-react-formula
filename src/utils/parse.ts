@@ -99,16 +99,16 @@ export const parseFieldData = (key: string, sourceData: IDataSource | any) => {
     return filterFieldData(data);
   }
 
-    // 对象 sourceData
+  // 对象 sourceData
   Object.entries(sourceData).forEach(([_key, value]) => {
     for (let j = 0; j < fieldKey.length; j += 1) {
-        if (fieldKey[j] === _key) {
-          data.push(value);
-        }
+      if (fieldKey[j] === _key) {
+        data.push(value);
       }
-    });
+    }
+  });
 
-    return filterFieldData(data);
+  return filterFieldData(data);
 };
 
 /**

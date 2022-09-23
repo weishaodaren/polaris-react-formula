@@ -5,6 +5,11 @@ import type { Variable, FunctionGroup } from '../types';
 import { ErrorType } from '../enum';
 import { parseFieldData, parseKeyReplaceField, parseFormula } from './parse';
 
+// 匹配加减乘除
+export const calcWayReg = /(?:[+]|[-]|[*]|[/]|[(]|[)]){1}$/g;
+// 匹配圆括号
+export const braketReg = /\((.+?)\)/g;
+
 /**
  * Function
  * @description 替换变量

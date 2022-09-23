@@ -76,7 +76,7 @@ const Code: FC<IProps> = ({
     initDocTag(editorConfig, _editorValue, fields as Variable[]);
     dispatch!({
       type: ActionType.SetEditorValue,
-      editorValue: _editorValue,
+      editorValue: _editorValue.trim(),
     } as IActionType);
   }, []);
 

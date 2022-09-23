@@ -18,6 +18,7 @@ import {
   getFormulaError,
   fuzzySearchField,
   fuzzySearchFunctions,
+  filterMarks,
 } from '../utils';
 
 interface IStoreProps {
@@ -62,7 +63,13 @@ export const Store: FC<IStoreProps> = ({ children }) => {
         // 输入值
         const { editorValue, isSelected } = action;
         // 原始字段
-        const { originalFields: fields, editorValue: originalEditorValue } = originalState;
+        const {
+          originalFields: fields,
+          editorValue: originalEditorValue,
+          fieldValues,
+          FunctionNames,
+        } = originalState;
+
         // 获取错误信息
         const [errorCode, errorText] = getFormulaError(editorValue) as string[];
 
@@ -92,10 +99,10 @@ export const Store: FC<IStoreProps> = ({ children }) => {
           // 匹配搜索结果，对应字段 模糊查询
           if (result) {
             // 默认找最后一位
-            const lastResult = result.at(-1);
+            const lastResult = result[result.length - 1];
             if (lastResult) {
               const { index } = lastResult;
-              const _editorValue = editorValue.slice(Number(index) + 1);
+              const _editorValue = editorValue.slice(Number(index) + 1, editorValue.length - 1);
 
               return {
                 ...originalState,
@@ -121,13 +128,19 @@ export const Store: FC<IStoreProps> = ({ children }) => {
           };
         }
 
+        // 查询后的值
         const _fields = fuzzySearchField(fields as Variable[], editorValue);
         const _functions = fuzzySearchFunctions(Functions, editorValue);
         const isValidFields = _fields.length;
         const isValidFunctions = _functions.length;
 
+        // console.log(FunctionNames, 'FunctionNames');
+
+        // 过滤加减乘除括号后的值
+        const filterValue = filterMarks(editorValue);
+
         // 搜索不到有效内容，禁用按钮，给出提示
-        if (!isValidFields && !isValidFunctions) {
+        if (!isValidFields && !isValidFunctions && Number.isNaN(+filterValue)) {
          return {
           ...originalState,
           editorValue,
@@ -170,6 +183,7 @@ export const Store: FC<IStoreProps> = ({ children }) => {
           ...originalState,
           fields: _fields,
           originalFields: _fields.slice(0),
+          fieldValues: _fields.map(({ value }) => `{${value}}`),
         };
       }
 

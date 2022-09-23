@@ -1,10 +1,8 @@
-import { Fields } from '../enum';
-import type { IColumn } from '../config/mock.column';
-
 /**
  * Function
  * @description 过滤字段数据
  * @param fieldData 字段数据
+ * @return []
  */
 export const filterFieldData = (fieldData: any[]): any[] => {
   if (!Array.isArray(fieldData) || !fieldData.length) return [];
@@ -14,7 +12,7 @@ export const filterFieldData = (fieldData: any[]): any[] => {
     // 存在数组的情况(成员) 取名称
     if (Array.isArray(fieldData[i]) && fieldData[i].length) {
       // 考虑存在多成员的情况
-      const memberName = fieldData[i].map(({ name }: { [x:string]: string }) => name).filter(Boolean).join(',');
+      const memberName = fieldData[i].map(({ name }: { [x: string]: string }) => name).filter(Boolean).join(',');
       fieldData[i] = memberName;
     }
   }
@@ -22,30 +20,11 @@ export const filterFieldData = (fieldData: any[]): any[] => {
 };
 
 /**
- * TODO: 暂时不处理
  * Function
- * @description 过滤成员字段
- * @param fieldObject 单个数据
+ * @description 过来加减乘除符号
+ * @param input 输入值
  */
-export const filterMember: (fieldObject: any) => void = () => {};
-
-/**
- * TODO: 暂时不处理
- * Function
- * @description 过滤字段
- * @param fields 原始数据
- * @return array
- */
-export const filterFields = (fields: IColumn): IColumn => fields.map((field) => {
-    const { field: { type } } = field;
-    switch (type) {
-      case Fields.Member: {
-        filterMember(field);
-        break;
-      }
-      default: {
-        break;
-      }
-    }
-  return field;
-  });
+export const filterMarks = (input: string) => input
+  .replace(/[\\+\-\\*/]/g, '')
+  .replace(/\(/g, '')
+  .replace(/\)/g, '');
