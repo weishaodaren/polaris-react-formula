@@ -49,13 +49,24 @@ const Code: FC<IProps> = ({
     editorConfig: CodemirrorEditor,
     editorValueParam: string,
   ) => {
+    // TODO: 暂是如此处理
+    const doc = editorConfig.getDoc();
+      const pos = doc.getCursor();
+    // const a = editorConfig.hasFocus();
+    // const b = editorConfig.getCursor();
+    editorConfig.setCursor(pos);
+      editorConfig!.focus();
+
+    // console.log(a, 'sadasda');
+    // console.log(b, 'asd-a0s9d-a');
+
     initDocTag(editorConfig, editorValueParam, fields as Variable[]);
 
     dispatch!({
       type: ActionType.SetEditor,
       editor: editorConfig,
     } as IActionType);
-  }, [value]);
+  }, []);
 
   /**
    * Callback
@@ -83,7 +94,7 @@ const Code: FC<IProps> = ({
   return useMemo(() => (
     <CodeMirror
       className={`${prefixCls}-code-mirror`}
-      autoCursor={false}
+      autoCursor={true}
       value={value}
       options={CMOptions}
       editorDidMount={onReady}
