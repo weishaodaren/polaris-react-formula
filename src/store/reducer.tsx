@@ -83,7 +83,7 @@ export const Store: FC<IStoreProps> = ({ children }) => {
 
       case ActionType.SetEditorValue: {
         // 输入值
-        const { editorValue, isSelected } = action;
+        const { editorValue, isSelected = false } = action;
         // 原始字段
         const {
           originalFields: fields,
@@ -102,6 +102,7 @@ export const Store: FC<IStoreProps> = ({ children }) => {
         if (isSelected) {
           return {
             ...originalState,
+            isSelected,
             editorValue: originalEditorValue,
             fields,
             functions: Functions,
@@ -127,6 +128,7 @@ export const Store: FC<IStoreProps> = ({ children }) => {
 
               return {
                 ...originalState,
+                isSelected,
                 editorValue,
                 fields: fuzzySearchField(fields as Variable[], _editorValue),
                 functions: fuzzySearchFunctions(Functions, _editorValue),
@@ -140,6 +142,7 @@ export const Store: FC<IStoreProps> = ({ children }) => {
           // 匹配不到 返回所有值
           return {
             ...originalState,
+            isSelected,
             editorValue,
             fields,
             functions: Functions,
@@ -167,6 +170,7 @@ export const Store: FC<IStoreProps> = ({ children }) => {
         if (!isValidFields && !isValidFunctions && isValidFilterValue && !isValidFieldValue) {
          return {
           ...originalState,
+          isSelected,
           editorValue,
           fields: _fields,
           functions: _functions,
@@ -179,6 +183,7 @@ export const Store: FC<IStoreProps> = ({ children }) => {
         // 无条件 模糊查询
         return {
           ...originalState,
+          isSelected,
           editorValue,
           fields: _fields,
           functions: _functions,
