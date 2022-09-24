@@ -55,14 +55,15 @@ const Editor: FC<FormulaEditorProps> = ({
 
   /**
    * Effect
-   * @description 依赖 极星表单传入的原表头字段 原数据
+   * @description 依赖Props 修改初始值
    */
   useEffect(() => {
     dispatch!({
-      type: ActionType.SetFields,
+      type: ActionType.SetInitialState,
       fields: field,
-    } as unknown as IActionType);
-  }, [field]);
+      editorValue: value,
+    } as IActionType);
+  }, [field, value]);
 
   /**
    * Callback

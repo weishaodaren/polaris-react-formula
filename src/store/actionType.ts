@@ -20,8 +20,7 @@ export default Object.freeze({
   SetErrorText: 'setErrorText',
 
   /**
-   * 修改字段
+   * 修改初始值
    */
-  SetFields: 'setFields',
-
+  SetInitialState: 'setInitialState',
 });

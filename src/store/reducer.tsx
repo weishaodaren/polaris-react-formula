@@ -51,6 +51,22 @@ const { Provider } = store;
 export const Store: FC<IStoreProps> = ({ children }) => {
   const [state, dispatch] = useReducer((originalState: InitialState, action: IActionType) => {
     switch (action.type) {
+      case ActionType.SetInitialState: {
+        const { fields, editorValue } = action;
+        const _fields = !fields?.length
+          ? []
+          : parseField(fields as IColumn);
+
+        return {
+          ...originalState,
+          editorValue,
+          fields: _fields, // 修改字段
+          originalFields: _fields.slice(0), // 字段(后续作为原始字段常量使用)
+          fieldValues: _fields.map(({ value }) => `{${value}}`), // 字段(后续作为原始字段value常量使用)
+          disabled: !editorValue,
+        };
+      }
+
       case ActionType.SetCurrentFieldOrFunction: {
         return {
           ...originalState,
@@ -178,20 +194,6 @@ export const Store: FC<IStoreProps> = ({ children }) => {
           errorText: action.errorText,
           errorCode: action.errorCode,
           disabled: action.errorCode !== ErrorType.Pass,
-        };
-      }
-
-      case ActionType.SetFields: {
-        const { fields } = action;
-        const _fields = !fields?.length
-          ? []
-          : parseField(fields as IColumn);
-
-        return {
-          ...originalState,
-          fields: _fields,
-          originalFields: _fields.slice(0),
-          fieldValues: _fields.map(({ value }) => `{${value}}`),
         };
       }
 
