@@ -1,5 +1,5 @@
 import React, {
-  useCallback, useMemo, memo, useContext, Suspense, lazy, useEffect,
+  useCallback, useMemo, memo, useContext, useEffect,
 } from 'react';
 import { Modal, Tooltip } from 'antd';
 import { Icon } from 'polaris-react-component';
@@ -8,6 +8,7 @@ import 'antd/lib/tooltip/style/index';
 import 'antd/lib/modal/style/index';
 
 import type { FC } from 'react';
+import type{ Variable } from '../types';
 import type { FormulaEditorProps } from '../index';
 import type { IActionType } from '../store';
 
@@ -15,9 +16,9 @@ import { store, ActionType } from '../store';
 import { ErrorType } from '../enum';
 import { prefixCls } from '../config';
 
-const Code = lazy(() => import('./Code'));
-const Content = lazy(() => import('./Content'));
-const ErrorText = lazy(() => import('./ErrorText'));
+import Code from './Code';
+import Content from './Content';
+import ErrorText from './ErrorText';
 
 /**
  * Component
@@ -38,6 +39,7 @@ const Editor: FC<FormulaEditorProps> = ({
    */
   const {
     state: {
+      fields,
       disabled,
       editorValue,
     },
@@ -97,22 +99,20 @@ const Editor: FC<FormulaEditorProps> = ({
       onCancel={onClose}
       onOk={confirmModal}
     >
-      <Suspense fallback={'加载中...'}>
-        <div className={classnames} style={style}>
-          <div className={`${prefixCls}-layout`}>
-            <h2>请输入公式</h2>
-            <Tooltip title="点击了解公式技巧">
-              <Icon type="icondoubt" />
-            </Tooltip>
-            <Code value={value} />
-            <ErrorText />
-            <h2>选择极星字段或函数</h2>
-            <Content />
-          </div>
+      <div className={classnames} style={style}>
+        <div className={`${prefixCls}-layout`}>
+          <h2>请输入公式</h2>
+          <Tooltip title="点击了解公式技巧">
+            <Icon type="icondoubt" />
+          </Tooltip>
+          {fields && <Code value={value} fields={fields as Variable[]} />}
+          <ErrorText />
+          <h2>选择极星字段或函数</h2>
+          <Content />
         </div>
-      </Suspense>
+      </div>
     </Modal>
-  ), [visible, disabled, editorValue]);
+  ), [visible, disabled, editorValue, fields]);
 };
 
 export default memo(Editor);

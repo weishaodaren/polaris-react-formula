@@ -1,12 +1,11 @@
 import React, {
-  useCallback, useMemo, useContext,
+  useCallback, useMemo, useContext, memo,
 } from 'react';
 import { UnControlled as CodeMirror } from 'react-codemirror2';
 
 import type { FC } from 'react';
 import type { EditorChange, Editor as CodemirrorEditor } from 'codemirror';
 import type { Variable } from '../types';
-import type { FormulaEditorProps } from '../index';
 import type { IActionType } from '../store';
 
 import { store, ActionType } from '../store';
@@ -18,7 +17,10 @@ import {
   parseMarks,
 } from '../utils';
 
-type IProps = Pick<FormulaEditorProps, 'value'>;
+interface IProps {
+  value: string
+  fields: Variable[]
+}
 
 /**
  * Component
@@ -27,14 +29,12 @@ type IProps = Pick<FormulaEditorProps, 'value'>;
  */
 const Code: FC<IProps> = ({
   value = '',
+  fields,
 }): JSX.Element => {
   /**
    * Context
    */
   const {
-    state: {
-      fields,
-    },
     dispatch,
   } = useContext(store);
 
@@ -49,19 +49,13 @@ const Code: FC<IProps> = ({
     editorConfig: CodemirrorEditor,
     editorValueParam: string,
   ) => {
-    // TODO: 暂是如此处理
     const doc = editorConfig.getDoc();
-      const pos = doc.getCursor();
-    // const a = editorConfig.hasFocus();
-    // const b = editorConfig.getCursor();
-    editorConfig.setCursor(pos);
-      editorConfig!.focus();
+    const pos = doc.getCursor();
 
-    // console.log(a, 'sadasda');
-    // console.log(b, 'asd-a0s9d-a');
+    editorConfig.setCursor(pos);
+    editorConfig!.focus();
 
     initDocTag(editorConfig, editorValueParam, fields as Variable[]);
-
     dispatch!({
       type: ActionType.SetEditor,
       editor: editorConfig,
@@ -103,4 +97,4 @@ const Code: FC<IProps> = ({
   ), [value]);
 };
 
-export default Code;
+export default memo(Code);

@@ -57,9 +57,9 @@ export interface FormulaEditorProps {
  * @return {JSX.Element}
  */
 const FormulaEditor: FC<FormulaEditorProps> = (props): JSX.Element => (
-  <Store>
-    <Editor {...props} />
-  </Store>
+    <Store>
+      <Editor {...props} />
+    </Store>
 );
 
 export default memo(FormulaEditor);
