@@ -23,7 +23,6 @@ import {
   fuzzySearchField,
   fuzzySearchFunctions,
   filterMarks,
-  blockReg,
   isValidField,
 } from '../utils';
 
@@ -113,39 +112,21 @@ export const Store: FC<IStoreProps> = ({ children }) => {
         }
 
         /**
-         * 匹配 逗号 空格，之后的输入值，继续模糊查询
+         * 匹配 逗号 空格 等区块间，之后的输入值，继续模糊查询
          */
-        const reg = blockReg;
-        if (reg.test(editorValue)) {
-          const result = [...editorValue.matchAll(reg)];
-          // 匹配搜索结果，对应字段 模糊查询
-          if (result) {
-            // 默认找最后一位
-            const lastResult = result[result.length - 1];
-            if (lastResult) {
-              const { index } = lastResult;
-              const _editorValue = editorValue.slice(Number(index) + 1, editorValue.length - 1);
+        const commaIndex = editorValue.lastIndexOf(',');
+        const blankIndex = editorValue.lastIndexOf(' ');
+        const index = commaIndex === -1 ? blankIndex : commaIndex;
 
-              return {
-                ...originalState,
-                isSelected,
-                editorValue,
-                fields: fuzzySearchField(fields as Variable[], _editorValue),
-                functions: fuzzySearchFunctions(Functions, _editorValue),
-                errorText,
-                errorCode,
-                disabled: Number(errorCode) > -1,
-              };
-            }
-          }
+        if (index !== -1) {
+          const _editorValue = editorValue.slice(Number(index) + 1, editorValue.length - 1);
 
-          // 匹配不到 返回所有值
           return {
             ...originalState,
             isSelected,
             editorValue,
-            fields,
-            functions: Functions,
+            fields: fuzzySearchField(fields as Variable[], _editorValue),
+            functions: fuzzySearchFunctions(Functions, _editorValue),
             errorText,
             errorCode,
             disabled: Number(errorCode) > -1,

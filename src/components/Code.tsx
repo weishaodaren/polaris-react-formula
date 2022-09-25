@@ -1,5 +1,8 @@
 import React, {
-  useCallback, useMemo, useContext, memo,
+  useCallback,
+  useMemo,
+  useContext,
+  memo,
 } from 'react';
 import { UnControlled as CodeMirror } from 'react-codemirror2';
 
@@ -35,9 +38,6 @@ const Code: FC<IProps> = ({
    * Context
    */
   const {
-    state: {
-      isSelected, // 是否选中
-    },
     dispatch,
   } = useContext(store);
 
@@ -80,10 +80,6 @@ const Code: FC<IProps> = ({
     editorValueParam: string,
   ) => {
     // 优先转义标点符号 无内容不执行转义
-    // console.log(editorConfig, 'config');
-    // console.log(data, 'data');
-    // console.log(editorValueParam, 'editorValueParam');
-
     const _editorValue = editorValueParam ? parseMarks(editorValueParam) : editorValueParam;
     initDocTag(editorConfig, _editorValue, fields as Variable[]);
     dispatch!({
