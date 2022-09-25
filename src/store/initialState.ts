@@ -1,8 +1,8 @@
 import type { Editor } from 'codemirror';
 import type { IColumn } from '../config';
-import type { FunctionItem, Variable, FunctionGroup } from '../types';
+import type { Variable, FunctionGroup } from '../types';
 import type { IErrorType } from '../enum';
-import { Functions } from '../config';
+import { Functions, Sample } from '../config';
 
 const FunctionNames = [];
 for (let i = 0; i < Functions.length; i += 1) {
@@ -53,7 +53,7 @@ export const initialState = {
   /**
    *  当前默认字段或函数
    */
-  currentFieldOrFunction: Functions[0].functions[0] as FunctionItem,
+  currentFieldOrFunction: Sample,
 
   /**
    * 函数字段

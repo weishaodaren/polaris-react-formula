@@ -606,3 +606,15 @@ value：是要对其求绝对值的数值。
     ],
   },
 ];
+
+// 公式样例
+export const Sample = {
+  name: '公式样例',
+  description: '填写变量、运算符和函数来组成公式进行运算',
+  useage: `引用极星字段：{字段ID}
+使用运算符：2 * 5
+使用函数：AVERAGE({数字列1}, {数字列2})
+使用IF语句：IF(逻辑条件, "值1", "值2")`,
+  example: '',
+  type: 'input',
+};
