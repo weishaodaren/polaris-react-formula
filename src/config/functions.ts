@@ -365,7 +365,7 @@ value：是要对其求绝对值的数值。
         description: `将所有数值相加。
 
 【number...】是进行运算的数值参数，可以输入数字或引用数值类型的列。数值类型的列包括数字、货币、百分比、评分等。`,
-        usage: 'SUM(number1, [number2, ...])',
+        useage: 'SUM(number1, [number2, ...])',
         example: '',
         type: 'inputnumber',
       },
