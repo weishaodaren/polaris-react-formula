@@ -15,6 +15,31 @@ export const parseKey = (rawKey: string) => rawKey.match(/(?<=\{)(.+?)(?=\})/g);
 
 /**
  * Function
+ * @description 解析标点符号
+ * @param rawString 输入值
+ * @return string
+ */
+export const parseMarks = (rawString: string) => rawString
+  .replace(/，/g, ',')
+  .replace(/【/g, '[')
+  .replace(/】/g, ']')
+  .replace(/（/g, '(')
+  .replace(/）/g, ')')
+  .replace(/：/g, ':');
+
+/**
+ * Function
+ * @description 解析大于 小于(默认=被转换==)
+ * @param rawString 输入值
+ * @return string
+ */
+export const parseMarks2 = (rawString: string) => rawString
+  .replace(/=/g, '==')
+  .replace(/<==/g, '<=')
+  .replace(/>==/g, '>=');
+
+/**
+ * Function
  * @description 匹配字段 替换数据
  * @param fields 字段组
  * @param originalField 原始字段
@@ -37,7 +62,7 @@ export const parseKeyReplaceField = (
     _originalField = _originalField.replace(fields[i], JSON.stringify(replacedFields[i]));
   }
 
-  return _originalField;
+  return parseMarks2(_originalField);
 };
 
 /**
@@ -164,17 +189,3 @@ export const parseFormula = (result: unknown) => {
     }
   }
 };
-
-/**
- * Function
- * @description 解析标点符号
- * @param rawString 输入值
- * @return string
- */
-export const parseMarks = (rawString: string) => rawString
-  .replace(/，/g, ',')
-  .replace(/【/g, '[')
-  .replace(/】/g, ']')
-  .replace(/（/g, '(')
-  .replace(/）/g, ')')
-  .replace(/：/g, ':');
