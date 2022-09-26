@@ -1,4 +1,5 @@
 import React, { useContext, useMemo } from 'react';
+import { UnControlled as CodeMirror } from 'react-codemirror2';
 import type { FC } from 'react';
 import type { FunctionItem, Variable } from '../types';
 import { prefixCls } from '../config';
@@ -19,7 +20,7 @@ const Description: FC = (): JSX.Element => {
   } = useContext(store);
 
   const {
-    name, description, useage, label, value,
+    name, description, useage, label, value, example,
   } = currentFieldOrFunction as FunctionItem & Variable;
 
   return useMemo(() => (
@@ -28,6 +29,8 @@ const Description: FC = (): JSX.Element => {
       <div className={`${prefixCls}-description-layout-description`}>{description ?? `返回 ${label} 列单元格的值`}</div>
       <div className={`${prefixCls}-description-layout-description-useage`}>用法</div>
       <code>{useage ?? `{${value}}`}</code>
+      <div className={`${prefixCls}-description-layout-description-example`}>举个例子</div>
+      <CodeMirror options={{ readOnly: 'nocursor' }} value={example ?? `{${value}}`} />
     </div>
   ), [currentFieldOrFunction]);
 };

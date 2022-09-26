@@ -13,7 +13,11 @@ export default [
 
 IF支持嵌套使用，并且可以用于检查单元格是否为空白/为空。`,
         useage: 'IF(logical, value1, value2)',
-        example: '',
+        example: `IF({分数} > 60, "及格", "不及格")
+
+IF({水温} >  40, IF({水温} < 60, "刚刚好", "太热"), "太冷")
+
+IF({Date} = BLANK(), "请输入日期", "日期已经输入")`,
         type: 'input',
       },
       {
@@ -22,6 +26,8 @@ IF支持嵌套使用，并且可以用于检查单元格是否为空白/为空�
 
 【logical】是逻辑参数，可以是逻辑值、数组或引用的维格列`,
         useage: 'AND(logical1, [logical2, ...])',
+        example: `AND(3>2, 4>3)
+=> true`,
         type: 'multiselect',
       },
       {
@@ -30,6 +36,8 @@ IF支持嵌套使用，并且可以用于检查单元格是否为空白/为空�
 
 【logical】是逻辑参数，可以是逻辑值、数组或引用的维格列。`,
         useage: 'OR(logical1, [logical2, ...])',
+        example: `OR(3>2, 2>3)
+=>  true`,
         type: 'multiselect',
       },
       {
@@ -43,6 +51,7 @@ IF支持嵌套使用，并且可以用于检查单元格是否为空白/为空�
 如例子一：2>3输出值是假，但经过反转后函数输出值的是真。
 如例子二：NOT({年纪} > 18)经过NOT函数反转后，其实相当于判断{年纪} ≤ 18`,
         useage: 'NOT(boolean)',
+        example: 'NOT({年纪} > 18)',
         type: 'multiselect',
       },
       {
@@ -56,6 +65,10 @@ IF支持嵌套使用，并且可以用于检查单元格是否为空白/为空�
 
 比如例子一，{国家}是引用的一列数据，其输出值可能是成千上万个国家名称，它是该函数中的表达式。“中国”和“中文”分别为其中一条分支和返回值，它表示如果{国家}的输出值为“中国”时，则返回“中文”。而“通用英语”为默认值，它表示{国家}的输出值没有匹配任何分支时，则输出“通用英语”`,
         useage: 'SWITCH(expression, [pattern, result...], [default])',
+        example: `SWITCH({国家}, "中国", "中文", "俄国", "俄语", "法国", "法语", "日本", "日语", "通用英语")
+
+SWITCH("C", "A", "优秀", "B", "中等", "C", "普通", "D", "较差", "没有成绩")
+=>普通`,
         type: 'input',
       },
     ],
@@ -72,6 +85,9 @@ IF支持嵌套使用，并且可以用于检查单元格是否为空白/为空�
 请用双引号将你要串联的文本值引起来，数字和引用列除外。
 特例：如果要串联双引号，你需要使用反斜杠（\\）作为转义字符。`,
         useage: 'CONCATENATE(text1, [text2, ...])',
+        example: `CONCATENATE({姓名}, {年纪}, "岁")
+
+CONCATENATE("\\"", {年纪}, "\\"")`,
         type: 'input',
       },
       {
@@ -81,6 +97,11 @@ IF支持嵌套使用，并且可以用于检查单元格是否为空白/为空�
 【string】是要被提取字符的文本。
 【howMany】是提取的字符数量。用数字表示，比如"3"，代表从左到右提取3个字符。`,
         useage: 'LEFT(string, howMany)',
+        example: `LEFT("极星字段：支持API，随意DIY", 3)
+=> 极星字段
+
+LEFT({出生年月}, 4)
+=> 1996`,
         type: 'input',
       },
       {
@@ -90,6 +111,11 @@ IF支持嵌套使用，并且可以用于检查单元格是否为空白/为空�
 【string】是要被提取字符的文本。
 【howMany】是提取的字符数量。用数字表示，比如"5"，代表从右到左提取5个字符。`,
         useage: 'RIGHT(string, howMany)',
+        example: `RIGHT("极星字段：支持API，随意DIY", 5)
+=> 极星字段
+
+RIGHT({出生年月}, 5)
+=> 12-06`,
         type: 'input',
       },
       {
@@ -100,6 +126,17 @@ IF支持嵌套使用，并且可以用于检查单元格是否为空白/为空�
 【whereToSearch】是你指定从哪儿提取文本，用数字表示。比如数字"3"表示从内容的第3个字符开始提取。
 【count】是提取的文本长度，用数字表示。比如数字"2"表示从指定位置提取2个字符。`,
         useage: 'MID(string, whereToStart, count)',
+        example: `MID("这个苹果又大又圆", 3, 2)
+=> 苹果
+
+MID("这个苹果又大又圆", 99, 2)
+=> 空值
+
+MID("这个苹果又大又圆", 3, 99)
+=> 苹果又大又圆
+
+MID({嘉宾姓名}, 2, 99)
+=> 彦祖`,
         type: 'input',
       },
       {
@@ -113,6 +150,14 @@ IF支持嵌套使用，并且可以用于检查单元格是否为空白/为空�
 
 （如果你想将内容中所有出现的原文本替换为新文本，请参见SUBSTITUTE。）`,
         useage: 'REPLACE(string, whereToStart, count, replacement)',
+        example: `REPLACE("这个苹果又大又圆", 3, 2, "桃子")
+=> 这个桃子又大又圆
+
+REPLACE("这个苹果又大又圆", 3, 99, "榴莲又香又甜")
+=> 这个榴莲又香又甜
+
+REPLACE({嘉宾姓名}, 1, 1, "X")
+=> X彦祖`,
         type: 'input',
       },
       {
@@ -121,6 +166,8 @@ IF支持嵌套使用，并且可以用于检查单元格是否为空白/为空�
 
 【value】是需要被处理的文本。`,
         useage: 'TRIM(string)',
+        example: `TRIM(" 两边空格会被清除! ")
+=>两边空格会被清除!`,
         type: 'input',
       },
       {
@@ -129,6 +176,11 @@ IF支持嵌套使用，并且可以用于检查单元格是否为空白/为空�
 
 【string】是要计算长度的文本；标点符号、空格等也会占一个字符。`,
         useage: 'LEN(string)',
+        example: `LEN("你猜猜我有多长？")
+=> 8
+
+LEN("a blank")
+=> 7`,
         type: 'inputnumber',
       },
       {
@@ -137,6 +189,8 @@ IF支持嵌套使用，并且可以用于检查单元格是否为空白/为空�
 
 【string】是被转换的文本。`,
         useage: 'LOWER(string)',
+        example: `LOWER("Hello!")
+=> hello!`,
         type: 'input',
       },
       {
@@ -145,6 +199,8 @@ IF支持嵌套使用，并且可以用于检查单元格是否为空白/为空�
 
 【string】是被转换的文本。`,
         useage: 'UPPER(string)',
+        example: `UPPER("Hello!")
+=> HELLO!`,
         type: 'input',
       },
       // {
@@ -166,6 +222,14 @@ IF支持嵌套使用，并且可以用于检查单元格是否为空白/为空�
 
 其效果与SEARCH()类似，但是未找到匹配项时，SEARCH()返回值为空而不是0。`,
         useage: 'FIND(stringToFind, whereToSearch, [startFromPosition])',
+        example: `FIND("苹果", "这个苹果又大又圆，要买两斤苹果吗？")
+=> 3
+
+FIND("香蕉", "这个苹果又大又圆，要买两斤苹果吗？")
+=> 0
+
+FIND("苹果", "这个苹果又大又圆，买两斤苹果吗？"，10)
+=> 13`,
         type: 'inputnumber',
       },
       {
@@ -176,6 +240,8 @@ IF支持嵌套使用，并且可以用于检查单元格是否为空白/为空�
 
 本函数可以将文本内的数字提取出来。`,
         useage: 'NUMBERVALUE(text)',
+        example: `VALUE("$10000")
+=> 10000`,
         type: 'inputnumber',
       },
       // {
@@ -190,6 +256,8 @@ IF支持嵌套使用，并且可以用于检查单元格是否为空白/为空�
 【string】是需要重复的文本。
 【mumber】是指定的重复次数。用数字表示，比如”2“，表示重复2次。`,
         useage: 'REPT(string, number)',
+        example: `REPT("哈", 2)
+=> 哈哈`,
         type: 'input',
       },
       {
@@ -206,6 +274,14 @@ IF支持嵌套使用，并且可以用于检查单元格是否为空白/为空�
 
 其效果与FIND()类似，但是未找到匹配项时，FIND()返回值为0而不是空值。`,
         useage: 'SEARCH(stringToFind, whereToSearch, [startFromPosition])',
+        example: `SEARCH("苹果", "这个苹果又大又圆，要买两斤苹果吗？")
+=> 3
+
+SEARCH("香蕉", "这个苹果又大又圆，要买两斤苹果吗？")
+=> 空值
+
+SEARCH("苹果", "这个苹果又大又圆，买两斤苹果吗？"，10)
+=> 13`,
         type: 'inputnumber',
       },
       // {
@@ -226,6 +302,11 @@ IF支持嵌套使用，并且可以用于检查单元格是否为空白/为空�
 
 （如果你想替换指定起点位置和终点位置之间的字符，请参见REPLACE。）`,
         useage: 'SUBSTITUTE(string, oldText, newText, [index])',
+        example: `SUBSTITUTE("小胡，小张，小王", "小", "老")
+=> 老胡，老张，老王
+
+SUBSTITUTE("小胡，小张，小王", "小", "老", 3)
+=> 小胡，老张，小王`,
         type: 'input',
       },
     ],
@@ -242,6 +323,17 @@ IF支持嵌套使用，并且可以用于检查单元格是否为空白/为空�
 value：是要对其求绝对值的数值。
 绝对值：正数的绝对值是本身，负数的绝对值是去掉负号。`,
         useage: 'ABS(value)',
+        example: `// value > 0
+公式：ABS(1.5)
+运算结果：1.50
+
+//value = 0
+公式：ABS(0)
+运算结果：0.00
+
+// value < 0
+公式：ABS(-1.5)
+运算结果：1.50`,
         type: 'inputnumber',
       },
       {
@@ -252,6 +344,10 @@ value：是要对其求绝对值的数值。
 
 如果其中某个参数是文本值，比如"八"，在运算时会被当做0。`,
         useage: 'AVERAGE(number1, [number2, ...])',
+        example: `AVERAGE(2, 4, "6", "八")
+=>(2 + 4 + 6 + 0) /4 =3
+
+AVERAGE({数学成绩}, {英语成绩}, {语文成绩}) `,
         type: 'inputnumber',
       },
       {
@@ -262,6 +358,11 @@ value：是要对其求绝对值的数值。
 【significance】非必填，是用于向上舍入的基数，返回值为基数的倍数。如果未提供，默认取1。
 【向上舍入】即它返回值是大于或等于原数值,且为最接近的基数的倍数。`,
         useage: 'CEILING(value, [significance])',
+        example: `CEILING(1.99)
+=> 2
+
+CEILING(-1.99, 0.1)
+=> -1.9`,
         type: 'inputnumber',
       },
       // {
@@ -277,6 +378,8 @@ value：是要对其求绝对值的数值。
 
 本函数可以计算输入的参数或单元格内包含了多少个数值（数字、货币、百分比、评分都为数值）。`,
         useage: 'COUNT(number1, [number2, ...])',
+        example: `COUNT(1, 3, 5, "", "七")
+=> 3`,
         type: 'inputnumber',
       },
       {
@@ -289,6 +392,8 @@ value：是要对其求绝对值的数值。
 比如，可以统计一个单元格内有多少个选项，多少个图片。多少个成员等。
 还可以统计神奇引用的单元格内的数组非空值。`,
         useage: 'COUNTA(textOrNumber1, [number2, ...])',
+        example: `COUNTA(1, 3, 5, "", "七")
+=> 4`,
         type: 'inputnumber',
       },
       {
@@ -298,6 +403,11 @@ value：是要对其求绝对值的数值。
 【e】是自然数，约为2.718282
 【power】是幂。即指定e的多少次方。`,
         useage: 'EXP(power)',
+        example: `EXP(1)
+=> 2.72
+
+EXP(2)
+=> 7.40`,
         type: 'inputnumber',
       },
       {
@@ -308,6 +418,11 @@ value：是要对其求绝对值的数值。
 【significance】非必填，是用于向下舍入的基数，返回值为基数的倍数。如果未提供，默认取1。
 【向下舍入】即它返回值是小于或等于原数值,且为最接近基数的倍数。`,
         useage: 'FLOOR(value, [significance])',
+        example: `FLOOR(1.01, 0.1)
+=> 1.0
+
+FLOOR(-1.99, 0.1)
+=> -2.0`,
         type: 'inputnumber',
       },
       // {
@@ -323,6 +438,10 @@ value：是要对其求绝对值的数值。
 
 另外，本函数的输入值都为日期格式时，可以比较多个日期中最晚的日期。`,
         useage: 'MAX(number1, [number2, ...])',
+        example: `MAX(5, -5, 555, -55)
+=> 555
+
+MAX({数学成绩}, {英语成绩}, {语文成绩})`,
         type: 'inputnumber',
       },
       {
@@ -333,6 +452,7 @@ value：是要对其求绝对值的数值。
 
 另外，本函数的输入值都为日期格式时，可以比较多个日期中最晚的日期。`,
         useage: 'MIN(number1, [number2, ...])',
+        example: 'MIN({数学成绩}, {英语成绩}, {语文成绩})',
         type: 'inputnumber',
       },
       {
@@ -342,6 +462,11 @@ value：是要对其求绝对值的数值。
 【value】是要向下舍入的值。
 【向下舍入】即它返回值是小于或等于原数值。`,
         useage: 'INT(value)',
+        example: `INT(1.99)
+=> 1
+
+INT(-1.99)
+=> -2`,
         type: 'inputnumber',
       },
       {
@@ -353,6 +478,8 @@ value：是要对其求绝对值的数值。
 
 返回结果的符号与除数的符号相同。`,
         useage: 'MOD(value, divisor)',
+        example: `MOD(7, 2)
+=> 1`,
         type: 'inputnumber',
       },
       // {
@@ -366,7 +493,10 @@ value：是要对其求绝对值的数值。
 
 【number...】是进行运算的数值参数，可以输入数字或引用数值类型的列。数值类型的列包括数字、货币、百分比、评分等。`,
         useage: 'SUM(number1, [number2, ...])',
-        example: '',
+        example: `SUM(1, 2, "3", "四")
+=> 1 + 2 + 3 =6
+
+SUM({数学成绩}, {英语成绩}, {语文成绩})`,
         type: 'inputnumber',
       },
       // {
@@ -390,6 +520,11 @@ value：是要对其求绝对值的数值。
 如果位数等于 0，则四舍五入到最接近的整数。　
 如果位数小于 0，则在小数点左侧进行四舍五入。`,
         useage: 'ROUND(value, [precision])',
+        example: `ROUND(1.99, 0)
+=> 2
+
+ROUND(18.8, -1)
+=> 20`,
         type: 'inputnumber',
       },
       {
@@ -404,6 +539,11 @@ value：是要对其求绝对值的数值。
 如果位数等于 0，则四舍五入到最接近的整数。　
 如果位数小于 0，则在小数点左侧进行四舍五入。`,
         useage: 'ROUNDUP(value, [precision])',
+        example: `ROUNDUP(1.1, 0)
+=> 2
+
+ROUNDUP(-1.1, 0)
+=> -2`,
         type: 'inputnumber',
       },
       {
@@ -418,6 +558,11 @@ value：是要对其求绝对值的数值。
 如果位数等于 0，则四舍五入到最接近的整数。　
 如果位数小于 0，则在小数点左侧进行四舍五入。`,
         useage: 'ROUNDDOWN(value, [precision])',
+        example: `ROUNDDOWN(1.9, 0)
+=> 1
+
+ROUNDDOWN(-1.9, 0)
+=> -1`,
         type: 'inputnumber',
       },
       {
@@ -427,6 +572,11 @@ value：是要对其求绝对值的数值。
 【base】是基数。
 【power】是幂。`,
         useage: 'POWER(base, power)',
+        example: `POWER(2, 5)
+=> 32
+
+POWER(-5, 3)
+=> -125`,
         type: 'inputnumber',
       },
       // {
@@ -441,6 +591,11 @@ value：是要对其求绝对值的数值。
 【number】是想要计算其对数的数值。
 【base】是对数的基数（底数），如果未指定基数，则默认为10。`,
         useage: 'LOG(number, base=10))',
+        example: `LOG(1024, 2)
+=> 10
+
+LOG(10000)
+=> 4`,
         type: 'inputnumber',
       },
       // {
@@ -456,6 +611,8 @@ value：是要对其求绝对值的数值。
 
 如果数值为负数，则 SQRT 返回 Nan`,
         useage: 'SQRT(value)',
+        example: `SQRT(10000)
+=> 100`,
         type: 'inputnumber',
       },
     ],
@@ -476,6 +633,11 @@ value：是要对其求绝对值的数值。
 【date】是指定的日期。
 比如，数字1表示日期属于当月的第1号。`,
         useage: 'DAY(date)',
+        example: `DAY("2020.10.01")
+=>1
+
+DAY({完成日期})
+=>5`,
         type: 'inputnumber',
       },
       {
@@ -499,6 +661,14 @@ value：是要对其求绝对值的数值。
 
 点击下方链接可查看全部计时单位。`,
         useage: 'DAYS(date1, date2, [units])',
+        example: `DATETIME_DIFF( "2020-08-11"  ,"2020-08-10", "days")
+=> 1
+
+DATETIME_DIFF( "2020-08-9" ,"2020-08-10", "days")
+=> -1
+
+DATETIME_DIFF( {截止时间} , TODAY(), "hours")
+=> 48`,
         type: 'inputnumber',
       },
       // {
@@ -522,6 +692,11 @@ value：是要对其求绝对值的数值。
 
 【date】是指定的日期。`,
         useage: 'YEAR(date)',
+        example: `YEAR("2020/10/01")
+=> 2020
+
+YEAR({毕业时间})
+=> 2020`,
         type: 'inputnumber',
       },
       {
@@ -532,6 +707,11 @@ value：是要对其求绝对值的数值。
 
 本函数输出值为1（一月）至12（十二月）之间的整数。`,
         useage: 'MONTH(date)',
+        example: `MONTH("2020.10.01")
+=> 10
+
+MONTH({毕业时间})
+=> 6`,
         type: 'inputnumber',
       },
       {
@@ -541,6 +721,8 @@ value：是要对其求绝对值的数值。
 【date】是指定的日期。
 比如，18表示18:00`,
         useage: 'HOUR(date)',
+        example: `HOUR({打卡时间})
+=> 9`,
         type: 'inputnumber',
       },
       {
@@ -548,6 +730,8 @@ value：是要对其求绝对值的数值。
         description: `返回指定日期的分钟数，输出格式为0到59之间的整数。
 `,
         useage: 'MINUTE(date)',
+        example: `MINUTE({打卡时间})
+=>30`,
         type: 'inputnumber',
       },
       {
@@ -556,6 +740,8 @@ value：是要对其求绝对值的数值。
 
 【date】是指定的日期。`,
         useage: 'SECOND(date)',
+        example: `SECOND({打卡时间})
+=> 1`,
         type: 'inputnumber',
       },
       {
@@ -567,6 +753,11 @@ value：是要对其求绝对值的数值。
 
 注意：仅当重新刷新计算公式或刷新表格时，这个函数返回的结果才会更新。`,
         useage: 'TODAY()',
+        example: `TODAY()
+=> "2020/06/02 00:00"
+
+DATETIME_DIFF( {截止时间} , TODAY(),"days")
+=> 15`,
         type: 'datepicker',
       },
       {
@@ -579,6 +770,11 @@ value：是要对其求绝对值的数值。
 
  注意：仅当重新刷新计算公式或刷新表格时，这个函数返回的结果才会更新。`,
         useage: 'NOW()',
+        example: `NOW()
+=> "2020/06/02 07:12"
+
+DATETIME_DIFF( {截止时间} , NOW(),"days")
+=> 15`,
         type: 'datepicker',
       },
       {
@@ -590,6 +786,13 @@ value：是要对其求绝对值的数值。
 
 本函数输出值为0到6之间的整数。 `,
         useage: 'WEEKDAY(date, [startDayOfWeek])',
+        example: `WEEKDAY("2020.10.01")
+=>4
+
+WEEKDAY("2020.10.01", "Monday")
+=>3
+
+WEEKDAY(TODAY())`,
         type: 'inputnumber',
       },
       {
@@ -601,6 +804,14 @@ value：是要对其求绝对值的数值。
 
 本函数输出值为整数。比如6，代表该日期属于一年中的第6个星期。`,
         useage: 'WEEKNUM(date, [startDayOfWeek])',
+        example: `WEEKNUM("2020.10.01")
+=>40
+
+WEEKNUM("2020.10.01", "Sunday")
+=>40
+
+WEEKNUM(TODAY())
+=>33`,
         type: 'inputnumber',
       },
     ],
@@ -615,6 +826,9 @@ export const Sample = {
 使用运算符：2 * 5
 使用函数：AVERAGE({数字列1}, {数字列2})
 使用IF语句：IF(逻辑条件, "值1", "值2")`,
-  example: '',
+  example: `单价 * 数量
+姓名 "-" 年纪
+AVERAGE({数学}, {语文}, {英语})
+IF({平均分} > 60, "👍", "❗")`,
   type: 'input',
 };
