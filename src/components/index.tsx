@@ -33,6 +33,7 @@ const Editor: FC<FormulaEditorProps> = ({
   field = [],
   onChange,
   onClose,
+  onLink = undefined,
 }): JSX.Element => {
   /**
    * Context
@@ -104,7 +105,7 @@ const Editor: FC<FormulaEditorProps> = ({
         <div className={`${prefixCls}-layout`}>
           <h2>请输入公式</h2>
           <Tooltip title="点击了解公式技巧">
-            <Icon type="icondoubt" />
+            <Icon type="icondoubt" onClick={onLink} />
           </Tooltip>
           {fields && <Code value={value} fields={fields as Variable[]} />}
           <ErrorText />
