@@ -295,16 +295,17 @@ export const isValidField = (input: string, fields: string[]): boolean => {
  */
 export const reverseField = (input: string, fields: Variable[]) => {
   const content = parseKey(input);
-  if (!content) return input;
+  if (!content || !content.length) return input;
 
-  let _content = '';
+  let output = input;
   // 拿{title}匹配字段，替换内容
   for (let i = 0; i < fields.length; i += 1) {
-    for (let j = 0; j < content?.length; j += 1) {
+    for (let j = 0; j < content.length; j += 1) {
       if (fields[i].value === content[j]) {
-        _content = input.replace(`{${content[j]}}`, fields[i].label);
+        output = output.replace(`{${content[j]}}`, fields[i].label);
       }
     }
   }
-  return _content;
+
+  return output;
 };

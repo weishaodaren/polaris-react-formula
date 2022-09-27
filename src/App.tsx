@@ -7,7 +7,7 @@ function App() {
   const value = 'IF({title}= \'\', \'A\', \'B\', SUM({title}, {ownerId}))';
 
   const onCalc = useCallback((formula: string, formulaField: string) => {
-    console.log('这是最外层的值：', formula, formulaField);
+    console.log('这是最外层的值：', formula, 'field:', formulaField);
   }, []);
 
   const onClose = useCallback(() => {
