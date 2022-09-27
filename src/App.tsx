@@ -18,13 +18,16 @@ function App() {
     console.log(A);
 
   return (
-    <FormulaEditor
-      visible={visible}
-      value={value}
-      field={column}
-      onChange={onCalc}
-      onClose={onClose}
-    />
+    <>
+      <button onClick={() => setVisible(true)}>Click Me</button>
+      <FormulaEditor
+        visible={visible}
+        value={value}
+        field={column}
+        onChange={onCalc}
+        onClose={onClose}
+        />
+      </>
   );
 }
 

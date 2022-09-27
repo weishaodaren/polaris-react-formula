@@ -93,12 +93,14 @@ const Editor: FC<FormulaEditorProps> = ({
 
   return useMemo(() => (
     <Modal
+      centered
       open={visible}
       closable={false}
       maskClosable={false}
       okText="确认"
       cancelText='取消'
       okButtonProps={{ disabled }}
+      destroyOnClose
       onCancel={onClose}
       onOk={confirmModal}
     >
