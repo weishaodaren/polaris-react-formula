@@ -239,3 +239,10 @@ export enum ErrorType {
 }
 
 export type IErrorType = typeof ErrorType;
+
+/**
+ * CodeMirror 操作事件
+ */
+export enum CodeMirrorActionType {
+  Delete = '+delete',
+}

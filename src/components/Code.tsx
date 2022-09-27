@@ -11,6 +11,7 @@ import type { EditorChange, Editor as CodemirrorEditor } from 'codemirror';
 import type { Variable } from '../types';
 import type { IActionType } from '../store';
 
+import { CodeMirrorActionType } from '../enum';
 import { store, ActionType } from '../store';
 import {
   CMOptions, prefixCls,
@@ -38,6 +39,7 @@ const Code: FC<IProps> = ({
    * Context
    */
   const {
+    state: { fieldValues },
     dispatch,
   } = useContext(store);
 
@@ -81,11 +83,27 @@ const Code: FC<IProps> = ({
   ) => {
     // 优先转义标点符号 无内容不执行转义
     const _editorValue = editorValueParam ? parseMarks(editorValueParam) : editorValueParam;
+    // 初始化文本标签
     initDocTag(editorConfig, _editorValue, fields as Variable[]);
-    dispatch!({
-      type: ActionType.SetEditorValue,
-      editorValue: _editorValue.trim(),
-    } as IActionType);
+
+    /**
+     * 捕获删除操作逻辑
+     * 如果删除有效字段，不执行模糊查询
+     * 否则执行默认查询(set 状态)
+     */
+    const { origin, removed = [''] } = data;
+    // 删除的是有效字段
+    if (CodeMirrorActionType.Delete === origin && fieldValues.includes(removed[0])) {
+      dispatch!({
+        type: ActionType.SetEditorValue,
+        isSelected: true,
+      } as IActionType);
+    } else {
+      dispatch!({
+        type: ActionType.SetEditorValue,
+        editorValue: _editorValue.trim(),
+      } as IActionType);
+    }
   }, []);
 
   return useMemo(() => (

@@ -81,9 +81,7 @@ export const Store: FC<IStoreProps> = ({ children }) => {
       }
 
       case ActionType.SetEditorValue: {
-        // 输入值
-        const { editorValue, isSelected = false } = action;
-        // 原始字段
+        const { editorValue = '', isSelected = false } = action;
         const {
           originalFields: fields,
           editorValue: originalEditorValue,
