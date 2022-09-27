@@ -1,5 +1,6 @@
 import { Fields, FieldName } from '../enum';
 import { filterFieldData } from './filter';
+import { braceReg } from './regexp';
 
 import type { IColumn, IDataSource } from '../config/mock.column';
 import type { Variable } from '../types';
@@ -11,7 +12,7 @@ import type { IFields } from '../enum';
  * @param rawKey 未解析前的字段 {code}
  * @return array | null
  */
-export const parseKey = (rawKey: string) => rawKey.match(/(?<=\{)(.+?)(?=\})/g);
+export const parseKey = (rawKey: string) => rawKey.match(braceReg)?.map((item) => item.replace('{', '').replace('}', ''));
 
 /**
  * Function

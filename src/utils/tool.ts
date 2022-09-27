@@ -3,18 +3,10 @@ import * as formulajs from '@formulajs/formulajs';
 import type { Position, Editor as CodemirrorEditor } from 'codemirror';
 import type { Variable, FunctionGroup } from '../types';
 import { ErrorType } from '../enum';
-import { parseFieldData, parseKeyReplaceField, parseFormula } from './parse';
-
-// 匹配加减乘除
-export const calcWayReg = /(?:[+]|[-]|[*]|[/]|[(]|[)]){1}$/g;
-// 匹配小括号
-export const braketReg = /\((.+?)\)/g;
-// 匹配大括号
-export const braceReg = /\{.*?\}/g;
-// 匹配大括号内容
-export const innerBraceReg = /(?<=\{)(.+?)(?=\})/g;
-// 匹配空格 逗号
-export const blockReg = /[\\ \\,\\，]/g;
+import {
+ parseFieldData, parseKeyReplaceField, parseFormula, parseKey,
+} from './parse';
+import { braceReg } from './regexp';
 
 /**
  * Function
@@ -302,7 +294,7 @@ export const isValidField = (input: string, fields: string[]): boolean => {
  * @return string
  */
 export const reverseField = (input: string, fields: Variable[]) => {
-  const content = input.match(innerBraceReg);
+  const content = parseKey(input);
   if (!content) return input;
 
   let _content = '';
