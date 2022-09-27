@@ -57,8 +57,6 @@ export const parseKeyReplaceField = (
    * 替换变量字段
    */
   for (let i = 0; i < fields.length; i += 1) {
-    // TODO: 暂时使用此方法减少变量产生
-    // _originalField = _originalField.replace(fields[i], `${replacedFields[i]}`);
     _originalField = _originalField.replace(fields[i], JSON.stringify(replacedFields[i]));
   }
 

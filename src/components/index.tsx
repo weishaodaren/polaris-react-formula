@@ -15,6 +15,7 @@ import type { IActionType } from '../store';
 import { store, ActionType } from '../store';
 import { ErrorType } from '../enum';
 import { prefixCls } from '../config';
+import { reverseField } from '../utils';
 
 import Code from './Code';
 import Content from './Content';
@@ -73,13 +74,13 @@ const Editor: FC<FormulaEditorProps> = ({
    */
   const confirmModal = useCallback(() => {
     try {
-        onChange?.(editorValue);
-        onClose?.();
-        dispatch!({
-          type: ActionType.SetErrorText,
-          errorCode: ErrorType.Pass,
-          errorText: '',
-        } as IActionType);
+      onChange?.(editorValue, reverseField(editorValue, fields as Variable[]));
+      onClose?.();
+      dispatch!({
+        type: ActionType.SetErrorText,
+        errorCode: ErrorType.Pass,
+        errorText: '',
+      } as IActionType);
     } catch ({ message }) {
       dispatch!({
         type: ActionType.SetErrorText,

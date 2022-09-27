@@ -48,7 +48,10 @@ export interface FormulaEditorProps {
   /**
    * 获取计算值 回调
    */
-  onChange?: ((formula: string) => void)
+  onChange?: ((
+    formula: string, // 公式
+    formulaField: string // 公式(原字段)
+  ) => void)
 
   /**
    * 跳转外链

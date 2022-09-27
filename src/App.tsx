@@ -1,24 +1,21 @@
 import React, { useCallback, useState } from 'react';
-import FormulaEditor from '.';
-import { column } from './config';
+import FormulaEditor, { useFormula } from '.';
+import { column, dataSource } from './config';
 
 function App() {
   const [visible, setVisible] = useState(true);
-  const value = 'IF({title}>= \'\', \'A\', \'B\')';
+  const value = 'IF({title}= \'\', \'A\', \'B\', SUM({title}, {ownerId}))';
 
-  const onCalc: (v: string) => void = useCallback((formula) => {
-    console.log('这是最外层的值：', formula);
+  const onCalc = useCallback((formula: string, formulaField: string) => {
+    console.log('这是最外层的值：', formula, formulaField);
   }, []);
 
   const onClose = useCallback(() => {
     setVisible(false);
   }, []);
 
-  // TODO: 调试数据
-  // useEffect(() => {
-  //   const A = useFormula(value, dataSource[0]);
-  //   console.log(A);
-  // }, []);
+    const A = useFormula(value, dataSource[0]);
+    console.log(A);
 
   return (
     <FormulaEditor

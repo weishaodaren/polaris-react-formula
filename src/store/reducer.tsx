@@ -116,7 +116,8 @@ export const Store: FC<IStoreProps> = ({ children }) => {
          */
         const commaIndex = editorValue.lastIndexOf(',');
         const blankIndex = editorValue.lastIndexOf(' ');
-        const index = commaIndex === -1 ? blankIndex : commaIndex;
+        const leftIndex = editorValue.lastIndexOf('(');
+        const index = [commaIndex, blankIndex, leftIndex].filter((_) => _ !== -1)[0] ?? -1;
 
         if (index !== -1) {
           const _editorValue = editorValue.slice(Number(index) + 1, editorValue.length - 1);

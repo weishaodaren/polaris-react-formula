@@ -11,6 +11,8 @@ export const calcWayReg = /(?:[+]|[-]|[*]|[/]|[(]|[)]){1}$/g;
 export const braketReg = /\((.+?)\)/g;
 // 匹配大括号
 export const braceReg = /\{.*?\}/g;
+// 匹配大括号内容
+export const innerBraceReg = /(?<=\{)(.+?)(?=\})/g;
 // 匹配空格 逗号
 export const blockReg = /[\\ \\,\\，]/g;
 
@@ -290,4 +292,27 @@ export const isValidField = (input: string, fields: string[]): boolean => {
     return validFiledNums === matchValue.length;
   }
   return false;
+};
+
+/**
+ * Function
+ * @description 反转字段 {title} => 标题
+ * @param input 输入值
+ * @param fields 字段组
+ * @return string
+ */
+export const reverseField = (input: string, fields: Variable[]) => {
+  const content = input.match(innerBraceReg);
+  if (!content) return input;
+
+  let _content = '';
+  // 拿{title}匹配字段，替换内容
+  for (let i = 0; i < fields.length; i += 1) {
+    for (let j = 0; j < content?.length; j += 1) {
+      if (fields[i].value === content[j]) {
+        _content = input.replace(`{${content[j]}}`, fields[i].label);
+      }
+    }
+  }
+  return _content;
 };
