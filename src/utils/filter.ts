@@ -1,3 +1,7 @@
+import { Fields, FieldName } from '../enum';
+import type { IFields, IFieldName } from '../enum';
+import type { Variable } from '../types';
+
 /**
  * Function
  * @description 过滤字段数据
@@ -29,3 +33,40 @@ export const filterMarks = (input: string) => input
   .replace(/[\\+\-\\*/]/g, '')
   .replace(/\(/g, '')
   .replace(/\)/g, '');
+
+/**
+ * Function
+ * @description 过滤字段列
+ * @param inputArray 输入字段组
+ * @return array
+ */
+export const filterFieldColumn = (
+  inputArray: {
+    label: string,
+    value: string,
+    type: string,
+  }[],
+): Variable[] => (
+  Array.isArray(inputArray) && inputArray.length
+    /**
+     * 暂不考虑 以下
+     * 类型： 附件 前后置 工时 多选 分组单选 编号 下拉选 富文本 联级选择
+     * 名称： 编号 父任务id 所属项目
+     */
+    ? inputArray.filter(({ type, value }) => ![
+      Fields.Annex,
+      Fields.BaRelating,
+      Fields.WorkingHours,
+      Fields.Checkbox,
+      Fields.GroupSelect,
+      Fields.Select,
+      Fields.Richtext,
+      Fields.Radio,
+      Fields.Cascader,
+    ].includes(type as IFields['Annex'])
+      && ![
+        FieldName.Code,
+        FieldName.ParentId,
+        FieldName.ProjectId,
+      ].includes(value as IFieldName['Code']))
+    : []);

@@ -1,10 +1,8 @@
-import { Fields, FieldName } from '../enum';
-import { filterFieldData } from './filter';
+import { filterFieldData, filterFieldColumn } from './filter';
 import { braceReg } from './regexp';
 
 import type { IColumn, IDataSource } from '../config/mock.column';
 import type { Variable } from '../types';
-import type { IFields } from '../enum';
 
 /**
  * Function
@@ -70,28 +68,9 @@ export const parseKeyReplaceField = (
  * @param rawFields 原始字段组(极星表格直传)
  * @return array
  */
-export const parseField = (rawFields: IColumn): Variable[] => {
-  // 格式化字段组
-  const formatFields = rawFields
-    .map(({
-      name: value,
-      label,
-      field: { type },
-    }) => ({
-      label, value, type,
-    }))
-    // 附件 前后置 工时 多选 分组单选 编号 暂不考虑
-    .filter(({ type, value }) => ![
-      Fields.Annex,
-      Fields.BaRelating,
-      Fields.WorkingHours,
-      Fields.Checkbox,
-      Fields.GroupSelect,
-    ].includes(type as IFields['Annex'])
-      && value !== FieldName.Code);
-
-  return formatFields;
-};
+export const parseField = (rawFields: IColumn): Variable[] => filterFieldColumn(
+  rawFields.map(({ name: value, label, field: { type } }) => ({ label, value, type })),
+);
 
 /**
  * Function

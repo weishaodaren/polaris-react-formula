@@ -214,6 +214,16 @@ export enum FieldName {
    * 编号
    */
   Code = 'code',
+
+  /**
+   * 父任务ID
+   */
+  ParentId = 'parentId',
+
+  /**
+   * 所属项目
+   */
+  ProjectId = 'projectId',
 }
 
 export type IFieldName = typeof FieldName;

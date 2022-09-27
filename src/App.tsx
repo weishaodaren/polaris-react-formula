@@ -4,7 +4,7 @@ import { column, dataSource } from './config';
 
 function App() {
   const [visible, setVisible] = useState(true);
-  const value = 'IF({title}= \'\', \'A\', \'B\', SUM({title}, {ownerId}))';
+  const value = 'IF({title}= \'32142323\', \'A\', \'B\', SUM({title}, {ownerId}))';
 
   const onCalc = useCallback((formula: string, formulaField: string) => {
     console.log('这是最外层的值：', formula, 'field:', formulaField);
