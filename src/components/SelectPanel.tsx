@@ -80,18 +80,14 @@ const SelectPanel: FC = (): JSX.Element => {
       const _value = value.toString();
       const blankIndex = _value.lastIndexOf(' ');
       const commaIndex = _value.lastIndexOf(',');
-      const index = blankIndex !== -1 ? blankIndex : commaIndex;
+      const index = commaIndex !== -1 ? commaIndex : blankIndex;
 
       // 存在有效索引
       if (index !== -1) {
         console.log('index:', index, 'pos:', pos, 'name.length:', name.length, '_value.length:', _value.length);
         doc.replaceRange(`${name}()`, { ch: index + 1, line: pos.line }, pos);
-        // pos.ch += name.length + 1;
-        // pos.ch += name.length - 2;
-        // pos.ch += name.length;
         pos.ch = name.length - (_value.length - (index + 1)) + _value.length + 1;
         console.log('pos', pos, 'name.length:', name.length, '_value.length:', _value.length);
-
         doc.setCursor(pos);
         editor!.focus();
       } else {
