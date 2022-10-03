@@ -74,10 +74,35 @@ const SelectPanel: FC = (): JSX.Element => {
       editor!.focus();
     } else {
       // 函数字段
-      doc.replaceRange(`${name}()`, pos);
-      pos.ch += name.length + 1;
-      doc.setCursor(pos);
-      editor!.focus();
+      const value = doc.getValue();
+
+      // 如果在空格 逗号之后有输入值，用户在下方选中函数，直接替换
+      const _value = value.toString();
+      const blankIndex = _value.lastIndexOf(' ');
+      const commaIndex = _value.lastIndexOf(',');
+      const index = blankIndex !== -1 ? blankIndex : commaIndex;
+
+      // 存在有效索引
+      if (index !== -1) {
+        console.log('index:', index, 'pos:', pos, 'name.length:', name.length, '_value.length:', _value.length);
+        doc.replaceRange(`${name}()`, { ch: index + 1, line: pos.line }, pos);
+        // pos.ch += name.length + 1;
+        // pos.ch += name.length - 2;
+        // pos.ch += name.length;
+        pos.ch = name.length - (_value.length - (index + 1)) + _value.length + 1;
+        console.log('pos', pos, 'name.length:', name.length, '_value.length:', _value.length);
+
+        doc.setCursor(pos);
+        editor!.focus();
+      } else {
+        console.log('here???');
+
+        // 默认选中
+        doc.replaceRange(`${name}()`, pos);
+        pos.ch += name.length + 1;
+        doc.setCursor(pos);
+        editor!.focus();
+      }
     }
 
     dispatch!({
