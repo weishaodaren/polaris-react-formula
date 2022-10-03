@@ -85,31 +85,32 @@ const SelectPanel: FC = (): JSX.Element => {
       // 存在有效索引
       if (index !== -1) {
         const _index = _value.lastIndexOf(')');
-        console.log(_index, 'alksdjalskdjas');
-
-        console.log('index:', index, 'pos:', pos, 'name.length:', name.length, '_value.length:', _value.length);
         pos.ch = name.length - (_value.length - (index + 1)) + _value.length + 1;
 
-        // doc.replaceRange(
-        //   `${name}()`,
-        //   { ch: index + 1, line: pos.line },
-        //   { ch: pos.ch - 1, line: pos.line },
-        // );
+        console.log('index:', index, 'pos:', pos, 'name.length:', name.length, '_value.length:', _value.length);
+
         doc.replaceRange(
           `${name}()`,
           { ch: index + 1, line: pos.line },
           { ch: _index !== -1 ? _index : pos.ch - 1, line: pos.line },
         );
-        // pos.ch = name.length - (_value.length - (index + 1)) + _value.length + 1;
         console.log('pos', pos, 'name.length:', name.length, '_value.length:', _value.length);
         doc.setCursor(pos);
         editor!.focus();
       } else {
         console.log('here???');
+        console.log('index:', index, 'pos:', pos, 'name.length:', name.length, '_value.length:', _value.length);
+
+        pos.ch = name.length - (_value.length - (index + 1)) + _value.length + 1;
+         doc.replaceRange(
+          `${name}()`,
+          { ch: index - 2, line: pos.line },
+          { ch: pos.ch - 1, line: pos.line },
+        );
 
         // 默认选中
-        doc.replaceRange(`${name}()`, pos);
-        pos.ch += name.length + 1;
+        // doc.replaceRange(`${name}()`, pos);
+        // pos.ch += name.length + 1;
         doc.setCursor(pos);
         editor!.focus();
       }
