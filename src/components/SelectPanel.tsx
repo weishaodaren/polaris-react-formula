@@ -14,6 +14,7 @@ import type { CustomFieldIconType } from '../config';
 
 import { store, ActionType } from '../store';
 import { prefixCls, CustomFieldIcon } from '../config';
+import { braketReg, blockReg } from '../utils';
 
 /**
  * Component
@@ -80,7 +81,13 @@ const SelectPanel: FC = (): JSX.Element => {
       const _value = value.toString();
       const blankIndex = _value.lastIndexOf(' ');
       const commaIndex = _value.lastIndexOf(',');
-      const index = commaIndex !== -1 ? commaIndex : blankIndex;
+      const leftIndex = _value.lastIndexOf('(');
+      // const index = commaIndex !== -1 ? commaIndex : blankIndex;
+      const index = [leftIndex, commaIndex, blankIndex].filter((_) => _ !== -1)[0] ?? -1;
+
+      console.log(index, 'iiiiiiiiiiii', leftIndex, commaIndex, blankIndex);
+
+      console.log('lalalalaalal', _value.match(braketReg), _value.match(blockReg));
 
       // 存在有效索引
       if (index !== -1) {
@@ -97,20 +104,32 @@ const SelectPanel: FC = (): JSX.Element => {
         console.log('pos', pos, 'name.length:', name.length, '_value.length:', _value.length);
         doc.setCursor(pos);
         editor!.focus();
-      } else {
-        console.log('here???');
-        console.log('index:', index, 'pos:', pos, 'name.length:', name.length, '_value.length:', _value.length);
-
+      } else if (!_value.match(braketReg) && !_value.match(blockReg)) {
+        console.log('weihsaodaren');
         pos.ch = name.length - (_value.length - (index + 1)) + _value.length + 1;
-         doc.replaceRange(
+        doc.replaceRange(
           `${name}()`,
           { ch: index - 2, line: pos.line },
           { ch: pos.ch - 1, line: pos.line },
         );
+        doc.setCursor(pos);
+        editor!.focus();
+      } else {
+        console.log('here???');
+        console.log('index:', index, 'pos:', pos, 'name.length:', name.length, '_value.length:', _value.length);
+
+        // pos.ch = name.length - (_value.length - (index + 1)) + _value.length + 1;
+        console.log('pos', pos, 'name.length:', name.length, '_value.length:', _value.length);
+
+        // doc.replaceRange(
+        //   `${name}()`,
+        //   { ch: index - 2, line: pos.line },
+        //   { ch: pos.ch - 1, line: pos.line },
+        // );
 
         // 默认选中
-        // doc.replaceRange(`${name}()`, pos);
-        // pos.ch += name.length + 1;
+        doc.replaceRange(`${name}()`, pos);
+        pos.ch += name.length + 1;
         doc.setCursor(pos);
         editor!.focus();
       }
