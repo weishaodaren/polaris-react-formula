@@ -14,7 +14,8 @@ import type { CustomFieldIconType } from '../config';
 
 import { store, ActionType } from '../store';
 import { prefixCls, CustomFieldIcon } from '../config';
-import { braketReg, blockReg } from '../utils';
+// TODO: fixme
+// import { braketReg, blockReg } from '../utils';
 
 /**
  * Component
