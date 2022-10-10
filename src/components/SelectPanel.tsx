@@ -74,65 +74,66 @@ const SelectPanel: FC = (): JSX.Element => {
       doc.replaceRange(`{${name}}`, pos, pos);
       editor!.focus();
     } else {
+      // TODO: 空了着重解决
       // 函数字段
-      const value = doc.getValue();
+      // const value = doc.getValue();
 
-      // 如果在空格 逗号之后有输入值，用户在下方选中函数，直接替换
-      const _value = value.toString();
-      const blankIndex = _value.lastIndexOf(' ');
-      const commaIndex = _value.lastIndexOf(',');
-      const leftIndex = _value.lastIndexOf('(');
-      // const index = commaIndex !== -1 ? commaIndex : blankIndex;
-      const index = [leftIndex, commaIndex, blankIndex].filter((_) => _ !== -1)[0] ?? -1;
+      // // 如果在空格 逗号之后有输入值，用户在下方选中函数，直接替换
+      // const _value = value.toString();
+      // const blankIndex = _value.lastIndexOf(' ');
+      // const commaIndex = _value.lastIndexOf(',');
+      // const leftIndex = _value.lastIndexOf('(');
+      // // const index = commaIndex !== -1 ? commaIndex : blankIndex;
+      // const index = [leftIndex, commaIndex, blankIndex].filter((_) => _ !== -1)[0] ?? -1;
 
-      console.log(index, 'iiiiiiiiiiii', leftIndex, commaIndex, blankIndex);
+      // console.log(index, 'iiiiiiiiiiii', leftIndex, commaIndex, blankIndex);
 
-      console.log('lalalalaalal', _value.match(braketReg), _value.match(blockReg));
+      // console.log('lalalalaalal', _value.match(braketReg), _value.match(blockReg));
 
-      // 存在有效索引
-      if (index !== -1) {
-        const _index = _value.lastIndexOf(')');
-        pos.ch = name.length - (_value.length - (index + 1)) + _value.length + 1;
+      // // 存在有效索引
+      // if (index !== -1) {
+      //   const _index = _value.lastIndexOf(')');
+      //   pos.ch = name.length - (_value.length - (index + 1)) + _value.length + 1;
 
-        console.log('index:', index, 'pos:', pos, 'name.length:', name.length, '_value.length:', _value.length);
+      //   console.log('index:', index, 'pos:', pos, 'name.length:', name.length, '_value.length:', _value.length);
 
-        doc.replaceRange(
-          `${name}()`,
-          { ch: index + 1, line: pos.line },
-          { ch: _index !== -1 ? _index : pos.ch - 1, line: pos.line },
-        );
-        console.log('pos', pos, 'name.length:', name.length, '_value.length:', _value.length);
-        doc.setCursor(pos);
-        editor!.focus();
-      } else if (!_value.match(braketReg) && !_value.match(blockReg)) {
-        console.log('weihsaodaren');
-        pos.ch = name.length - (_value.length - (index + 1)) + _value.length + 1;
-        doc.replaceRange(
-          `${name}()`,
-          { ch: index - 2, line: pos.line },
-          { ch: pos.ch - 1, line: pos.line },
-        );
-        doc.setCursor(pos);
-        editor!.focus();
-      } else {
-        console.log('here???');
-        console.log('index:', index, 'pos:', pos, 'name.length:', name.length, '_value.length:', _value.length);
+      //   doc.replaceRange(
+      //     `${name}()`,
+      //     { ch: index + 1, line: pos.line },
+      //     { ch: _index !== -1 ? _index : pos.ch - 1, line: pos.line },
+      //   );
+      //   console.log('pos', pos, 'name.length:', name.length, '_value.length:', _value.length);
+      //   doc.setCursor(pos);
+      //   editor!.focus();
+      // } else if (!_value.match(braketReg) && !_value.match(blockReg)) {
+      //   console.log('weihsaodaren');
+      //   pos.ch = name.length - (_value.length - (index + 1)) + _value.length + 1;
+      //   doc.replaceRange(
+      //     `${name}()`,
+      //     { ch: index - 2, line: pos.line },
+      //     { ch: pos.ch - 1, line: pos.line },
+      //   );
+      //   doc.setCursor(pos);
+      //   editor!.focus();
+      // } else {
+      //   console.log('here???');
+      //   console.log('index:', index, 'pos:', pos, 'name.length:', name.length, '_value.length:', _value.length);
 
-        // pos.ch = name.length - (_value.length - (index + 1)) + _value.length + 1;
-        console.log('pos', pos, 'name.length:', name.length, '_value.length:', _value.length);
+      //   // pos.ch = name.length - (_value.length - (index + 1)) + _value.length + 1;
+      //   console.log('pos', pos, 'name.length:', name.length, '_value.length:', _value.length);
 
-        // doc.replaceRange(
-        //   `${name}()`,
-        //   { ch: index - 2, line: pos.line },
-        //   { ch: pos.ch - 1, line: pos.line },
-        // );
+      //   // doc.replaceRange(
+      //   //   `${name}()`,
+      //   //   { ch: index - 2, line: pos.line },
+      //   //   { ch: pos.ch - 1, line: pos.line },
+      //   // );
 
         // 默认选中
         doc.replaceRange(`${name}()`, pos);
         pos.ch += name.length + 1;
         doc.setCursor(pos);
         editor!.focus();
-      }
+      // }
     }
 
     dispatch!({

@@ -118,7 +118,10 @@ export const Store: FC<IStoreProps> = ({ children }) => {
         const index = [commaIndex, blankIndex, leftIndex].filter((_) => _ !== -1)[0] ?? -1;
 
         if (index !== -1) {
-          const _editorValue = editorValue.slice(Number(index) + 1, editorValue.length - 1);
+          const _editorValue = editorValue
+            .slice(Number(index) + 1, editorValue.length - 1)
+            .replaceAll(')', '')
+            .replaceAll('(', '');
 
           return {
             ...originalState,
