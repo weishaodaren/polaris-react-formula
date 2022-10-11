@@ -88,7 +88,7 @@ export const Store: FC<IStoreProps> = ({ children }) => {
           editorValue: originalEditorValue,
           fieldValues,
           FunctionNames,
-          editor,
+          // editor, TODO: 后期使用
         } = originalState;
 
         // 替换值
