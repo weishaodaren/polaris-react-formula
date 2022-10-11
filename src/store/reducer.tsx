@@ -1,3 +1,4 @@
+/* eslint-disable no-extra-parens */
 import React, {
   createContext,
   useReducer,
@@ -86,7 +87,51 @@ export const Store: FC<IStoreProps> = ({ children }) => {
           originalFields: fields,
           editorValue: originalEditorValue,
           fieldValues,
+          FunctionNames,
+          editor,
         } = originalState;
+
+        // 替换值
+        let replaceValue = editorValue.slice(0);
+         // 全量替换字段
+        if (fields?.length) {
+          for (let j = 0; j < fields?.length; j += 1) {
+            replaceValue = replaceValue.replace(new RegExp(`{${(fields[j] as Variable).value}}`, 'ig'), '');
+          }
+        }
+        // 全量替换函数
+        for (let i = 0; i < FunctionNames.length; i += 1) {
+          replaceValue = replaceValue.replace(new RegExp(FunctionNames[i], 'ig'), '');
+        }
+        replaceValue = replaceValue
+          .replaceAll('(', '')
+          .replaceAll(')', '')
+          .replace(/\d+/g, '')
+          .replaceAll(',', '')
+          .replaceAll('=', '')
+          .replace(/"(.*?)"/g, '');
+
+        // 存在 被过滤剩下的值，都是非法值
+        if (replaceValue.trim()) {
+          return {
+            ...originalState,
+            isSelected,
+            editorValue: originalEditorValue,
+            fields,
+            functions: Functions,
+            errorText: replaceValue,
+            errorCode: ErrorType.Invalid,
+            disabled: true,
+          };
+        }
+
+        // 获取当前光标位置
+        // const { line, ch } = editor!.getCursor();
+        // const value = editor!.getLine(line);
+        // console.log('line:', line);
+        // console.log('ch: ', ch);
+        // console.log('value: ', value);
+        // console.log('__value__: ', value![ch as number - 1]);
 
         // 获取错误信息
         const [errorCode, errorText] = getFormulaError(editorValue) as string[];

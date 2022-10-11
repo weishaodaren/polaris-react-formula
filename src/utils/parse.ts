@@ -24,7 +24,12 @@ export const parseMarks = (rawString: string) => rawString
   .replace(/】/g, ']')
   .replace(/（/g, '(')
   .replace(/）/g, ')')
-  .replace(/：/g, ':');
+  .replace(/：/g, ':')
+  .replace(/'/g, '"')
+  .replace(/‘/g, '"')
+  .replace(/’/g, '"')
+  .replace(/“/g, '"')
+  .replace(/”/g, '"');
 
 /**
  * Function
