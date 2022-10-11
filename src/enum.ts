@@ -202,6 +202,11 @@ export enum Fields {
    */
   ProjectId = 'projectId',
 
+  /**
+   * 条件引用
+   */
+  ConditionRef = 'conditionRef',
+
 }
 
 export type IFields = typeof Fields;
