@@ -42,6 +42,7 @@ const Editor: FC<FormulaEditorProps> = ({
   const {
     state: {
       fields,
+      originalFields,
       disabled,
       editorValue,
     },
@@ -74,7 +75,7 @@ const Editor: FC<FormulaEditorProps> = ({
    */
   const confirmModal = useCallback(() => {
     try {
-      onChange?.(editorValue, reverseField(editorValue, fields as Variable[]));
+      onChange?.(editorValue, reverseField(editorValue, originalFields as Variable[]));
       onClose?.();
       dispatch!({
         type: ActionType.SetErrorText,
