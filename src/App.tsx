@@ -4,19 +4,20 @@ import { column, dataSource } from './config';
 
 function App() {
   const [visible, setVisible] = useState(true);
-  const value = 'IF({title}= \'32142323\', \'A\', \'B\', SUM({title}, {ownerId}))';
+  // const value = 'IF({title} = "刘123建", {title}, {ownerId})';
+  const value = '';
 
   const onCalc = useCallback((formula: string, formulaField: string) => {
-    console.log('formula：', formula);
+    console.log('formula:', formula);
     console.log('field:', formulaField);
+
+    const res = useFormula(formula, dataSource[0]);
+    console.log('result:', res);
   }, []);
 
   const onClose = useCallback(() => {
     setVisible(false);
   }, []);
-
-    const A = useFormula(value, dataSource[0]);
-    console.log(A);
 
   return (
     <>
