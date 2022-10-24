@@ -91,7 +91,7 @@ export const parseFieldData = (key: string, sourceData: IDataSource | any) => {
   if (!fieldKey || !Array.isArray(fieldKey)) return null;
 
   const data: any[] = [];
-  // 数组 sourceData
+  // 数组 sourceData(基本不再使用，后续没有新的需求，删除数组方法)
   if (Array.isArray(sourceData)) {
     for (let i = 0; i < sourceData.length; i += 1) {
       for (let j = 0; j < fieldKey.length; j += 1) {
@@ -107,14 +107,16 @@ export const parseFieldData = (key: string, sourceData: IDataSource | any) => {
     return filterFieldData(data);
   }
 
-  // 对象 sourceData
-  Object.entries(sourceData).forEach(([_key, value]) => {
-    for (let j = 0; j < fieldKey.length; j += 1) {
-      if (fieldKey[j] === _key) {
-        data.unshift(value);
+  // 存在单个值情况(对象)
+  const sourceDataArray = Object.entries(sourceData);
+  for (let j = 0; j < fieldKey.length; j += 1) {
+    for (let k = 0; k < sourceDataArray.length; k += 1) {
+      const [_key, value] = sourceDataArray[k];
+      if (_key === fieldKey[j]) {
+       data.push(value);
       }
     }
-  });
+  }
 
   return filterFieldData(data);
 };
