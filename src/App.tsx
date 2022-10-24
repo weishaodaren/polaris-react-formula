@@ -4,8 +4,8 @@ import { column, dataSource } from './config';
 
 function App() {
   const [visible, setVisible] = useState(true);
-  // const value = 'IF({title} = "刘123建", {title}, {ownerId})';
-  const value = '';
+  const value = 'IF({title} = "刘123建", {title}, {ownerId})';
+  // const value = '';
 
   const onCalc = useCallback((formula: string, formulaField: string) => {
     console.log('formula:', formula);

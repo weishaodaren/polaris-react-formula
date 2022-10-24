@@ -86,15 +86,6 @@ export const evil = (expression: string) => {
     _expression = Function(`"use strict";return (${expression})`)();
   } catch ({ message }) {
     // TODO: 拦截message 查看错误变量，替换字符串，暂时在`parseKeyReplaceField`解决
-    // if (typeof message === 'string') {
-    //   const errorIndex = message.indexOf(' is not defined');
-    //   const errorVariable = message.slice(0, errorIndex);
-    //   console.log(errorVariable, 'expression');
-
-    //   const expressionIndex = expression.indexOf(errorVariable);
-    //   console.log(expressionIndex, 'expressionIndex');
-
-    // _expression = Function(`"use strict";return (${expression})`)();
     _expression = Function(`"use strict";return (${JSON.stringify(expression)})`)();
   }
 
