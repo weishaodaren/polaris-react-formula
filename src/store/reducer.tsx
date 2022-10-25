@@ -128,14 +128,12 @@ export const Store: FC<IStoreProps> = ({ children }) => {
         //   };
         // }
 
+         // 获取错误信息
+        const [errorCode, errorText] = getFormulaError(editorValue) as string[];
+
         // 获取当前光标位置
         const { line, ch } = editor!.getCursor();
         const value = editor!.getLine(line);
-        // TODO: 暂时注释
-        // console.log('line:', line);
-        // console.log('ch: ', ch);
-        // console.log('value: ', value);
-        // console.log('__value__: ', value![ch as number - 1]);
 
         // 获取光标前的值
         const frontCursorValue = value![ch as number - 1];
@@ -147,11 +145,11 @@ export const Store: FC<IStoreProps> = ({ children }) => {
             editorValue: originalEditorValue,
             fields,
             functions: Functions,
+            errorText,
+            errorCode,
+            disabled: Number(errorCode) > -1,
           };
         }
-
-        // 获取错误信息
-        const [errorCode, errorText] = getFormulaError(editorValue) as string[];
 
         /**
          * 从面板中选中 原封不动返回值

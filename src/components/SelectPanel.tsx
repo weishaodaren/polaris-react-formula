@@ -17,8 +17,6 @@ import type { CustomFieldIconType } from '../config';
 
 import { store, ActionType } from '../store';
 import { prefixCls, CustomFieldIcon } from '../config';
-// TODO: fixme
-// import { braketReg, blockReg } from '../utils';
 
 const Style = `${prefixCls}-select-panel-layout`;
 
@@ -127,65 +125,73 @@ const SelectPanel: FC = (): JSX.Element => {
       doc.replaceRange(`{${name}}`, pos, pos);
       editor!.focus();
     } else {
-      // TODO: 空了着重解决
       // 函数字段
-      // const value = doc.getValue();
+      const { line } = pos;
+      const value = editor.getLine(line);
 
-      // // 如果在空格 逗号之后有输入值，用户在下方选中函数，直接替换
-      // const _value = value.toString();
-      // const blankIndex = _value.lastIndexOf(' ');
-      // const commaIndex = _value.lastIndexOf(',');
-      // const leftIndex = _value.lastIndexOf('(');
-      // // const index = commaIndex !== -1 ? commaIndex : blankIndex;
-      // const index = [leftIndex, commaIndex, blankIndex].filter((_) => _ !== -1)[0] ?? -1;
+      // 如果在空格 逗号之后有输入值，用户在下方选中函数，直接替换
+      const _value = value.toString();
+      const blankIndex = _value.lastIndexOf(' ');
+      const commaIndex = _value.lastIndexOf(',');
+      const leftIndex = _value.lastIndexOf('(');
+      const index = [commaIndex, blankIndex].filter((_) => _ !== -1)[0] ?? -1;
 
-      // console.log(index, 'iiiiiiiiiiii', leftIndex, commaIndex, blankIndex);
+      console.log(index, 'index', commaIndex, blankIndex, leftIndex);
 
-      // console.log('lalalalaalal', _value.match(braketReg), _value.match(blockReg));
+      // 优先判断是否有左侧小括号
+      if (leftIndex !== -1) {
+        // 判断是否有逗号，空格
+        if (index !== -1) {
+        console.log('22222222');
 
-      // // 存在有效索引
-      // if (index !== -1) {
-      //   const _index = _value.lastIndexOf(')');
-      //   pos.ch = name.length - (_value.length - (index + 1)) + _value.length + 1;
+          const endPosition = index + name.length + 1;
+          doc.replaceRange(
+            `${name}()`,
+            { ch: index + 1, line },
+            pos,
+          );
+          pos.ch = endPosition + 1;
+        } else {
+          console.log('1111111111');
+          doc.replaceRange(
+            `${name}()`,
+            { ch: leftIndex + 1, line },
+            pos,
+          );
+          pos.ch = leftIndex + name.length + 2;
+        }
+        // 如果没有敏感字符串，开头替换
+      } else if (index === -1) {
+        console.log('333333333');
 
-      //   console.log('index:', index, 'pos:', pos, 'name.length:', name.length, '_value.length:', _value.length);
+        const endPosition = name.length;
+        doc.replaceRange(
+          `${name}()`,
+          { ch: 0, line },
+          { ch: endPosition, line },
+        );
+        pos.ch = endPosition + 1;
+      } else {
+        console.log('44444444444444');
 
-      //   doc.replaceRange(
-      //     `${name}()`,
-      //     { ch: index + 1, line: pos.line },
-      //     { ch: _index !== -1 ? _index : pos.ch - 1, line: pos.line },
-      //   );
-      //   console.log('pos', pos, 'name.length:', name.length, '_value.length:', _value.length);
-      //   doc.setCursor(pos);
-      //   editor!.focus();
-      // } else if (!_value.match(braketReg) && !_value.match(blockReg)) {
-      //   console.log('weihsaodaren');
-      //   pos.ch = name.length - (_value.length - (index + 1)) + _value.length + 1;
-      //   doc.replaceRange(
-      //     `${name}()`,
-      //     { ch: index - 2, line: pos.line },
-      //     { ch: pos.ch - 1, line: pos.line },
-      //   );
-      //   doc.setCursor(pos);
-      //   editor!.focus();
-      // } else {
-      //   console.log('here???');
-      //   console.log('index:', index, 'pos:', pos, 'name.length:', name.length, '_value.length:', _value.length);
+        // 在括号外 执行逗号，空格的判断
+        const endPosition = index + name.length + 1;
+        doc.replaceRange(
+          `${name}()`,
+        { ch: index + 1, line },
+        { ch: endPosition, line },
+        );
+        pos.ch = endPosition + 1;
+      }
 
-      //   // pos.ch = name.length - (_value.length - (index + 1)) + _value.length + 1;
-      //   console.log('pos', pos, 'name.length:', name.length, '_value.length:', _value.length);
-
-      //   // doc.replaceRange(
-      //   //   `${name}()`,
-      //   //   { ch: index - 2, line: pos.line },
-      //   //   { ch: pos.ch - 1, line: pos.line },
-      //   // );
+      doc.setCursor(pos);
+      editor!.focus();
 
         // 默认选中
-        doc.replaceRange(`${name}()`, pos);
-        pos.ch += name.length + 1;
-        doc.setCursor(pos);
-        editor!.focus();
+        // doc.replaceRange(`${name}()`, pos);
+        // pos.ch += name.length + 1;
+        // doc.setCursor(pos);
+        // editor!.focus();
       // }
     }
 
