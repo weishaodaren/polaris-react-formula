@@ -5,6 +5,8 @@ import type { FunctionItem, Variable } from '../types';
 import { prefixCls } from '../config';
 import { store } from '../store';
 
+const Style = `${prefixCls}-description-layout`;
+
 /**
  * Component
  * @description 右侧内容描述
@@ -24,13 +26,18 @@ const Description: FC = (): JSX.Element => {
   } = currentFieldOrFunction as FunctionItem & Variable;
 
   return useMemo(() => (
-    <div className={`${prefixCls}-description-layout`}>
+    <div className={Style}>
       <h2>{name ?? label}</h2>
-      <div className={`${prefixCls}-description-layout-description`}>{description ?? `返回 ${label} 列单元格的值`}</div>
-      <div className={`${prefixCls}-description-layout-description-useage`}>用法</div>
+      <div className={`${Style}-description`}>
+        {description ?? `返回 ${label} 列单元格的值`}
+      </div>
+      <div className={`${Style}-description-useage`}>用法</div>
       <code>{useage ?? `{${value}}`}</code>
-      <div className={`${prefixCls}-description-layout-description-example`}>举个例子</div>
-      <CodeMirror options={{ readOnly: 'nocursor' }} value={example ?? `{${value}}`} />
+      <div className={`${Style}-description-example`}>举个例子</div>
+      <CodeMirror
+        options={{ readOnly: 'nocursor' }}
+        value={example ?? `{${value}}`}
+      />
     </div>
   ), [currentFieldOrFunction]);
 };

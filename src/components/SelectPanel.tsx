@@ -4,6 +4,9 @@ import React, {
   useContext,
   useCallback,
   useMemo,
+  useState,
+  useEffect,
+  useRef,
 } from 'react';
 import { Icon } from 'polaris-react-component';
 
@@ -16,6 +19,8 @@ import { store, ActionType } from '../store';
 import { prefixCls, CustomFieldIcon } from '../config';
 // TODO: fixme
 // import { braketReg, blockReg } from '../utils';
+
+const Style = `${prefixCls}-select-panel-layout`;
 
 /**
  * Component
@@ -37,6 +42,52 @@ const SelectPanel: FC = (): JSX.Element => {
   const emptyFunctions = !functions.length; // 空函数
 
   /**
+   * Ref
+   */
+  const mountedRef = useRef(false); // 用于判断当前DOM是否已经挂载
+
+  /**
+   * State
+   */
+  const [selected, setSelected] = useState(''); // 选中的字段
+
+  /**
+   * Effect
+   * @description 依赖变量字段，函数字段 匹配模糊查询默认选中第一项
+   * @return {Void}
+   */
+  useEffect(() => {
+    /**
+     * 第一次不执行副作用函数
+     * 等待依赖更新再执行
+     */
+    if (mountedRef.current) {
+      // 优先匹配变量字段
+      if (fields && fields?.length > 0) {
+        setSelected((fields[0] as Variable).value);
+        dispatch!({
+          type: ActionType.SetCurrentFieldOrFunction,
+          currentFieldOrFunction: fields[0] as Variable,
+        } as unknown as IActionType);
+        return undefined;
+      }
+
+      if (functions.length > 0) {
+        const { functions: _fns } = functions[0];
+        setSelected(_fns[0].name);
+        dispatch!({
+          type: ActionType.SetCurrentFieldOrFunction,
+          currentFieldOrFunction: _fns[0],
+        } as IActionType);
+      }
+    }
+
+    return () => {
+      mountedRef.current = true;
+    };
+  }, [fields, functions]);
+
+  /**
    * Callback
    * @description 选择字段 函数项
    * @param item 单项数据
@@ -47,11 +98,12 @@ const SelectPanel: FC = (): JSX.Element => {
   ) => (
     event: MouseEvent<HTMLDivElement>,
   ) => {
-      event.stopPropagation();
-      dispatch!({
-        type: ActionType.SetCurrentFieldOrFunction,
-        currentFieldOrFunction: item,
-      } as IActionType);
+    event.stopPropagation();
+    setSelected((item as FunctionItem).name ?? (item as Variable).value);
+    dispatch!({
+      type: ActionType.SetCurrentFieldOrFunction,
+      currentFieldOrFunction: item,
+    } as IActionType);
     }, []);
 
   /**
@@ -145,7 +197,7 @@ const SelectPanel: FC = (): JSX.Element => {
   }, [editor]);
 
   return useMemo(() => (
-    <div className={`${prefixCls}-select-panel-layout`}>
+    <div className={Style}>
       {/* 全字段为空 */}
       {!emptyFunctions || !emptyField
         ? (
@@ -155,7 +207,7 @@ const SelectPanel: FC = (): JSX.Element => {
             {/* 字段 */}
             {(fields as Variable[])?.map((field) => (
               <div
-                className={`${prefixCls}-select-panel-layout-list-item`}
+                className={[`${Style}-list-item`, selected === field.value && `${Style}-list-item-active`].join(' ')}
                 key={field.value}
                 onMouseEnter={selectItem(field)}
                 onClick={clickItem(field.value, true)}
@@ -163,14 +215,13 @@ const SelectPanel: FC = (): JSX.Element => {
                 <Icon type={(CustomFieldIcon as CustomFieldIconType as any)[field.type]} />
                 <span>{field.label}</span>
               </div>
-            ))
-            }
+            ))}
             {/* 函数 */}
             {(functions as FunctionGroup[]).map(({ name, functions: _functions }, index) => (
               <Fragment key={index}>
                 <h3>{name}</h3>
                 {_functions.map((item) => <div
-                  className={`${prefixCls}-select-panel-layout-list-item`}
+                  className={[`${Style}-list-item`, selected === item.name && `${Style}-list-item-active`].join(' ')}
                   key={item.name}
                   onMouseEnter={selectItem(item)}
                   onClick={clickItem(item.name, false)}
@@ -179,14 +230,13 @@ const SelectPanel: FC = (): JSX.Element => {
                   <span>{item.name}</span>
                 </div>)}
               </Fragment>
-            ))
-            }
+            ))}
           </>
         )
         : <h3>暂无搜索结果</h3>
       }
     </div >
-  ), [editor, fields, functions]);
+  ), [editor, fields, functions, selected]);
 };
 
 export default SelectPanel;
