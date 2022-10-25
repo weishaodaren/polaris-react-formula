@@ -133,8 +133,8 @@ export const isBracketError = (input: string): boolean => {
 /**
  * Function
  * @description 获取公式计算异常 抛出错误提示
- * @param input 输入值
- * @return [number, string]
+ * @param {String} input 输入值
+ * @return {Array<Number, String>}
  */
 export const getFormulaError = (input: string) => {
   if (isBracketError(input)) {

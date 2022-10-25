@@ -45,6 +45,63 @@ export const store = createContext<IStore>({ state: initialState });
 const { Provider } = store;
 
 /**
+ * @description 获取搜索后的编辑值
+ * @param fields 字段组
+ * @param editorValue 编辑器值
+ * @param fieldValues 字段值
+ * @param isSelected 是否选中
+ * @param errorText 错误文案
+ * @param errorCode 错误码
+ * @returns {Object}
+ */
+const getSearchedEditorValue = (
+  fields: Variable[],
+  editorValue: string,
+  fieldValues: string[],
+  isSelected: boolean,
+  errorText: string,
+  errorCode: string,
+) => {
+  // 查询后的值
+  const _fields = fuzzySearchField(fields as Variable[], editorValue);
+  const _functions = fuzzySearchFunctions(Functions, editorValue);
+  const isValidFields = _fields.length;
+  const isValidFunctions = _functions.length;
+
+  // 是否是有效字段
+  const isValidFieldValue = isValidField(editorValue, fieldValues);
+
+  // 过滤加减乘除括号后的值
+  const filterValue = filterMarks(editorValue);
+  // 默认输入数字不提示错误
+  const isValidFilterValue = Number.isNaN(+filterValue);
+
+  // 搜索不到有效内容，禁用按钮，给出提示
+  if (!isValidFields && !isValidFunctions && isValidFilterValue && !isValidFieldValue) {
+    return {
+      isSelected,
+      editorValue,
+      fields: _fields,
+      functions: _functions,
+      currentFieldOrFunction: Sample,
+      errorText: editorValue,
+      errorCode: ErrorType.Invalid,
+      disabled: true,
+    };
+  }
+  // 无条件 模糊查询
+  return {
+    isSelected,
+    editorValue,
+    fields: _fields,
+    functions: _functions,
+    errorText,
+    errorCode,
+    disabled: Number(errorCode) > -1,
+  };
+};
+
+/**
  * Component
  * @description 状态管理仓库
  */
@@ -87,46 +144,8 @@ export const Store: FC<IStoreProps> = ({ children }) => {
           originalFields: fields,
           editorValue: originalEditorValue,
           fieldValues,
-          // FunctionNames,
           editor,
         } = originalState;
-
-        // // 替换值
-        // let replaceValue = editorValue.slice(0);
-        //  // 全量替换字段
-        // if (fields?.length) {
-        //   for (let j = 0; j < fields?.length; j += 1) {
-        //     replaceValue =
-        // replaceValue.replace(new RegExp(`{${(fields[j] as Variable).value}}`, 'ig'), '');
-        //   }
-        // }
-        // // 全量替换函数
-        // for (let i = 0; i < FunctionNames.length; i += 1) {
-        //   replaceValue = replaceValue.replace(new RegExp(FunctionNames[i], 'ig'), '');
-        // }
-        // replaceValue = replaceValue
-        //   .replaceAll('(', '')
-        //   .replaceAll(')', '')
-        //   .replace(/\d+/g, '')
-        //   .replaceAll(',', '')
-        //   .replaceAll('=', '')
-        //   .replace(/"(.*?)"/g, '');
-
-        // // 存在 被过滤剩下的值，都是非法值
-        // if (replaceValue.trim()) {
-        //   console.log(replaceValue, 'replaceValue');
-
-        //   return {
-        //     ...originalState,
-        //     isSelected,
-        //     editorValue: originalEditorValue,
-        //     fields,
-        //     functions: Functions,
-        //     errorText: replaceValue,
-        //     errorCode: ErrorType.Invalid,
-        //     disabled: true,
-        //   };
-        // }
 
          // 获取错误信息
         const [errorCode, errorText] = getFormulaError(editorValue) as string[];
@@ -185,55 +204,27 @@ export const Store: FC<IStoreProps> = ({ children }) => {
 
           return {
             ...originalState,
-            isSelected,
-            editorValue,
-            fields: fuzzySearchField(fields as Variable[], _editorValue),
-            functions: fuzzySearchFunctions(Functions, _editorValue),
-            errorText,
-            errorCode,
-            disabled: Number(errorCode) > -1,
+            ...getSearchedEditorValue(
+                fields as Variable[],
+                _editorValue,
+                fieldValues,
+                isSelected,
+                errorText,
+                errorCode,
+            ),
           };
         }
 
-        // 查询后的值
-        const _fields = fuzzySearchField(fields as Variable[], editorValue);
-        const _functions = fuzzySearchFunctions(Functions, editorValue);
-        const isValidFields = _fields.length;
-        const isValidFunctions = _functions.length;
-
-        // 是否是有效字段
-        const isValidFieldValue = isValidField(editorValue, fieldValues);
-
-        // 过滤加减乘除括号后的值
-        const filterValue = filterMarks(editorValue);
-        // 默认输入数字不提示错误
-        const isValidFilterValue = Number.isNaN(+filterValue);
-
-        // 搜索不到有效内容，禁用按钮，给出提示
-        if (!isValidFields && !isValidFunctions && isValidFilterValue && !isValidFieldValue) {
-         return {
-          ...originalState,
-          isSelected,
-          editorValue,
-          fields: _fields,
-           functions: _functions,
-          currentFieldOrFunction: Sample,
-          errorText: editorValue,
-          errorCode: ErrorType.Invalid,
-          disabled: true,
-        };
-        }
-
-        // 无条件 模糊查询
         return {
           ...originalState,
-          isSelected,
-          editorValue,
-          fields: _fields,
-          functions: _functions,
-          errorText,
-          errorCode,
-          disabled: Number(errorCode) > -1,
+          ...getSearchedEditorValue(
+                fields as Variable[],
+                editorValue,
+                fieldValues,
+                isSelected,
+                errorText,
+                errorCode,
+          ),
         };
       }
 
