@@ -15,7 +15,7 @@ import type { IColumn } from '../config';
 import type { Variable } from '../types';
 
 import { ErrorType } from '../enum';
-import { Functions } from '../config';
+import { Functions, Sample } from '../config';
 import { initialState } from './initialState';
 import ActionType from './actionType';
 import {
@@ -216,7 +216,8 @@ export const Store: FC<IStoreProps> = ({ children }) => {
           isSelected,
           editorValue,
           fields: _fields,
-          functions: _functions,
+           functions: _functions,
+          currentFieldOrFunction: Sample,
           errorText: editorValue,
           errorCode: ErrorType.Invalid,
           disabled: true,
