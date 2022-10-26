@@ -126,7 +126,7 @@ const SelectPanel: FC = (): JSX.Element => {
       editor!.focus();
     } else {
       // 函数字段
-      const { line } = pos;
+      const { ch, line } = pos;
       const value = editor.getLine(line);
 
       // 如果在空格 逗号之后有输入值，用户在下方选中函数，直接替换
@@ -135,46 +135,31 @@ const SelectPanel: FC = (): JSX.Element => {
       const commaIndex = _value.lastIndexOf(',');
       const leftIndex = _value.lastIndexOf('(');
       const index = [commaIndex, blankIndex].filter((_) => _ !== -1)[0] ?? -1;
+      const cursorValue = value![ch as number - 1];
 
-      console.log(index, 'index', commaIndex, blankIndex, leftIndex);
-
-      // 优先判断是否有左侧小括号
-      if (leftIndex !== -1) {
-        // 判断是否有逗号，空格
-        if (index !== -1) {
-        console.log('22222222');
-
-          const endPosition = index + name.length + 1;
-          doc.replaceRange(
-            `${name}()`,
-            { ch: index + 1, line },
-            pos,
-          );
-          pos.ch = endPosition + 1;
-        } else {
-          console.log('1111111111');
-          doc.replaceRange(
-            `${name}()`,
-            { ch: leftIndex + 1, line },
-            pos,
-          );
-          pos.ch = leftIndex + name.length + 2;
-        }
-        // 如果没有敏感字符串，开头替换
-      } else if (index === -1) {
-        console.log('333333333');
-
-        const endPosition = name.length;
+      // 光标位置最终为`,`
+      if (cursorValue === ',') {
+        const endPosition = index + name.length + 1;
         doc.replaceRange(
           `${name}()`,
-          { ch: 0, line },
-          { ch: endPosition, line },
+          { ch: index + 1, line },
+          pos,
         );
         pos.ch = endPosition + 1;
-      } else {
-        console.log('44444444444444');
+      }
 
-        // 在括号外 执行逗号，空格的判断
+      // 光标位置最终为`(`
+      if (cursorValue === '(') {
+        doc.replaceRange(
+          `${name}()`,
+          { ch: leftIndex + 1, line },
+          pos,
+        );
+        pos.ch = leftIndex + name.length + 2;
+      }
+
+      // 默认输出
+      if (cursorValue !== ',' && cursorValue !== '(') {
         const endPosition = index + name.length + 1;
         doc.replaceRange(
           `${name}()`,
@@ -184,15 +169,60 @@ const SelectPanel: FC = (): JSX.Element => {
         pos.ch = endPosition + 1;
       }
 
+      // 默认选中
+      // doc.replaceRange(`${name}()`, pos);
+      // pos.ch += name.length + 1;
+      // doc.setCursor(pos);
+      // editor!.focus();
+
+      // // 优先判断是否有左侧小括号
+      // if (leftIndex !== -1) {
+      //   // 判断是否有逗号，空格
+      //   if (index !== -1) {
+      //   console.log('22222222');
+
+      //     const endPosition = index + name.length + 1;
+      //     doc.replaceRange(
+      //       `${name}()`,
+      //       { ch: index + 1, line },
+      //       pos,
+      //     );
+      //     pos.ch = endPosition + 1;
+      //   } else {
+      //     console.log('1111111111');
+      //     doc.replaceRange(
+      //       `${name}()`,
+      //       { ch: leftIndex + 1, line },
+      //       pos,
+      //     );
+      //     pos.ch = leftIndex + name.length + 2;
+      //   }
+      //   // 如果没有敏感字符串，开头替换
+      // } else if (index === -1) {
+      //   console.log('333333333');
+
+      //   const endPosition = name.length;
+      //   doc.replaceRange(
+      //     `${name}()`,
+      //     { ch: 0, line },
+      //     { ch: endPosition, line },
+      //   );
+      //   pos.ch = endPosition + 1;
+      // } else {
+      //   console.log('44444444444444');
+
+      //   // 在括号外 执行逗号，空格的判断
+      //   const endPosition = index + name.length + 1;
+      //   doc.replaceRange(
+      //     `${name}()`,
+      //   { ch: index + 1, line },
+      //   { ch: endPosition, line },
+      //   );
+      //   pos.ch = endPosition + 1;
+      // }
+
       doc.setCursor(pos);
       editor!.focus();
-
-        // 默认选中
-        // doc.replaceRange(`${name}()`, pos);
-        // pos.ch += name.length + 1;
-        // doc.setCursor(pos);
-        // editor!.focus();
-      // }
     }
 
     dispatch!({
