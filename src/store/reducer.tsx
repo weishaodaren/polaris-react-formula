@@ -148,8 +148,11 @@ export const Store: FC<IStoreProps> = ({ children }) => {
           editor,
         } = originalState;
 
+        // 引号内视为常量，需要替换掉
+        const variableValue = editorValue.replaceAll(/".*?"/g, '');
+
          // 获取错误信息
-        const [errorCode, errorText] = getFormulaError(editorValue) as string[];
+        const [errorCode, errorText] = getFormulaError(variableValue) as string[];
 
         // 获取当前光标位置
         const { line, ch } = editor!.getCursor();
@@ -157,6 +160,7 @@ export const Store: FC<IStoreProps> = ({ children }) => {
 
         // 获取光标前的值
         const frontCursorValue = value![ch as number - 1];
+
         // 不存在有效值，直接返回全字段
         if (typeof frontCursorValue === 'undefined' || frontCursorValue === '') {
            return {
@@ -192,14 +196,20 @@ export const Store: FC<IStoreProps> = ({ children }) => {
         /**
          * 匹配 逗号 空格 等区块间，之后的输入值，继续模糊查询
          */
-        const commaIndex = editorValue.lastIndexOf(',');
-        const blankIndex = editorValue.lastIndexOf(' ');
-        const leftIndex = editorValue.lastIndexOf('(');
-        const index = [commaIndex, blankIndex, leftIndex].filter((_) => _ !== -1)[0] ?? -1;
+        const commaIndex = variableValue.lastIndexOf(',');
+        const blankIndex = variableValue.lastIndexOf(' ');
+        const equalIndex = variableValue.lastIndexOf('=');
+        const leftIndex = variableValue.lastIndexOf('(');
+        const index = [
+          commaIndex,
+          blankIndex,
+          equalIndex,
+          leftIndex,
+        ].filter((_) => _ !== -1)[0] ?? -1;
 
         if (index !== -1) {
-          const _editorValue = editorValue
-            .slice(Number(index) + 1, editorValue.length - 1)
+          const _editorValue = variableValue
+            .slice(Number(index) + 1, variableValue.length - 1)
             .replaceAll(')', '')
             .replaceAll('(', '');
 
