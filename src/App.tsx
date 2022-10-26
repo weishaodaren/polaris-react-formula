@@ -8,11 +8,11 @@ function App() {
   const value = '';
 
   const onCalc = useCallback((formula: string, formulaField: string) => {
-    console.log('formula:', formula);
-    console.log('field:', formulaField);
+    console.log('%c Formula:', 'color: pink', formula);
+    console.log('%c Field:', 'color: orange', formulaField);
 
     const res = useFormula(formula, dataSource[0]);
-    console.log('result:', res);
+    console.log('%c Result:', 'color: yellow', res);
   }, []);
 
   const onClose = useCallback(() => {

@@ -89,6 +89,7 @@ const getSearchedEditorValue = (
       disabled: true,
     };
   }
+
   // 无条件 模糊查询
   return {
     isSelected,
@@ -212,6 +213,7 @@ export const Store: FC<IStoreProps> = ({ children }) => {
                 errorText,
                 errorCode,
             ),
+            editorValue,
           };
         }
 
