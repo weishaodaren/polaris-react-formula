@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-implied-eval */
-import * as formulajs from '@formulajs/formulajs';
 import type { Position, Editor as CodemirrorEditor } from 'codemirror';
 import type { Variable, FunctionGroup } from '../types';
 import { ErrorType } from '../enum';
@@ -90,20 +89,6 @@ export const evil = (expression: string) => {
   }
 
   return _expression;
-};
-
-/**
- * Function
- * @description 将formulajsAPI注入全局
- * @return void
- */
-export const injectWindowApi = () => {
-  Object.keys(formulajs).forEach((key) => {
-    if (!Object.prototype.hasOwnProperty.call(window, key)) {
-      // @ts-ignore
-      window[key] = formulajs[key];
-    }
-  });
 };
 
 /**

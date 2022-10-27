@@ -4,7 +4,7 @@ import 'codemirror/mode/spreadsheet/spreadsheet.js';
 import type { FC } from 'react';
 import type { IColumn } from './config';
 
-import { injectWindowApi } from './utils';
+import { injectWindowAPI } from './utils';
 import { Store } from './store';
 import Editor from './components';
 
@@ -12,7 +12,7 @@ import './styles';
 
 export * from './utils';
 
-injectWindowApi();
+injectWindowAPI();
 
 export interface FormulaEditorProps {
   /**

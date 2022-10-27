@@ -122,6 +122,61 @@ const SelectPanel: FC = (): JSX.Element => {
 
     // 变量字段
     if (isField) {
+      // // 函数字段
+      // const { line } = pos;
+      // const value = editor.getLine(line);
+
+      // // 如果在空格 逗号之后有输入值，用户在下方选中函数，直接替换
+      // const _value = value.toString();
+      // const blankIndex = _value.lastIndexOf(' ');
+      // const commaIndex = _value.lastIndexOf(',');
+      // const leftIndex = _value.lastIndexOf('(');
+      // const index = [commaIndex, blankIndex].filter((_) => _ !== -1)[0] ?? -1;
+
+      // /**
+      //  * 根据计算，距离光标最近的敏感索引
+      //  * `lastIndex` > 0 使用 leftIndex
+      //  * 否则 使用 index
+      //  */
+      // const lastIndex = Math.abs(leftIndex) - Math.abs(index);
+      // console.log('Calccccccccccccccccccccc:', Math.abs(leftIndex), Math.abs(index));
+
+      // if (lastIndex > 0) {
+      //   console.log(1);
+
+      //   doc.replaceRange(
+      //     `{${name}}`,
+      //     { ch: leftIndex + 1, line },
+      //     pos,
+      //   );
+      //   pos.ch += name.length + 1;
+      // } else if (lastIndex < 0) {
+      //   console.log(2);
+
+      //   const endPosition = index + name.length + 1;
+      //   doc.replaceRange(
+      //     `{${name}}`,
+      //     { ch: index + 1, line },
+      //     { ch: endPosition + 1, line },
+      //   );
+      //   pos.ch += endPosition + 1;
+      // } else {
+      //   console.log(3);
+      //   const endPosition = index + name.length + 1;
+      //   console.log(endPosition, 'endPosition', index, name, name.length);
+
+      //   doc.replaceRange(
+      //     `{${name}}`,
+      //     { ch: index + 1, line },
+      //     pos,
+      //     // { ch: endPosition, line },
+      //   );
+      //   pos.ch = endPosition + 2;
+      // }
+
+      // doc.setCursor(pos);
+      // editor!.focus();
+
       doc.replaceRange(`{${name}}`, pos, pos);
       editor!.focus();
     } else {

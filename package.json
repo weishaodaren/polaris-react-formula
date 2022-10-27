@@ -2,7 +2,7 @@
   "name": "polaris-react-formula",
   "private": false,
   "auther": "weishaodaren@gmail.com",
-  "version": "2.8.5",
+  "version": "2.9.0",
   "type": "module",
   "license": "MIT",
   "main": "./dist/index.js",
@@ -39,7 +39,8 @@
     "@formulajs/formulajs": "^3.1.7",
     "antd": "^4.23.4",
     "codemirror": "5.65.8",
-    "polaris-react-component": "^0.1.2",
+    "dayjs": "^1.11.6",
+    "polaris-react-component": "^0.2.3",
     "react-codemirror2": "^7.2.1"
   },
   "devDependencies": {
