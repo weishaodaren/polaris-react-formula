@@ -1,4 +1,5 @@
 import React, { memo } from 'react';
+import 'codemirror/lib/codemirror.css';
 import 'codemirror/mode/spreadsheet/spreadsheet.js';
 
 import type { FC } from 'react';
