@@ -15,12 +15,26 @@ export default defineConfig({
       fileName: 'index',
     },
     rollupOptions: {
-      external: ['react', 'react-dom', 'antd', 'polaris-react-component', 'dayjs', 'codemirror'],
+      external: [
+        'react',
+        'react-dom',
+        'antd',
+        'polaris-react-component',
+        'dayjs',
+        'codemirror',
+        'react-codemirror2',
+        '@formulajs/formulajs',
+      ],
       output: {
         globals: {
           react: 'React',
           'react-dom': 'ReactDom',
           antd: 'antd',
+          'polaris-react-component': 'polarisReactComponent',
+          dayjs: 'DayJS',
+          codemirror: 'codemirror',
+          'react-codemirror2': 'reactCodemirror2',
+          '@formulajs/formulajs': '@formulajs/formulajs',
         },
       },
     },
