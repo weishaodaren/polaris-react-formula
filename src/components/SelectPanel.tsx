@@ -119,13 +119,20 @@ const SelectPanel: FC = (): JSX.Element => {
     event.stopPropagation();
     if (!editor) return;
 
-    const doc = editor!.getDoc();
-    const pos = doc.getCursor();
-    const { ch, line } = pos;
-    const value = editor.getLine(line);
+    /**
+     * 编辑器信息
+     */
+    const doc = editor!.getDoc(); // 获取当前文本
+    const pos = doc.getCursor(); // 获取当前位置
+    const { ch, line } = pos; // 当前光标位置 ch: 字符位置(非索引) line: 行
+    const value = editor.getLine(line); // 当前行的值
 
+    /**
+     * 需要先替换掉中文字符
+     * 方便统一获取敏感字段索引
+     */
     const _value = value.toString().replaceAll('，', ',').replaceAll('）', ')');
-    const cursorValue = _value![ch as number - 1];
+    const cursorValue = _value![ch as number - 1]; // 光标前一个字符
 
     const leftIndex = _value.lastIndexOf('(');
     const commaIndex = _value.lastIndexOf(',');
@@ -136,32 +143,20 @@ const SelectPanel: FC = (): JSX.Element => {
       const equalIndex = _value.lastIndexOf('=');
       const equalOrCommonIndex = equalIndex === -1 ? _value.lastIndexOf(',') : equalIndex;
 
+      // 获取距离光标最近的敏感索引
       const _lastIndex = Math.abs(equalOrCommonIndex) - Math.abs(leftIndex);
+      // 是否是逗号(等号)
+      const isCommonOrEqual = _lastIndex > 0 && (cursorValue === ',' || equalOrCommonIndex !== -1 || cursorValue === '=') && cursorValue !== '}';
+      // 是否是左侧括号
+      const isLeft = _lastIndex < 0 && leftIndex !== -1 && cursorValue !== '}' && cursorValue !== '=';
 
-      console.log('字段 光标值:', cursorValue, 'commaIndex:', commaIndex, 'leftIndex:', leftIndex, '_value:', _value);
-      if (
-        _lastIndex > 0
-        && (
-        cursorValue === ','
-        || equalOrCommonIndex !== -1
-        || cursorValue === '='
-        )
-        && cursorValue !== '}') {
-        const endPosition = equalOrCommonIndex + name.length + 1;
-        console.log('字段 进入逗号：--------------');
-        console.log('endPosition:', endPosition);
-        console.log('commaIndex:', commaIndex);
-        console.log('equalIndex:', equalIndex);
-        console.log('name:', name, name.length);
-        console.log('_value:', _value, _value.length);
-        console.log('pos:', pos);
-
-      /**
-       * 根据计算，距离光标最近的敏感索引
-       * `lastIndex` > 0 使用 equalIndex
-       * 否则 使用 commaIndex
-       */
-      const lastIndex = Math.abs(equalIndex) - Math.abs(commaIndex);
+      if (isCommonOrEqual) {
+        /**
+         * 根据计算，距离光标最近的敏感索引
+         * `lastIndex` > 0 使用 equalIndex
+         * 否则 使用 commaIndex
+         */
+        const lastIndex = Math.abs(equalIndex) - Math.abs(commaIndex);
         if (lastIndex > 0) {
           const { range: [pos1, pos2], ch: _ch } = getEditorPos({
             value: _value,
@@ -174,7 +169,7 @@ const SelectPanel: FC = (): JSX.Element => {
           doc.replaceRange(`{${name}}`, pos1, pos2);
           pos.ch = _ch;
         } else if (lastIndex < 0) {
-           const { range: [pos1, pos2], ch: _ch } = getEditorPos({
+          const { range: [pos1, pos2], ch: _ch } = getEditorPos({
             value: _value,
             index: commaIndex,
             ch,
@@ -185,13 +180,7 @@ const SelectPanel: FC = (): JSX.Element => {
           doc.replaceRange(`{${name}}`, pos1, pos2);
           pos.ch = _ch;
         }
-      } else if (_lastIndex < 0 && leftIndex !== -1 && cursorValue !== '}' && cursorValue !== '=') {
-          console.log('字段 进入括号：============');
-          console.log('leftIndex:', leftIndex);
-          console.log('name:', name, name.length);
-          console.log('_value:', _value, _value.length);
-          console.log('pos:', pos);
-
+      } else if (isLeft) {
          const { range: [pos1, pos2], ch: _ch } = getEditorPos({
             value: _value,
             index: leftIndex,
@@ -200,21 +189,15 @@ const SelectPanel: FC = (): JSX.Element => {
             name,
             pos,
          });
-        console.log('after:', pos1, pos2, _ch);
 
-          doc.replaceRange(`{${name}}`, pos1, pos2);
-          pos.ch = _ch;
+        doc.replaceRange(`{${name}}`, pos1, pos2);
+        pos.ch = _ch;
       } else if (cursorValue === '}' || cursorValue === '=') {
-        console.log('no');
         doc.setCursor(pos);
         editor!.focus();
         return;
-        } else {
+      } else {
         const endPosition = commaIndex + name.length + 1;
-        console.log('字段 默认================', endPosition);
-        console.log(endPosition, 'endPosition', commaIndex, name, name.length);
-        console.log('pos:', pos);
-
         doc.replaceRange(
           `{${name}}`,
           { ch: commaIndex + 1, line },
@@ -235,27 +218,20 @@ const SelectPanel: FC = (): JSX.Element => {
       const blankIndex = _value.lastIndexOf(' ');
       const index = [commaIndex, blankIndex].filter((_) => _ !== -1)[0] ?? -1;
 
-      console.log('函数 ', _value, _value![ch as number - 1]);
-
       /**
        * 根据计算，距离光标最近的敏感索引
        * `lastIndex` > 0 使用 leftIndex
        * 否则 使用 index
        */
       const lastIndex = Math.abs(leftIndex) - Math.abs(index);
-
       if (lastIndex > 0) {
-        console.log('函数 进入括号');
-
-         doc.replaceRange(
+        doc.replaceRange(
           `${name}()`,
           { ch: leftIndex + 1, line },
           pos,
         );
         pos.ch = leftIndex + name.length + 2;
       } else if (lastIndex < 0) {
-        console.log('函数 进入逗号 空格');
-
         const endPosition = index + name.length + 1;
         doc.replaceRange(
           `${name}()`,
@@ -264,8 +240,6 @@ const SelectPanel: FC = (): JSX.Element => {
         );
         pos.ch = endPosition + 1;
       } else {
-        console.log('函数 默认');
-
         const endPosition = index + name.length + 1;
         doc.replaceRange(
           `${name}()`,
@@ -281,8 +255,6 @@ const SelectPanel: FC = (): JSX.Element => {
         isSelected: true,
       } as IActionType);
     }
-
-    console.log('最终的POS:', pos);
 
     doc.setCursor(pos);
     editor!.focus();

@@ -2,6 +2,7 @@
   "name": "polaris-react-formula",
   "private": false,
   "auther": "weishaodaren@gmail.com",
+  "description": "极星公式库 ✨",
   "homepage": "https://gitea.startable.cn/zhaojiawei/frontend-formula",
   "repository": {
     "type": "git",
