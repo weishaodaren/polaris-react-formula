@@ -43,9 +43,10 @@ import FormulaEditor, { useFormula } from 'polaris-react-formula';
 
 function App() {
   const [visible, setVisible] = useState(true);
-  const value = '';
+  const [value, setValue] = useState('IF({title} = "刘123建", {title}, {ownerId})');
 
   const onCalc = useCallback((formula: string, formulaField: string) => {
+    setValue(formulaField);
     console.log('%c Formula:', 'color: pink', formula);
     console.log('%c Field:', 'color: orange', formulaField);
 

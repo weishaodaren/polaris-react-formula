@@ -44,6 +44,7 @@ const Editor: FC<FormulaEditorProps> = ({
       originalFields,
       disabled,
       editorValue,
+      editor,
     },
     dispatch,
   } = useContext(store);
@@ -74,7 +75,14 @@ const Editor: FC<FormulaEditorProps> = ({
    */
   const confirmModal = useCallback(() => {
     try {
-      onChange?.(editorValue, reverseField(editorValue, originalFields as Variable[]));
+      /**
+       * 通过编辑器反馈值
+       * 获取真正的输入框内容
+       */
+      const _editorValue = editor?.getValue();
+      if (!_editorValue) onChange?.('', '');
+      else onChange?.(editorValue, reverseField(editorValue, originalFields as Variable[]));
+
       onClose?.();
       dispatch!({
         type: ActionType.SetErrorText,
