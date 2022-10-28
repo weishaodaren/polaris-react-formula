@@ -22,6 +22,13 @@ const F = { ...FormulaJS };
 (F as FormulaTS).NOW = () => DayJS(new Date()).format('YYYY-MM-DD') as Date & string;
 
 /**
+ * @description TODAY()
+ * 修改原有NOW()函数，返回格式化日期
+ * @see https://github.com/formulajs/formulajs/blob/44cbacafa523f9f41a48b667708c35d2e0ec1102/src/date-time.js#L658
+ */
+(F as FormulaTS).TODAY = () => DayJS(FormulaJS.TODAY()).format('YYYY-MM-DD') as Date & string;
+
+/**
  * Function
  * @description 将formulajsAPI注入全局
  * @return void
