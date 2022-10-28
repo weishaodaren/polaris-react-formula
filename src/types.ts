@@ -1,4 +1,5 @@
-import type { Position } from 'codemirror'
+import type { Position } from 'codemirror';
+
 export interface Variable {
   label: string;
   value: string;
