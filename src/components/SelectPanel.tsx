@@ -17,6 +17,7 @@ import type { CustomFieldIconType } from '../config';
 
 import { store, ActionType } from '../store';
 import { prefixCls, CustomFieldIcon } from '../config';
+import { getEditorPos } from '../utils';
 
 const Style = `${prefixCls}-select-panel-layout`;
 
@@ -109,122 +110,112 @@ const SelectPanel: FC = (): JSX.Element => {
    * @description 点击字段 函数项
    * @param name 变量字段 或 函数字段名称
    * @param isField 是否是字段
+   * @param field 字段
    * @return void
    */
-  const clickItem = useCallback((name: string, isField: boolean) => (
+  const clickItem = useCallback((name: string, isField: boolean, field?: Variable) => (
     event: MouseEvent<HTMLDivElement>,
   ) => {
     event.stopPropagation();
     if (!editor) return;
 
-    const doc = editor!.getDoc();
-    const pos = doc.getCursor();
+    /**
+     * 编辑器信息
+     */
+    const doc = editor!.getDoc(); // 获取当前文本
+    const pos = doc.getCursor(); // 获取当前位置
+    const { ch, line } = pos; // 当前光标位置 ch: 字符位置(非索引) line: 行
+    const value = editor.getLine(line); // 当前行的值
+
+    /**
+     * 需要先替换掉中文字符
+     * 方便统一获取敏感字段索引
+     */
+    const _value = value.toString().replaceAll('，', ',').replaceAll('）', ')');
+    const cursorValue = _value![ch as number - 1]; // 光标前一个字符
+
+    const leftIndex = _value.lastIndexOf('(');
+    const commaIndex = _value.lastIndexOf(',');
 
     // 变量字段
     if (isField) {
-      // // 函数字段
-      // const { ch, line } = pos;
-      // const value = editor.getLine(line);
+      // 如果在空格 逗号之后有输入值，用户在下方选中函数，直接替换
+      const equalIndex = _value.lastIndexOf('=');
+      const equalOrCommonIndex = equalIndex === -1 ? _value.lastIndexOf(',') : equalIndex;
 
-      // // 如果在空格 逗号之后有输入值，用户在下方选中函数，直接替换
-      // const _value = value.toString();
-      // const cursorValue = _value![ch as number - 1];
+      // 获取距离光标最近的敏感索引
+      const _lastIndex = Math.abs(equalOrCommonIndex) - Math.abs(leftIndex);
+      // 是否是逗号(等号)
+      const isCommonOrEqual = _lastIndex > 0 && (cursorValue === ',' || equalOrCommonIndex !== -1 || cursorValue === '=') && cursorValue !== '}';
+      // 是否是左侧括号
+      const isLeft = _lastIndex < 0 && leftIndex !== -1 && cursorValue !== '}' && cursorValue !== '=';
 
-      // const commaIndex = _value.lastIndexOf(',');
-      // const leftIndex = _value.lastIndexOf('(');
+      if (isCommonOrEqual) {
+        /**
+         * 根据计算，距离光标最近的敏感索引
+         * `lastIndex` > 0 使用 equalIndex
+         * 否则 使用 commaIndex
+         */
+        const lastIndex = Math.abs(equalIndex) - Math.abs(commaIndex);
+        if (lastIndex > 0) {
+          const { range: [pos1, pos2], ch: _ch } = getEditorPos({
+            value: _value,
+            index: equalIndex,
+            ch,
+            line,
+            name,
+            pos,
+          });
+          doc.replaceRange(`{${name}}`, pos1, pos2);
+          pos.ch = _ch;
+        } else if (lastIndex < 0) {
+          const { range: [pos1, pos2], ch: _ch } = getEditorPos({
+            value: _value,
+            index: commaIndex,
+            ch,
+            line,
+            name,
+            pos,
+          });
+          doc.replaceRange(`{${name}}`, pos1, pos2);
+          pos.ch = _ch;
+        }
+      } else if (isLeft) {
+         const { range: [pos1, pos2], ch: _ch } = getEditorPos({
+            value: _value,
+            index: leftIndex,
+            ch,
+            line,
+            name,
+            pos,
+         });
 
-      // console.log('光标值:', cursorValue);
+        doc.replaceRange(`{${name}}`, pos1, pos2);
+        pos.ch = _ch;
+      } else if (cursorValue === '}' || cursorValue === '=') {
+        doc.setCursor(pos);
+        editor!.focus();
+        return;
+      } else {
+        const endPosition = commaIndex + name.length + 1;
+        doc.replaceRange(
+          `{${name}}`,
+          { ch: commaIndex + 1, line },
+          pos,
+        );
+        pos.ch += endPosition + 2;
+      }
 
-      // if (cursorValue === ',' || cursorValue === '，') {
-      //     console.log(2);
-
-      //   const endPosition = commaIndex + name.length + 1;
-      //   doc.replaceRange(
-      //     `{${name}}`,
-      //     { ch: commaIndex + 1, line },
-      //     { ch: endPosition + 1, line },
-      //   );
-      //   pos.ch += endPosition + 1;
-      // } else
-      // if (leftIndex !== -1) {
-      //      console.log(1);
-
-      //   doc.replaceRange(
-      //     `{${name}}`,
-      //     { ch: leftIndex + 1, line },
-      //     pos,
-      //   );
-      //   pos.ch += name.length + 1;
-      // } else {
-      //    console.log(3);
-      //   const endPosition = commaIndex + name.length + 1;
-      //   console.log(endPosition, 'endPosition', commaIndex, name, name.length);
-
-      //   doc.replaceRange(
-      //     `{${name}}`,
-      //     { ch: commaIndex + 1, line },
-      //     pos,
-      //     // { ch: endPosition, line },
-      //   );
-      //   pos.ch = endPosition + 2;
-      // }
-
-      // /**
-      //  * 根据计算，距离光标最近的敏感索引
-      //  * `lastIndex` > 0 使用 leftIndex
-      //  * 否则 使用 index
-      //  */
-      // // const lastIndex = Math.abs(leftIndex) - Math.abs(commaIndex);
-      // // console.log('计算后的值:', Math.abs(leftIndex), Math.abs(commaIndex), _value, cursorValue);
-
-      // // if (lastIndex > 0) {
-      // //   console.log(1);
-
-      // //   doc.replaceRange(
-      // //     `{${name}}`,
-      // //     { ch: leftIndex + 1, line },
-      // //     pos,
-      // //   );
-      // //   pos.ch += name.length + 1;
-      // // } else if (lastIndex < 0) {
-      // //   console.log(2);
-
-      // //   const endPosition = commaIndex + name.length + 1;
-      // //   doc.replaceRange(
-      // //     `{${name}}`,
-      // //     { ch: commaIndex + 1, line },
-      // //     { ch: endPosition + 1, line },
-      // //   );
-      // //   pos.ch += endPosition + 1;
-      // // } else {
-      // //   console.log(3);
-      // //   const endPosition = commaIndex + name.length + 1;
-      // //   console.log(endPosition, 'endPosition', commaIndex, name, name.length);
-
-      // //   doc.replaceRange(
-      // //     `{${name}}`,
-      // //     { ch: commaIndex + 1, line },
-      // //     pos,
-      // //     // { ch: endPosition, line },
-      // //   );
-      // //   pos.ch = endPosition + 2;
-      // // }
-
-      // doc.setCursor(pos);
-      // editor!.focus();
-
-      doc.replaceRange(`{${name}}`, pos, pos);
-      editor!.focus();
+      dispatch!({
+        type: ActionType.SetEditorValue,
+        editorValue: `{${name}}`,
+        isSelected: true,
+        fields: [field],
+      } as IActionType);
     } else {
       // 函数字段
-      const { line } = pos;
-      const value = editor.getLine(line);
-
       // 如果在空格 逗号之后有输入值，用户在下方选中函数，直接替换
-      const _value = value.toString();
       const blankIndex = _value.lastIndexOf(' ');
-      const commaIndex = _value.lastIndexOf(',');
-      const leftIndex = _value.lastIndexOf('(');
       const index = [commaIndex, blankIndex].filter((_) => _ !== -1)[0] ?? -1;
 
       /**
@@ -233,9 +224,8 @@ const SelectPanel: FC = (): JSX.Element => {
        * 否则 使用 index
        */
       const lastIndex = Math.abs(leftIndex) - Math.abs(index);
-
       if (lastIndex > 0) {
-         doc.replaceRange(
+        doc.replaceRange(
           `${name}()`,
           { ch: leftIndex + 1, line },
           pos,
@@ -259,15 +249,15 @@ const SelectPanel: FC = (): JSX.Element => {
         pos.ch = endPosition + 1;
       }
 
-      doc.setCursor(pos);
-      editor!.focus();
+      dispatch!({
+        type: ActionType.SetEditorValue,
+        editorValue: `${name}()`,
+        isSelected: true,
+      } as IActionType);
     }
 
-    dispatch!({
-      type: ActionType.SetEditorValue,
-      editorValue: isField ? `{${name}}` : `${name}()`,
-      isSelected: true,
-    } as IActionType);
+    doc.setCursor(pos);
+    editor!.focus();
   }, [editor]);
 
   return useMemo(() => (
@@ -284,7 +274,7 @@ const SelectPanel: FC = (): JSX.Element => {
                 className={[`${Style}-list-item`, selected === field.value && `${Style}-list-item-active`].join(' ')}
                 key={field.value}
                 onMouseEnter={selectItem(field)}
-                onClick={clickItem(field.value, true)}
+                onClick={clickItem(field.value, true, field)}
               >
                 <Icon type={(CustomFieldIcon as CustomFieldIconType as any)[field.type]} />
                 <span>{field.label}</span>

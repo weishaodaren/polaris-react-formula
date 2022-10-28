@@ -1,6 +1,8 @@
 /* eslint-disable @typescript-eslint/no-implied-eval */
 import type { Position, Editor as CodemirrorEditor } from 'codemirror';
-import type { Variable, FunctionGroup } from '../types';
+import type {
+ Variable, FunctionGroup, GetEditorPosParams, GetEditorPosReturns,
+} from '../types';
 import { ErrorType } from '../enum';
 import {
  parseFieldData, parseKeyReplaceField, parseFormula, parseKey,
@@ -284,4 +286,38 @@ export const reverseField = (input: string, fields: Variable[]) => {
   }
 
   return output;
+};
+
+/**
+ * @description 获取编辑器Pos值
+ * @param value 当前值
+ * @param index 当前索引
+ * @param ch 编辑器字段位置
+ * @param line 编辑器字段位置(第几行)
+ * @param name 变量字段名称(显示用)
+ * @param pos 编辑器默认位置
+ * @return {}
+ */
+export const getEditorPos: (P: GetEditorPosParams) => GetEditorPosReturns = ({
+ value, index, ch, name, pos, line,
+}) => {
+  // 优先判断是否存在内部值(用户模糊查询手动输入部分)
+  const innerValue = value.slice(index + 1, value.length - 1);
+  // 替换范围
+  const range = [{ ch: index + 1, line }, pos];
+
+  if (innerValue) {
+    // 判断是否存在右侧括号
+    const isRightIndex = innerValue.trim().endsWith(')');
+    const _innerValue = isRightIndex ? innerValue.replaceAll(')', '') : innerValue;
+    return {
+        range,
+        ch: ch - _innerValue.length + name.length + 2,
+      };
+  }
+
+  return {
+    range,
+    ch: name.length + 2 + ch,
+  };
 };

@@ -140,13 +140,14 @@ export const Store: FC<IStoreProps> = ({ children }) => {
       }
 
       case ActionType.SetEditorValue: {
-        const { editorValue = '', isSelected = false } = action;
         const {
           originalFields: fields,
           editorValue: originalEditorValue,
           fieldValues,
           editor,
         } = originalState;
+
+        const { editorValue = '', isSelected = false, fields: _fields } = action;
 
         // 引号内视为常量，需要替换掉
         const variableValue = editorValue.replaceAll(/".*?"/g, '');
@@ -181,15 +182,28 @@ export const Store: FC<IStoreProps> = ({ children }) => {
          * 所以当选中时，返回内存中的旧的编辑值
          */
         if (isSelected) {
-          return {
-            ...originalState,
+          const returnValues = {
             isSelected,
             editorValue: originalEditorValue,
-            fields,
-            functions: Functions,
             errorText,
             errorCode,
             disabled: Number(errorCode) > -1,
+          };
+          // 存在选中字段组
+          if (_fields) {
+            return {
+              ...originalState,
+              ...returnValues,
+              fields: _fields,
+              functions: [],
+            };
+          }
+          return {
+            ...originalState,
+            ...returnValues,
+            fields,
+            functions: Functions,
+
           };
         }
 
@@ -200,16 +214,12 @@ export const Store: FC<IStoreProps> = ({ children }) => {
         const blankIndex = variableValue.lastIndexOf(' ');
         const equalIndex = variableValue.lastIndexOf('=');
         const leftIndex = variableValue.lastIndexOf('(');
-        const index = [
-          commaIndex,
-          blankIndex,
-          equalIndex,
-          leftIndex,
-        ].filter((_) => _ !== -1)[0] ?? -1;
+        // 选取最近的敏感字段索引
+        const lastIndex = [commaIndex, blankIndex, equalIndex, leftIndex].sort((a, b) => b - a)[0];
 
-        if (index !== -1) {
+        if (lastIndex !== -1) {
           const _editorValue = variableValue
-            .slice(Number(index) + 1, variableValue.length - 1)
+            .slice(lastIndex + 1, variableValue.length - 1)
             .replaceAll(')', '')
             .replaceAll('(', '');
 
