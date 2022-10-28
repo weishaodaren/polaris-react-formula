@@ -1,9 +1,60 @@
 import { ErrorType } from '../enum';
 
 /**
- * 常量映射
+ * 常量映射(函数必填参数)
+ * n > 0 需要 n 个参数
+ * n < 0 至少需要 n 个参数
+ * n = 0 无需参数
  */
-export const ConstantsMap = new Map();
+export const ConstantsMap = new Map()
+  .set('IF', 3)
+  .set('AND', -1)
+  .set('OR', -1)
+  .set('NOT', -1)
+  .set('SWITCH', -2)
+  .set('CONCATENATE', -1)
+  .set('LEFT', -1)
+  .set('RIGHT', -1)
+  .set('MID', -3)
+  .set('REPLACE', -4)
+  .set('TRIM', -1)
+  .set('LEN', -1)
+  .set('LOWER', -1)
+  .set('UPPER', -1)
+  .set('FIND', -2)
+  .set('NUMBERVALUE', -1)
+  .set('REPT', -2)
+  .set('SEARCH', -2)
+  .set('SUBSTITUTE', -3)
+  .set('ABS', -1)
+  .set('AVERAGE', -1)
+  .set('CEILING', -1)
+  .set('COUNT', -1)
+  .set('COUNTA', -1)
+  .set('EXP', -1)
+  .set('FLOOR', -1)
+  .set('MAX', -1)
+  .set('MIN', -1)
+  .set('INT', -1)
+  .set('MOD', -2)
+  .set('SUM', -1)
+  .set('ROUND', -1)
+  .set('ROUNDUP', -1)
+  .set('ROUNDDOWN', -1)
+  .set('POWER', -2)
+  .set('LOG', -1)
+  .set('SQRT', -1)
+  .set('DAY', -1)
+  .set('DAYS', -1)
+  .set('YEAR', -1)
+  .set('MONTH', -1)
+  .set('HOUR', -1)
+  .set('MINUTE', -1)
+  .set('SECOND', -1)
+  .set('TODAY', 0)
+  .set('NOW', 0)
+  .set('WEEKDAY', -1)
+  .set('WEEKNUM', -1);
 
 /**
  * 错误映射

@@ -1,13 +1,20 @@
 /* eslint-disable @typescript-eslint/no-implied-eval */
 import type { Position, Editor as CodemirrorEditor } from 'codemirror';
 import type {
- Variable, FunctionGroup, GetEditorPosParams, GetEditorPosReturns,
+  Variable,
+  FunctionGroup,
+  GetEditorPosParams,
+  GetEditorPosReturns,
 } from '../types';
 import { ErrorType } from '../enum';
 import {
- parseFieldData, parseKeyReplaceField, parseFormula, parseKey,
+  parseFieldData,
+  parseKeyReplaceField,
+  parseFormula,
+  parseKey,
 } from './parse';
 import { braceReg } from './regexp';
+import { ConstantsMap } from '../config';
 
 /**
  * Function
@@ -289,6 +296,7 @@ export const reverseField = (input: string, fields: Variable[]) => {
 };
 
 /**
+ * Function
  * @description 获取编辑器Pos值
  * @param value 当前值
  * @param index 当前索引
@@ -320,4 +328,27 @@ export const getEditorPos: (P: GetEditorPosParams) => GetEditorPosReturns = ({
     range,
     ch: name.length + 2 + ch,
   };
+};
+
+/**
+ * Function
+ * @description 判断是否是合法函数
+ * @param inputFunction 输入的函数字段
+ * @return string
+ */
+export const isValidFunction = (inputFunction: string): string => {
+  // `AND()`截取括号
+  const key = inputFunction.slice(0, inputFunction.length - 2);
+  if (!ConstantsMap.has(key)) return '';
+
+  /**
+   * 获取当前函数的映射
+   * 提示用户参数是否必填
+   */
+  const value = ConstantsMap.get(key);
+  if (value === 0) return '';
+  if (value < 0) return `${key} 函数至少需要 ${Math.abs(value)} 个参数`;
+  if (value > 0) return `${key} 函数需要 ${value} 个参数`;
+
+  return '';
 };

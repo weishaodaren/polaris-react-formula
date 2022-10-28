@@ -25,6 +25,7 @@ import {
   fuzzySearchFunctions,
   filterMarks,
   isValidField,
+  isValidFunction,
 } from '../utils';
 
 interface IStoreProps {
@@ -147,7 +148,12 @@ export const Store: FC<IStoreProps> = ({ children }) => {
           editor,
         } = originalState;
 
-        const { editorValue = '', isSelected = false, fields: _fields } = action;
+        const {
+          editorValue = '',
+          isSelected = false,
+          fields: _fields,
+          isFunctionField = false, // 是否是函数字段
+        } = action;
 
         // 引号内视为常量，需要替换掉
         const variableValue = editorValue.replaceAll(/".*?"/g, '');
@@ -182,11 +188,20 @@ export const Store: FC<IStoreProps> = ({ children }) => {
          * 所以当选中时，返回内存中的旧的编辑值
          */
         if (isSelected) {
+          /**
+           * 获取选中的函数字段
+           * 映射必填参数，反馈UI
+           */
+          let functionFieldValue;
+          if (isFunctionField && editorValue) {
+            functionFieldValue = isValidFunction(editorValue);
+          }
+
           const returnValues = {
             isSelected,
             editorValue: originalEditorValue,
-            errorText,
-            errorCode,
+            errorText: functionFieldValue || errorText,
+            errorCode: functionFieldValue ? ErrorType.Pass : errorCode,
             disabled: Number(errorCode) > -1,
           };
           // 存在选中字段组

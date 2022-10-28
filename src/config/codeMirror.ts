@@ -1,3 +1,5 @@
+import type { EditorConfiguration } from 'codemirror';
+
 /**
  * @description code mirror 配置参数
  * @link https://codemirror.net/5/doc/manual.html#event_change
@@ -7,4 +9,4 @@ export default {
   mode: 'text/x-spreadsheet',
   line: true,
   lineWrapping: true,
-};
+} as EditorConfiguration;

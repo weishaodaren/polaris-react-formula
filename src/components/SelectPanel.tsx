@@ -253,7 +253,8 @@ const SelectPanel: FC = (): JSX.Element => {
         type: ActionType.SetEditorValue,
         editorValue: `${name}()`,
         isSelected: true,
-      } as IActionType);
+        isFunctionField: true,
+      } as unknown as IActionType);
     }
 
     doc.setCursor(pos);
