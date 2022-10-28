@@ -120,23 +120,22 @@ const SelectPanel: FC = (): JSX.Element => {
 
     const doc = editor!.getDoc();
     const pos = doc.getCursor();
+    const { ch, line } = pos;
+    const value = editor.getLine(line);
+
+    const _value = value.toString().replaceAll('，', ',').replaceAll('）', ')');
+    const cursorValue = _value![ch as number - 1];
+
+    const leftIndex = _value.lastIndexOf('(');
+    const commaIndex = _value.lastIndexOf(',');
 
     // 变量字段
     if (isField) {
-      // 函数字段
-      const { ch, line } = pos;
-      const value = editor.getLine(line);
-
       // 如果在空格 逗号之后有输入值，用户在下方选中函数，直接替换
-      const _value = value.toString().replaceAll('，', ',').replaceAll('）', ')');
-      const cursorValue = _value![ch as number - 1];
-
       const equalIndex = _value.lastIndexOf('=');
-      const commaIndex = _value.lastIndexOf(',');
       const equalOrCommonIndex = equalIndex === -1 ? _value.lastIndexOf(',') : equalIndex;
-      const leftIndex = _value.lastIndexOf('(');
 
-      console.log('光标值:', cursorValue, 'commaIndex:', commaIndex, '_value:', _value);
+      console.log('字段 光标值:', cursorValue, 'commaIndex:', commaIndex, '_value:', _value);
       if (
         (
         cursorValue === ','
@@ -145,7 +144,7 @@ const SelectPanel: FC = (): JSX.Element => {
         )
         && cursorValue !== '}') {
         const endPosition = equalOrCommonIndex + name.length + 1;
-        console.log('进入逗号：--------------');
+        console.log('字段 进入逗号：--------------');
         console.log('endPosition:', endPosition);
         console.log('commaIndex:', commaIndex);
         console.log('equalIndex:', equalIndex);
@@ -183,7 +182,7 @@ const SelectPanel: FC = (): JSX.Element => {
           pos.ch = _ch;
         }
       } else if (leftIndex !== -1 && cursorValue !== '}' && cursorValue !== '=') {
-          console.log('进入括号：============');
+          console.log('字段 进入括号：============');
           console.log('leftIndex:', leftIndex);
           console.log('name:', name, name.length);
           console.log('_value:', _value, _value.length);
@@ -203,8 +202,7 @@ const SelectPanel: FC = (): JSX.Element => {
         console.log('no');
         } else {
         const endPosition = commaIndex + name.length + 1;
-        console.log('默认================', endPosition);
-
+        console.log('字段 默认================', endPosition);
         console.log(endPosition, 'endPosition', commaIndex, name, name.length);
         console.log('pos:', pos);
 
@@ -223,15 +221,11 @@ const SelectPanel: FC = (): JSX.Element => {
       // editor!.focus();
     } else {
       // 函数字段
-      const { line } = pos;
-      const value = editor.getLine(line);
-
       // 如果在空格 逗号之后有输入值，用户在下方选中函数，直接替换
-      const _value = value.toString();
       const blankIndex = _value.lastIndexOf(' ');
-      const commaIndex = _value.lastIndexOf(',');
-      const leftIndex = _value.lastIndexOf('(');
       const index = [commaIndex, blankIndex].filter((_) => _ !== -1)[0] ?? -1;
+
+      console.log('函数 ', _value, _value![ch as number - 1]);
 
       /**
        * 根据计算，距离光标最近的敏感索引
@@ -241,6 +235,8 @@ const SelectPanel: FC = (): JSX.Element => {
       const lastIndex = Math.abs(leftIndex) - Math.abs(index);
 
       if (lastIndex > 0) {
+        console.log('函数 进入括号');
+
          doc.replaceRange(
           `${name}()`,
           { ch: leftIndex + 1, line },
@@ -248,6 +244,8 @@ const SelectPanel: FC = (): JSX.Element => {
         );
         pos.ch = leftIndex + name.length + 2;
       } else if (lastIndex < 0) {
+        console.log('函数 进入逗号 空格');
+
         const endPosition = index + name.length + 1;
         doc.replaceRange(
           `${name}()`,
@@ -256,6 +254,8 @@ const SelectPanel: FC = (): JSX.Element => {
         );
         pos.ch = endPosition + 1;
       } else {
+        console.log('函数 默认');
+
         const endPosition = index + name.length + 1;
         doc.replaceRange(
           `${name}()`,
