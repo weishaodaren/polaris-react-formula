@@ -2,6 +2,11 @@
   "name": "polaris-react-formula",
   "private": false,
   "auther": "weishaodaren@gmail.com",
+  "homepage": "https://gitea.startable.cn/zhaojiawei/frontend-formula",
+  "repository": {
+    "type": "git",
+    "url": "https://gitea.startable.cn/zhaojiawei/frontend-formula.git"
+  },
   "version": "2.9.11",
   "type": "module",
   "license": "MIT",
