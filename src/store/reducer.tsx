@@ -214,11 +214,12 @@ export const Store: FC<IStoreProps> = ({ children }) => {
         const blankIndex = variableValue.lastIndexOf(' ');
         const equalIndex = variableValue.lastIndexOf('=');
         const leftIndex = variableValue.lastIndexOf('(');
-        const lastIndex = [commaIndex, blankIndex, equalIndex, leftIndex].sort()[3];
+        // 选取最近的敏感字段索引
+        const lastIndex = [commaIndex, blankIndex, equalIndex, leftIndex].sort((a, b) => b - a)[0];
 
         if (lastIndex !== -1) {
           const _editorValue = variableValue
-            .slice(Number(lastIndex) + 1, variableValue.length - 1)
+            .slice(lastIndex + 1, variableValue.length - 1)
             .replaceAll(')', '')
             .replaceAll('(', '');
 
