@@ -202,7 +202,7 @@ export const Store: FC<IStoreProps> = ({ children }) => {
             editorValue: originalEditorValue,
             errorText: functionFieldValue || errorText,
             errorCode: functionFieldValue ? ErrorType.Pass : errorCode,
-            disabled: Number(errorCode) > -1,
+            disabled: Number(functionFieldValue ? ErrorType.Error : errorCode) > -1,
           };
           // 存在选中字段组
           if (_fields) {
