@@ -136,9 +136,12 @@ const SelectPanel: FC = (): JSX.Element => {
       const equalIndex = _value.lastIndexOf('=');
       const equalOrCommonIndex = equalIndex === -1 ? _value.lastIndexOf(',') : equalIndex;
 
-      console.log('字段 光标值:', cursorValue, 'commaIndex:', commaIndex, '_value:', _value);
+      const _lastIndex = Math.abs(equalOrCommonIndex) - Math.abs(leftIndex);
+
+      console.log('字段 光标值:', cursorValue, 'commaIndex:', commaIndex, 'leftIndex:', leftIndex, '_value:', _value);
       if (
-        (
+        _lastIndex > 0
+        && (
         cursorValue === ','
         || equalOrCommonIndex !== -1
         || cursorValue === '='
@@ -182,7 +185,7 @@ const SelectPanel: FC = (): JSX.Element => {
           doc.replaceRange(`{${name}}`, pos1, pos2);
           pos.ch = _ch;
         }
-      } else if (leftIndex !== -1 && cursorValue !== '}' && cursorValue !== '=') {
+      } else if (_lastIndex < 0 && leftIndex !== -1 && cursorValue !== '}' && cursorValue !== '=') {
           console.log('字段 进入括号：============');
           console.log('leftIndex:', leftIndex);
           console.log('name:', name, name.length);
@@ -196,11 +199,16 @@ const SelectPanel: FC = (): JSX.Element => {
             line,
             name,
             pos,
-          });
+         });
+        console.log('after:', pos1, pos2, _ch);
+
           doc.replaceRange(`{${name}}`, pos1, pos2);
           pos.ch = _ch;
       } else if (cursorValue === '}' || cursorValue === '=') {
         console.log('no');
+        doc.setCursor(pos);
+        editor!.focus();
+        return;
         } else {
         const endPosition = commaIndex + name.length + 1;
         console.log('字段 默认================', endPosition);
@@ -273,6 +281,8 @@ const SelectPanel: FC = (): JSX.Element => {
         isSelected: true,
       } as IActionType);
     }
+
+    console.log('最终的POS:', pos);
 
     doc.setCursor(pos);
     editor!.focus();

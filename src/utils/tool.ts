@@ -296,6 +296,7 @@ export const reverseField = (input: string, fields: Variable[]) => {
  * @param line 编辑器字段位置(第几行)
  * @param name 变量字段名称(显示用)
  * @param pos 编辑器默认位置
+ * @return {}
  */
 export const getEditorPos: (P: GetEditorPosParams) => GetEditorPosReturns = ({
  value, index, ch, name, pos, line,
@@ -306,9 +307,12 @@ export const getEditorPos: (P: GetEditorPosParams) => GetEditorPosReturns = ({
   const range = [{ ch: index + 1, line }, pos];
 
   if (innerValue) {
+    // 判断是否存在右侧括号
+    const isRightIndex = innerValue.trim().endsWith(')');
+    const _innerValue = isRightIndex ? innerValue.replaceAll(')', '') : innerValue;
     return {
         range,
-        ch: ch - innerValue.length + name.length + 2,
+        ch: ch - _innerValue.length + name.length + 2,
       };
   }
 
