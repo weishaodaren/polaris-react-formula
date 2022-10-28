@@ -110,9 +110,10 @@ const SelectPanel: FC = (): JSX.Element => {
    * @description 点击字段 函数项
    * @param name 变量字段 或 函数字段名称
    * @param isField 是否是字段
+   * @param field 字段
    * @return void
    */
-  const clickItem = useCallback((name: string, isField: boolean) => (
+  const clickItem = useCallback((name: string, isField: boolean, field?: Variable) => (
     event: MouseEvent<HTMLDivElement>,
   ) => {
     event.stopPropagation();
@@ -214,11 +215,12 @@ const SelectPanel: FC = (): JSX.Element => {
         pos.ch += endPosition + 2;
       }
 
-      doc.setCursor(pos);
-      editor!.focus();
-
-      // doc.replaceRange(`{${name}}`, pos, pos);
-      // editor!.focus();
+      dispatch!({
+        type: ActionType.SetEditorValue,
+        editorValue: `{${name}}`,
+        isSelected: true,
+        fields: [field],
+      } as IActionType);
     } else {
       // 函数字段
       // 如果在空格 逗号之后有输入值，用户在下方选中函数，直接替换
@@ -265,15 +267,15 @@ const SelectPanel: FC = (): JSX.Element => {
         pos.ch = endPosition + 1;
       }
 
-      doc.setCursor(pos);
-      editor!.focus();
+      dispatch!({
+        type: ActionType.SetEditorValue,
+        editorValue: `${name}()`,
+        isSelected: true,
+      } as IActionType);
     }
 
-    dispatch!({
-      type: ActionType.SetEditorValue,
-      editorValue: isField ? `{${name}}` : `${name}()`,
-      isSelected: true,
-    } as IActionType);
+    doc.setCursor(pos);
+    editor!.focus();
   }, [editor]);
 
   return useMemo(() => (
@@ -290,7 +292,7 @@ const SelectPanel: FC = (): JSX.Element => {
                 className={[`${Style}-list-item`, selected === field.value && `${Style}-list-item-active`].join(' ')}
                 key={field.value}
                 onMouseEnter={selectItem(field)}
-                onClick={clickItem(field.value, true)}
+                onClick={clickItem(field.value, true, field)}
               >
                 <Icon type={(CustomFieldIcon as CustomFieldIconType as any)[field.type]} />
                 <span>{field.label}</span>
