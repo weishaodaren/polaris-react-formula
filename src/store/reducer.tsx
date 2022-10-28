@@ -214,16 +214,11 @@ export const Store: FC<IStoreProps> = ({ children }) => {
         const blankIndex = variableValue.lastIndexOf(' ');
         const equalIndex = variableValue.lastIndexOf('=');
         const leftIndex = variableValue.lastIndexOf('(');
-        const index = [
-          commaIndex,
-          blankIndex,
-          equalIndex,
-          leftIndex,
-        ].filter((_) => _ !== -1)[0] ?? -1;
+        const lastIndex = [commaIndex, blankIndex, equalIndex, leftIndex].sort()[3];
 
-        if (index !== -1) {
+        if (lastIndex !== -1) {
           const _editorValue = variableValue
-            .slice(Number(index) + 1, variableValue.length - 1)
+            .slice(Number(lastIndex) + 1, variableValue.length - 1)
             .replaceAll(')', '')
             .replaceAll('(', '');
 
