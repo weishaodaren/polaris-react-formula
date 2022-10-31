@@ -8,7 +8,7 @@
     "type": "git",
     "url": "https://gitea.startable.cn/zhaojiawei/frontend-formula.git"
   },
-  "version": "3.2.5",
+  "version": "3.3.0",
   "type": "module",
   "license": "MIT",
   "main": "./dist/index.js",
@@ -50,7 +50,6 @@
     "codemirror": "5.65.8",
     "react-codemirror2": "^7.2.1",
     "polaris-react-component": "^0.2.3"
-
   },
   "devDependencies": {
     "@types/codemirror": "^5.60.5",

@@ -16,6 +16,9 @@ import {
 import { braceReg } from './regexp';
 import { ConstantsMap } from '../config';
 
+// 特殊计算符号
+export const specialSymbols: string[] = ['=', '+', '-', '*', '/', '%'];
+
 /**
  * Function
  * @description 替换变量
@@ -352,3 +355,22 @@ export const isValidFunction = (inputFunction: string): string => {
 
   return '';
 };
+
+/**
+ * Function
+ * @description 获取最近的索引
+ * @param inputValue 输入值
+ * @param extraSymbols 额外特殊符号组
+ * @return Number
+ */
+export const getNearestIndex = (
+  inputValue: string,
+  extraSymbols?: string[],
+): number => (
+  Array.isArray(extraSymbols)
+    ? [...specialSymbols, ...extraSymbols]
+      .map((_) => inputValue.lastIndexOf(_))
+      .sort((a, b) => b - a)[0]
+    : [',', ' ', '(', ...specialSymbols]
+      .map((_) => inputValue.lastIndexOf(_))
+      .sort((a, b) => b - a)[0]);

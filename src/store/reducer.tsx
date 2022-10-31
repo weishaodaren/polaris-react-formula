@@ -26,6 +26,7 @@ import {
   filterMarks,
   isValidField,
   isValidFunction,
+  getNearestIndex,
 } from '../utils';
 
 interface IStoreProps {
@@ -223,15 +224,10 @@ export const Store: FC<IStoreProps> = ({ children }) => {
         }
 
         /**
-         * 匹配 逗号 空格 等区块间，之后的输入值，继续模糊查询
+         * 匹配 逗号 空格 计算符号等区间，之后的输入值，继续模糊查询
+         * 选取最近的敏感字段索引
          */
-        const commaIndex = variableValue.lastIndexOf(',');
-        const blankIndex = variableValue.lastIndexOf(' ');
-        const equalIndex = variableValue.lastIndexOf('=');
-        const leftIndex = variableValue.lastIndexOf('(');
-        // 选取最近的敏感字段索引
-        const lastIndex = [commaIndex, blankIndex, equalIndex, leftIndex].sort((a, b) => b - a)[0];
-
+        const lastIndex = getNearestIndex(variableValue);
         if (lastIndex !== -1) {
           const _editorValue = variableValue
             .slice(lastIndex + 1, variableValue.length - 1)

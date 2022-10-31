@@ -17,7 +17,7 @@ import type { CustomFieldIconType } from '../config';
 
 import { store, ActionType } from '../store';
 import { prefixCls, CustomFieldIcon } from '../config';
-import { getEditorPos } from '../utils';
+import { getEditorPos, getNearestIndex, specialSymbols } from '../utils';
 
 const Style = `${prefixCls}-select-panel-layout`;
 
@@ -139,14 +139,14 @@ const SelectPanel: FC = (): JSX.Element => {
 
     // 变量字段
     if (isField) {
-      // 如果在空格 逗号之后有输入值，用户在下方选中函数，直接替换
-      const equalIndex = _value.lastIndexOf('=');
-      const equalOrCommonIndex = equalIndex === -1 ? _value.lastIndexOf(',') : equalIndex;
+      // 如果在计算符号 逗号之后有输入值，用户在下方选中函数，直接替换
+      const equalIndex = getNearestIndex(_value, []);
+      const index = getNearestIndex(_value, [',']);
 
       // 获取距离光标最近的敏感索引
-      const _lastIndex = Math.abs(equalOrCommonIndex) - Math.abs(leftIndex);
-      // 是否是逗号(等号)
-      const isCommonOrEqual = _lastIndex > 0 && (cursorValue === ',' || equalOrCommonIndex !== -1 || cursorValue === '=') && cursorValue !== '}';
+      const _lastIndex = Math.abs(index) - Math.abs(leftIndex);
+      // 是否是逗号(等号 计算符号)
+      const isCommonOrEqual = _lastIndex > 0 && (index !== -1 || [',', ...specialSymbols].includes(cursorValue)) && cursorValue !== '}';
       // 是否是左侧括号
       const isLeft = _lastIndex < 0 && leftIndex !== -1 && cursorValue !== '}' && cursorValue !== '=';
 
@@ -215,9 +215,7 @@ const SelectPanel: FC = (): JSX.Element => {
     } else {
       // 函数字段
       // 如果在空格 逗号之后有输入值，用户在下方选中函数，直接替换
-      const blankIndex = _value.lastIndexOf(' ');
-      const index = [commaIndex, blankIndex].filter((_) => _ !== -1)[0] ?? -1;
-
+      const index = getNearestIndex(_value, [',', ' ']);
       /**
        * 根据计算，距离光标最近的敏感索引
        * `lastIndex` > 0 使用 leftIndex
