@@ -82,7 +82,7 @@ export const CustomFieldIcon = {
   document: 'iconenclosure1', // 附件
   mobile: 'iconphone_number', // 手机
   email: 'icone_mail', // 邮箱
-  formula: 'iconformula', // 公式
+  formula: 'iconformula1', // 公式
   member: 'iconmembers_permissions', // 成员
   dept: 'icondepartment1', // 部门
   status: 'iconswitch', // 状态
