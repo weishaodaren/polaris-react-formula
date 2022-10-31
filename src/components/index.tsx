@@ -101,6 +101,7 @@ const Editor: FC<FormulaEditorProps> = ({
 
   return useMemo(() => (
     <Modal
+      width={600}
       centered
       open={visible}
       closable={false}

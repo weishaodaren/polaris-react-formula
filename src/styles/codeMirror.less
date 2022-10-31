@@ -4,7 +4,7 @@
   position: relative;
   width: 100%;
   height: auto;
-  min-height: 30px;
+  min-height: 60px;
   max-height: 204px;
   text-indent: 0;
   line-height: 1.8;
@@ -21,12 +21,11 @@
   outline: none;
 
   .formula-tag {
-    background: @theme-color;
-    color: white;
-    border-radius: 4px;
+    background: @tag-color;
+    color: @tag-font-color;
     font-size: 0.8em;
-    padding: 2px 4px;
-    margin: 0 2px;
+    padding: 5px 8px;
+    border-radius: 11px;
   }
 }
 
@@ -57,4 +56,17 @@
 
 .CodeMirror-sizer{
   font-size: 13px;
+}
+
+// TODO: 暂时先这么修改
+.cm-s-default {
+  .cm-bracket,.cm-variable-2{
+    color: @tag-font-color;
+  }
+  .cm-variable-2{
+    background: @tag-color;
+    padding: 5px 8px;
+    border-radius: 11px;
+  }
+
 }
