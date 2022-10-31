@@ -1,4 +1,4 @@
-import { filterFieldData, filterFieldColumn } from './filter';
+import { filterFieldData, filterFieldColumn, filterFormulaField } from './filter';
 import { braceReg } from './regexp';
 
 import type { IColumn, IDataSource } from '../config/mock.column';
@@ -74,7 +74,7 @@ export const parseKeyReplaceField = (
  * @return array
  */
 export const parseField = (rawFields: IColumn): Variable[] => filterFieldColumn(
-  rawFields.map(({ name: value, label, field: { type } }) => ({ label, value, type })),
+  rawFields.map((fields) => filterFormulaField(fields)),
 );
 
 /**
@@ -84,7 +84,10 @@ export const parseField = (rawFields: IColumn): Variable[] => filterFieldColumn(
  * @param sourceData 源数据
  * @return array | null
  */
-export const parseFieldData = (key: string, sourceData: IDataSource | any) => {
+export const parseFieldData = (
+  key: string,
+  sourceData: IDataSource | any,
+) => {
   const fieldKey = parseKey(key);
 
   // 不满足匹配条件直接抛出

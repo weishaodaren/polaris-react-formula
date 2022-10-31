@@ -230,7 +230,6 @@ export const useFormula = (
   try {
     // 字段数据
     const fieldsData = parseFieldData(value, dataSourceItem);
-
     // 存在用户手动输入的可能
     if (fieldsData === null) return parseFormula(evil(value)) as string;
     // 匹配不到 抛出
@@ -367,10 +366,10 @@ export const getNearestIndex = (
   inputValue: string,
   extraSymbols?: string[],
 ): number => (
-  Array.isArray(extraSymbols)
-    ? [...specialSymbols, ...extraSymbols]
-      .map((_) => inputValue.lastIndexOf(_))
-      .sort((a, b) => b - a)[0]
+  Array.isArray(extraSymbols) ? [
+    ...specialSymbols,
+    ...extraSymbols,
+  ].map((_) => inputValue.lastIndexOf(_)).sort((a, b) => b - a)[0]
     : [',', ' ', '(', ...specialSymbols]
       .map((_) => inputValue.lastIndexOf(_))
       .sort((a, b) => b - a)[0]);

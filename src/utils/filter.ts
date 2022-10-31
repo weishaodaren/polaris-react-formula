@@ -1,6 +1,7 @@
 import { Fields, FieldName } from '../enum';
 import type { IFields, IFieldName } from '../enum';
 import type { Variable } from '../types';
+import type { IColumn } from '../config/mock.column';
 
 /**
  * Function
@@ -36,6 +37,40 @@ export const filterMarks = (input: string) => input
 
 /**
  * Function
+ * @description 过滤公式字段
+ */
+export const filterFormulaField: (T: IColumn[number]) => Variable = (fields) => {
+  const {
+    name: value,
+    label,
+    field: { type, props },
+  } = fields;
+
+  const params = {
+    label,
+    value,
+    type,
+  };
+
+  /**
+   * 公式计算结果只存在前端计算
+   * 暂时先获取公式表达式
+   * 计算后拼接
+   */
+  if (Fields.Formula === type) {
+    const { expression = '' } = props![Fields.Formula] || {};
+
+    return {
+      ...params,
+      expression,
+    };
+  }
+
+    return params;
+};
+
+/**
+ * Function
  * @description 过滤字段列
  * @param inputArray 输入字段组
  * @return array
@@ -50,7 +85,7 @@ export const filterFieldColumn = (
   Array.isArray(inputArray) && inputArray.length
     /**
      * 暂不考虑 以下
-     * 类型： 附件 前后置 工时 多选 分组单选 编号 下拉选 富文本 联级选择 开关 引用
+     * 类型： 附件 前后置 工时 多选 单选 编号 下拉选 富文本 分组单选 开关 引用 公式
      * 名称： 编号 父任务id 所属项目
      */
     ? inputArray.filter(({ type, value }) => ![
@@ -65,6 +100,7 @@ export const filterFieldColumn = (
       Fields.Cascader,
       Fields.Switch,
       Fields.ConditionRef,
+      Fields.Formula,
     ].includes(type as IFields['Annex'])
       && ![
         FieldName.Code,
