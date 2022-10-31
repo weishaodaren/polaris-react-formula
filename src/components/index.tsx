@@ -97,7 +97,7 @@ const Editor: FC<FormulaEditorProps> = ({
       } as IActionType);
       throw message;
     }
-  }, [editorValue]);
+  }, [editorValue, editor]);
 
   return useMemo(() => (
     <Modal
@@ -125,7 +125,7 @@ const Editor: FC<FormulaEditorProps> = ({
         </div>
       </div>
     </Modal>
-  ), [visible, disabled, editorValue, fields]);
+  ), [visible, disabled, editorValue, fields, editor]);
 };
 
 export default memo(Editor);
