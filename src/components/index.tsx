@@ -1,8 +1,7 @@
 import React, {
   useCallback, useMemo, memo, useContext, useEffect,
 } from 'react';
-import { Modal, Tooltip } from 'antd';
-import { Icon } from 'polaris-react-component';
+import { Modal } from 'antd';
 import 'antd/lib/tooltip/style/index';
 import 'antd/lib/modal/style/index';
 
@@ -33,7 +32,6 @@ const Editor: FC<FormulaEditorProps> = ({
   field = [],
   onChange,
   onClose,
-  onLink = undefined,
 }): JSX.Element => {
   /**
    * Context
@@ -116,9 +114,10 @@ const Editor: FC<FormulaEditorProps> = ({
       <div className={classnames} style={style}>
         <div className={`${prefixCls}-layout`}>
           <h2>请输入公式</h2>
-          <Tooltip title="点击了解公式技巧">
+          {/* TODO: 暂时隐藏该功能 */}
+          {/* <Tooltip title="点击了解公式技巧">
             <Icon type="icondoubt" onClick={onLink} />
-          </Tooltip>
+          </Tooltip> */}
           {fields && <Code value={value} fields={fields as Variable[]} />}
           <ErrorText />
           <h2>选择极星字段或函数</h2>

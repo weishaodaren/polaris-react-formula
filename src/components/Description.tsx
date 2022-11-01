@@ -35,6 +35,7 @@ const Description: FC = (): JSX.Element => {
       <code>{useage ?? `{${value}}`}</code>
       <div className={`${Style}-description-example`}>举个例子</div>
       <CodeMirror
+        className={`${prefixCls}-code-mirror-sample`}
         options={{ readOnly: 'nocursor' }}
         value={example ?? `{${value}}`}
       />
