@@ -43,11 +43,12 @@ export const filterFormulaField: (T: IColumn[number]) => Variable = (fields) => 
   const {
     name: value,
     label,
+    aliasTitle,
     field: { type, props },
   } = fields;
 
   const params = {
-    label,
+    label: aliasTitle || label, // 优先选择别名
     value,
     type,
   };
