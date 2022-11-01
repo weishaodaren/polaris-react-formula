@@ -8,7 +8,7 @@
     "type": "git",
     "url": "https://gitea.startable.cn/zhaojiawei/frontend-formula.git"
   },
-  "version": "4.1.5",
+  "version": "4.1.7",
   "type": "module",
   "license": "MIT",
   "main": "./dist/index.js",

@@ -261,6 +261,37 @@ export const Store: FC<IStoreProps> = ({ children }) => {
         };
       }
 
+      case ActionType.SetCursorPosition: {
+        const {
+          originalFields: fields,
+          fieldValues,
+        } = originalState;
+
+        const {
+          editorValue = '',
+          isSelected = false,
+        } = action;
+
+        const { fields: _fields, functions } = getSearchedEditorValue(
+          fields as Variable[],
+          editorValue,
+          fieldValues,
+          isSelected,
+          '',
+          String(ErrorType.Pass),
+        );
+
+        return {
+          ...originalState,
+          disabled: false,
+          isSelected: false,
+          errorCode: ErrorType.Pass,
+          errorText: '',
+          fields: _fields,
+          functions,
+        };
+      }
+
       case ActionType.SetErrorText: {
         return {
           ...originalState,

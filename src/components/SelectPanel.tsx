@@ -198,12 +198,12 @@ const SelectPanel: FC = (): JSX.Element => {
         editor!.focus();
         return;
       } else {
-        const endPosition = commaIndex + name.length + 1;
         doc.replaceRange(
           `{${name}}`,
+          { ch: 0, line },
           pos,
         );
-        pos.ch += endPosition + 2;
+        pos.ch += name.length + 2;
       }
 
       dispatch!({

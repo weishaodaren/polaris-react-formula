@@ -123,7 +123,7 @@ const Code: FC<IProps> = ({
     // 获取代码块
     const block = getCodeBlock(frontValue, currentValue, fields);
     dispatch!({
-      type: ActionType.SetEditorValue,
+      type: ActionType.SetCursorPosition,
       editorValue: block,
     } as IActionType);
   }, []);

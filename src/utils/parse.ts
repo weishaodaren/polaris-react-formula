@@ -89,7 +89,6 @@ export const parseFieldData = (
   sourceData: IDataSource | any,
 ) => {
   const fieldKey = parseKey(key);
-
   // 不满足匹配条件直接抛出
   if (!fieldKey || !Array.isArray(fieldKey)) return null;
 
