@@ -63,6 +63,7 @@ export const initLineTag = (
 ) => {
   (innerVariables || []).forEach((variable) => {
     const variableMark = `{${variable.value}}`;
+    // const variableMark = `{${variable.label}}`;
     const regex = new RegExp(variableMark, 'g');
     while (regex.exec(content) !== null) {
       const begin = { line, ch: regex.lastIndex - variableMark.length };
@@ -315,7 +316,8 @@ export const getEditorPos: (P: GetEditorPosParams) => GetEditorPosReturns = ({
  value, index, ch, name, pos, line,
 }) => {
   // 优先判断是否存在内部值(用户模糊查询手动输入部分)
-  const innerValue = value.slice(index + 1, value.length - 1);
+  const innerValue = value.slice(index + 1, value.length);
+
   // 替换范围
   const range = [{ ch: index + 1, line }, pos];
 

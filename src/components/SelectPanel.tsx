@@ -131,7 +131,7 @@ const SelectPanel: FC = (): JSX.Element => {
      * 需要先替换掉中文字符
      * 方便统一获取敏感字段索引
      */
-    const _value = value.toString().replaceAll('，', ',').replaceAll('）', ')');
+    const _value = value.toString().replaceAll('，', ',').replaceAll('）', ')').slice(0, ch); // 光标前的值
     const cursorValue = _value![ch - 1]; // 光标前一个字符
 
     const leftIndex = _value.lastIndexOf('(');
@@ -146,9 +146,9 @@ const SelectPanel: FC = (): JSX.Element => {
       // 获取距离光标最近的敏感索引
       const _lastIndex = Math.abs(index) - Math.abs(leftIndex);
       // 是否是逗号(等号 计算符号)
-      const isCommonOrEqual = _lastIndex > 0 && (index !== -1 || [',', ...specialSymbols].includes(cursorValue)) && cursorValue !== '}';
+      const isCommonOrEqual = _lastIndex > 0 && (index !== -1 || [',', ...specialSymbols].includes(cursorValue)) && !['}', '(', ')'].includes(cursorValue);
       // 是否是左侧括号
-      const isLeft = _lastIndex < 0 && leftIndex !== -1 && cursorValue !== '}' && cursorValue !== '=';
+      const isLeft = (_lastIndex < 0 && (leftIndex !== -1 && !['}', '=', ')'].includes(cursorValue))) || cursorValue === '(';
 
       if (isCommonOrEqual) {
         /**
@@ -177,6 +177,7 @@ const SelectPanel: FC = (): JSX.Element => {
             name,
             pos,
           });
+
           doc.replaceRange(`{${name}}`, pos1, pos2);
           pos.ch = _ch;
         }
@@ -200,7 +201,6 @@ const SelectPanel: FC = (): JSX.Element => {
         const endPosition = commaIndex + name.length + 1;
         doc.replaceRange(
           `{${name}}`,
-          { ch: commaIndex + 1, line },
           pos,
         );
         pos.ch += endPosition + 2;
