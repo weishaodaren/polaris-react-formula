@@ -29,6 +29,10 @@
   }
 }
 
+.CodeMirror-focused .CodeMirror-selected {
+  background: @code-background-color;
+}
+
 // 作用小组件 无法键入
 .CodeMirror-widget{
   pointer-events: none;
@@ -36,7 +40,7 @@
 
 .CodeMirror-focused {
   box-shadow: none;
-  background-color: @code-background-color;
+  background-color: #fff;
   outline: 1px solid @theme-color;
 }
 
@@ -60,14 +64,17 @@
 
 // TODO: 暂时先这么修改
 .formula-editor-code-mirror-sample{
-  .cm-s-default {
-    .cm-bracket,.cm-variable-2{
-      color: @tag-font-color;
-    }
-    .cm-variable-2{
-      background: @tag-color;
-      padding: 5px 8px;
-      border-radius: 11px;
+  .CodeMirror{
+    background-color: @code-background-color-2;
+    .cm-s-default {
+      .cm-bracket,.cm-variable-2{
+        color: @tag-font-color;
+      }
+      .cm-variable-2{
+        background: @tag-color;
+        padding: 5px 8px;
+        border-radius: 11px;
+      }
     }
   }
 }
