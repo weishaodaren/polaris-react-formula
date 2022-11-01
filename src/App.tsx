@@ -4,7 +4,7 @@ import { column, dataSource } from './config';
 
 function App() {
   const [visible, setVisible] = useState(true);
-  const [value, setValue] = useState('IF({title} = "刘123建", {title}, {ownerId})');
+  const [value, setValue] = useState('IF({title} = "刘123建", {title}, {ownerId}) + SUM({title})');
 
   const onCalc = useCallback((formula: string, formulaField: string) => {
     setValue(formulaField);

@@ -19,6 +19,9 @@ import { ConstantsMap } from '../config';
 // 特殊计算符号
 export const specialSymbols: string[] = ['=', '+', '-', '*', '/', '%'];
 
+// 代码块标志位
+export const blocks = ['(', ')', ',', '{', '}', ...specialSymbols];
+
 /**
  * Function
  * @description 替换变量
@@ -373,3 +376,43 @@ export const getNearestIndex = (
     : [',', ' ', '(', ...specialSymbols]
       .map((_) => inputValue.lastIndexOf(_))
       .sort((a, b) => b - a)[0]);
+
+/**
+ * Function 获取字段块
+ * @param inputValue 输入值
+ * @param endIndex 结束索引
+ * @return string 截取位置
+ */
+export const getFieldBlock = (
+  inputValue: string,
+  endIndex: number,
+  fields: Variable[],
+): string => {
+  // 获取起始位置，不包含{}
+  const startIndex = inputValue.lastIndexOf('{') + 1;
+  const value = inputValue.slice(startIndex, endIndex);
+  const { label = '' } = fields?.find(({ value: _value }) => _value === value) || {};
+  return label;
+};
+
+/**
+ * Function
+ * @description 获取代码块
+ * @param inputValue 输入值
+ * @param sign 标志位
+ * @param fields 字段组
+ * @return string
+ */
+export const getCodeBlock = (
+  inputValue: string,
+  sign: string,
+  fields: Variable[] = [],
+): string => {
+  const index = blocks.map((_) => inputValue.lastIndexOf(_)).sort((a, b) => b - a)[0];
+
+  if (sign === '}') return getFieldBlock(inputValue, index, fields);
+
+  const endIndex = inputValue.lastIndexOf(sign);
+  const block = inputValue.slice(index + 1, endIndex + 1).trim();
+  return block;
+};

@@ -132,7 +132,7 @@ const SelectPanel: FC = (): JSX.Element => {
      * 方便统一获取敏感字段索引
      */
     const _value = value.toString().replaceAll('，', ',').replaceAll('）', ')');
-    const cursorValue = _value![ch as number - 1]; // 光标前一个字符
+    const cursorValue = _value![ch - 1]; // 光标前一个字符
 
     const leftIndex = _value.lastIndexOf('(');
     const commaIndex = _value.lastIndexOf(',');

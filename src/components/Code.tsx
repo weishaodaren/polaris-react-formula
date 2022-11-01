@@ -7,7 +7,7 @@ import React, {
 import { UnControlled as CodeMirror } from 'react-codemirror2';
 
 import type { FC } from 'react';
-import type { EditorChange, Editor as CodemirrorEditor } from 'codemirror';
+import type { EditorChange, Editor as CodemirrorEditor, Position } from 'codemirror';
 import type { Variable } from '../types';
 import type { IActionType } from '../store';
 
@@ -19,6 +19,7 @@ import {
 import {
   initDocTag,
   parseMarks,
+  getCodeBlock,
 } from '../utils';
 
 interface IProps {
@@ -106,6 +107,27 @@ const Code: FC<IProps> = ({
     }
   }, []);
 
+  /**
+   * Callback
+   * @description 切换光标事件
+   * @param editor 编辑器配置
+   * @param position 光标位置
+   * @return void
+   */
+  const handleCursor = useCallback((editor: CodemirrorEditor, position: Position) => {
+    const { line, ch } = position;
+    const currentLineValue = editor.getLine(line); // 当前行的值
+    const frontValue = currentLineValue.slice(0, ch); // 光标前的值
+    const currentValue = currentLineValue[ch - 1]; // 当前光标前一位值
+
+    // 获取代码块
+    const block = getCodeBlock(frontValue, currentValue, fields);
+    dispatch!({
+      type: ActionType.SetEditorValue,
+      editorValue: block,
+    } as IActionType);
+  }, []);
+
   return useMemo(() => (
     <CodeMirror
       className={`${prefixCls}-code-mirror`}
@@ -114,6 +136,7 @@ const Code: FC<IProps> = ({
       options={CMOptions}
       editorDidMount={onReady}
       onChange={handleChange}
+      onCursor={handleCursor}
     />
   ), [value]);
 };
