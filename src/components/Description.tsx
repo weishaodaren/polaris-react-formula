@@ -1,4 +1,4 @@
-import React, { useContext, useMemo, useDeferredValue } from 'react';
+import React, { useContext, useMemo } from 'react';
 import { UnControlled as CodeMirror } from 'react-codemirror2';
 import type { FC } from 'react';
 import type { FunctionItem, Variable } from '../types';
