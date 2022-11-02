@@ -1,10 +1,18 @@
 /* eslint-disable @typescript-eslint/no-implied-eval */
-import type { Position, Editor as CodemirrorEditor } from 'codemirror';
 import type {
-  Variable,
-  FunctionGroup,
-  GetEditorPosParams,
-  GetEditorPosReturns,
+  ReplaceVariable,
+  InitLineTag,
+  InitDocTag,
+  FuzzySearchField,
+  FuzzySearchFunctions,
+  UseFormula,
+  IsValidField,
+  ReverseField,
+  GetCodeBlock,
+  GetFieldBlock,
+  GetNearestIndex,
+  IsValidFunction,
+  GetEditorPos,
 } from '../types';
 import { ErrorType } from '../enum';
 import {
@@ -31,11 +39,11 @@ export const blocks = ['(', ')', ',', '{', '}', ...specialSymbols];
  * @param val 值信息{label: '', value: '', type: ''}
  * @return void 0
  */
-const replaceVariable = (
-  editor: CodemirrorEditor,
-  begin: Position,
-  end: Position,
-  val: Variable,
+const replaceVariable: ReplaceVariable = (
+  editor,
+  begin,
+  end,
+  val,
 ) => {
   const doc = editor.getDoc();
   const el = document.createElement('span');
@@ -55,11 +63,11 @@ const replaceVariable = (
  * @param innerVariables 输入的内部变量组
  * @return void 0
  */
-export const initLineTag = (
-  editor: CodemirrorEditor,
-  content: string,
-  line: number,
-  innerVariables: Variable[] = [],
+export const initLineTag: InitLineTag = (
+  editor,
+  content,
+  line,
+  innerVariables,
 ) => {
   (innerVariables || []).forEach((variable) => {
     const variableMark = `{${variable.label}}`;
@@ -79,10 +87,10 @@ export const initLineTag = (
  * @param code 值
  * @return void 0
  */
-export const initDocTag = (
-  editor: CodemirrorEditor,
-  code: string,
-  innerVariables: Variable[] = [],
+export const initDocTag: InitDocTag = (
+  editor,
+  code,
+  innerVariables = [],
 ) => {
   const contents = code.split('\n');
   contents.forEach((content, idx) => initLineTag(editor, content, idx, innerVariables));
@@ -169,7 +177,10 @@ export const getFormulaError = (input: string) => {
  * @param inputValue 输入值
  * @return array
  */
-export const fuzzySearchField = (fields: Variable[], inputValue: string) => {
+export const fuzzySearchField: FuzzySearchField = (
+  fields,
+  inputValue,
+) => {
   const _fields = [];
   if (fields && fields.length) {
     for (let i = 0; i < fields.length; i += 1) {
@@ -189,7 +200,10 @@ export const fuzzySearchField = (fields: Variable[], inputValue: string) => {
  * @param inputValue 输入值
  * @return array
  */
-export const fuzzySearchFunctions = (functionArray: FunctionGroup[], inputValue: string) => {
+export const fuzzySearchFunctions: FuzzySearchFunctions = (
+  functionArray,
+  inputValue,
+) => {
   const _functions = [];
   for (let i = 0; i < functionArray.length; i += 1) {
     const { functions } = functionArray[i];
@@ -226,10 +240,10 @@ export const fuzzySearchFunctions = (functionArray: FunctionGroup[], inputValue:
  * @param dataSourceItem 单元格数据
  * @return string
  */
-export const useFormula = (
-  value: string,
-  dataSourceItem: {},
-): string | string[] | undefined => {
+export const useFormula: UseFormula = (
+  value,
+  dataSourceItem,
+) => {
   try {
     // 字段数据
     const fieldsData = parseFieldData(value, dataSourceItem);
@@ -258,7 +272,10 @@ export const useFormula = (
  * @param fields 字段组
  * @return boolean
  */
-export const isValidField = (input: string, fields: string[]): boolean => {
+export const isValidField: IsValidField = (
+  input,
+  fields,
+) => {
   const matchValue = input.match(braceReg);
   if (matchValue) {
     /**
@@ -283,7 +300,10 @@ export const isValidField = (input: string, fields: string[]): boolean => {
  * @param fields 字段组
  * @return string
  */
-export const reverseField = (input: string, fields: Variable[]) => {
+export const reverseField: ReverseField = (
+  input,
+  fields,
+) => {
   const content = parseKey(input);
 
   if (!content || !content.length) return input;
@@ -329,8 +349,14 @@ export const reverseField = (input: string, fields: Variable[]) => {
  * @param pos 编辑器默认位置
  * @return {}
  */
-export const getEditorPos: (P: GetEditorPosParams) => GetEditorPosReturns = ({
- value, index, ch, name, pos, line, isRightFieldEnd,
+export const getEditorPos: GetEditorPos = ({
+  value,
+  index,
+  ch,
+  name,
+  pos,
+  line,
+  isRightFieldEnd,
 }) => {
   // 优先判断是否存在内部值(用户模糊查询手动输入部分)
   const innerValue = value.slice(index + 1, value.length);
@@ -363,7 +389,9 @@ export const getEditorPos: (P: GetEditorPosParams) => GetEditorPosReturns = ({
  * @param inputFunction 输入的函数字段
  * @return string
  */
-export const isValidFunction = (inputFunction: string): string => {
+export const isValidFunction: IsValidFunction = (
+  inputFunction,
+) => {
   // `AND()`截取括号
   const key = inputFunction.slice(0, inputFunction.length - 2);
   if (!ConstantsMap.has(key)) return '';
@@ -387,10 +415,10 @@ export const isValidFunction = (inputFunction: string): string => {
  * @param extraSymbols 额外特殊符号组
  * @return Number
  */
-export const getNearestIndex = (
-  inputValue: string,
-  extraSymbols?: string[],
-): number => (
+export const getNearestIndex: GetNearestIndex = (
+  inputValue,
+  extraSymbols,
+) => (
   Array.isArray(extraSymbols) ? [
     ...specialSymbols,
     ...extraSymbols,
@@ -405,10 +433,10 @@ export const getNearestIndex = (
  * @param endIndex 结束索引
  * @return string 截取位置
  */
-export const getFieldBlock = (
-  inputValue: string,
-  endIndex: number,
-): string => {
+export const getFieldBlock: GetFieldBlock = (
+  inputValue,
+  endIndex,
+) => {
   // 获取起始位置，不包含{}
   const startIndex = inputValue.lastIndexOf('{') + 1;
   const value = inputValue.slice(startIndex, endIndex);
@@ -422,10 +450,10 @@ export const getFieldBlock = (
  * @param sign 标志位
  * @return string
  */
-export const getCodeBlock = (
-  inputValue: string,
-  sign: string,
-): string => {
+export const getCodeBlock: GetCodeBlock = (
+  inputValue,
+  sign,
+) => {
   const index = blocks.map((_) => inputValue.lastIndexOf(_)).sort((a, b) => b - a)[0];
 
   if (sign === '}') return getFieldBlock(inputValue, index);

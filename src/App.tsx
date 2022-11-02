@@ -6,8 +6,8 @@ function App() {
   const [visible, setVisible] = useState(true);
   // const [value, setValue] = useState('');
   // const [value, setValue] = useState('IF({title} = "刘123建", {title}, {ownerId}) + SUM({title})');
-  // const [value, setValue] = useState('IF({多选}="A"||{多选}="B"||{多选}="A, B","通过"，"不通过")');
   const [value, setValue] = useState('IF({任务标题} = "刘123建", {任务标题}, {负责人}) + SUM({任务标题})');
+  // const [value, setValue] = useState('{title}+{ownerId}');
 
   const onCalc = useCallback((formulaField: string, formula: string) => {
     setValue(formulaField);

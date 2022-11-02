@@ -1,7 +1,6 @@
 import { Fields, FieldName } from '../enum';
 import type { IFields, IFieldName } from '../enum';
-import type { Variable } from '../types';
-import type { IColumn } from '../config/mock.column';
+import type { FilterFieldColumn, FilterFormulaField } from '../types';
 
 /**
  * Function
@@ -39,7 +38,7 @@ export const filterMarks = (input: string) => input
  * Function
  * @description 过滤公式字段
  */
-export const filterFormulaField: (T: IColumn[number]) => Variable = (fields) => {
+export const filterFormulaField: FilterFormulaField = (fields) => {
   const {
     name: value,
     label,
@@ -76,13 +75,9 @@ export const filterFormulaField: (T: IColumn[number]) => Variable = (fields) => 
  * @param inputArray 输入字段组
  * @return array
  */
-export const filterFieldColumn = (
-  inputArray: {
-    label: string,
-    value: string,
-    type: string,
-  }[],
-): Variable[] => (
+export const filterFieldColumn: FilterFieldColumn = (
+  inputArray,
+) => (
   Array.isArray(inputArray) && inputArray.length
     /**
      * 暂不考虑 以下

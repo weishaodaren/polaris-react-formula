@@ -50,8 +50,8 @@ export interface FormulaEditorProps {
    * 获取计算值 回调
    */
   onChange?: ((
-    formula: string, // 公式
-    formulaField: string // 公式(原字段)
+    formulaField: string, // 公式(原字段)
+    formula: string // 公式
   ) => void)
 
   /**

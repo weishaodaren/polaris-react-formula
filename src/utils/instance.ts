@@ -1,10 +1,7 @@
 /* eslint-disable no-extra-parens */
 import * as FormulaJS from '@formulajs/formulajs';
 import DayJS from 'dayjs';
-
-type RewriteType<T> = {
-  -readonly [key in keyof T]: T[key];
-};
+import type { RewriteType } from '../types';
 
 type FormulaJSType = typeof FormulaJS;
 

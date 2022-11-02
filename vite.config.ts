@@ -22,6 +22,7 @@ export default defineConfig({
         'polaris-react-component',
         'dayjs',
         '@formulajs/formulajs',
+        '/src/config/mock.column.ts',
       ],
       output: {
         globals: {

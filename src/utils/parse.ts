@@ -1,8 +1,12 @@
 import { filterFieldData, filterFieldColumn, filterFormulaField } from './filter';
 import { braceReg } from './regexp';
 
-import type { IColumn, IDataSource } from '../config/mock.column';
-import type { Variable } from '../types';
+import type {
+  ParseFullFieldData,
+  ParseFieldData,
+  ParseField,
+  ParseKeyReplaceField,
+} from '../types';
 
 /**
  * Function
@@ -50,10 +54,10 @@ export const parseMarks2 = (rawString: string) => rawString
  * @param replacedFields 替换字段组
  * @return string
  */
-export const parseKeyReplaceField = (
-  fields: string[],
-  originalField: string,
-  replacedFields: string[],
+export const parseKeyReplaceField: ParseKeyReplaceField = (
+  fields,
+  originalField,
+  replacedFields,
 ) => {
   let _originalField = originalField;
   /**
@@ -73,7 +77,7 @@ export const parseKeyReplaceField = (
  * @param rawFields 原始字段组(极星表格直传)
  * @return array
  */
-export const parseField = (rawFields: IColumn): Variable[] => filterFieldColumn(
+export const parseField: ParseField = (rawFields) => filterFieldColumn(
   rawFields.map((fields) => filterFormulaField(fields)),
 );
 
@@ -84,9 +88,9 @@ export const parseField = (rawFields: IColumn): Variable[] => filterFieldColumn(
  * @param sourceData 源数据
  * @return array | null
  */
-export const parseFieldData = (
-  key: string,
-  sourceData: IDataSource | any,
+export const parseFieldData: ParseFieldData = (
+  key,
+  sourceData,
 ) => {
   const fieldKey = parseKey(key);
   // 不满足匹配条件直接抛出
@@ -130,7 +134,10 @@ export const parseFieldData = (
  * @param sourceData 源数据
  * @return object
  */
-export const parseFullFieldData = (fields: Variable[], sourceData: IDataSource | any) => {
+export const parseFullFieldData: ParseFullFieldData = (
+  fields,
+  sourceData,
+) => {
   // 字段组
   const fieldArray = fields
     .map(({ value }) => value)
