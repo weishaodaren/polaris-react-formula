@@ -3,10 +3,13 @@
   "private": false,
   "auther": "weishaodaren@gmail.com",
   "description": "极星公式库 ✨",
-  "homepage": "https://gitea.startable.cn/zhaojiawei/frontend-formula",
+  "homepage": "https://github.com/weishaodaren/polaris-react-formula",
   "repository": {
     "type": "git",
-    "url": "https://gitea.startable.cn/zhaojiawei/frontend-formula.git"
+    "url": "https://github.com/weishaodaren/polaris-react-formula.git"
+  },
+  "publishConfig":{
+    "registry": "https://www.npmjs.com/package/polaris-react-formula"
   },
   "version": "4.1.7",
   "type": "module",
