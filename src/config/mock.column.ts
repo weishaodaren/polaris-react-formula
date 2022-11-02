@@ -2,7 +2,7 @@ export const column = [
         {
             name: 'title',
             label: '标题',
-            aliasTitle: '任务标题',
+            aliasTitle: '7*2',
             description: '',
             isSys: false,
             isOrg: false,

@@ -17,7 +17,11 @@ import type { CustomFieldIconType } from '../config';
 
 import { store, ActionType } from '../store';
 import { prefixCls, CustomFieldIcon } from '../config';
-import { getEditorPos, getNearestIndex, specialSymbols } from '../utils';
+import {
+  getEditorPos,
+  getNearestIndex,
+  specialSymbols,
+} from '../utils';
 
 const Style = `${prefixCls}-select-panel-layout`;
 

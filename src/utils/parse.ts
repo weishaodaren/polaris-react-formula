@@ -1,4 +1,8 @@
-import { filterFieldData, filterFieldColumn, filterFormulaField } from './filter';
+import {
+  filterFieldData,
+  filterFieldColumn,
+  filterFormulaField,
+} from './filter';
 import { braceReg } from './regexp';
 
 import type {

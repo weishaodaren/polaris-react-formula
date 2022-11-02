@@ -123,6 +123,10 @@ export type FilterFormulaField = (
   T: IColumn[number]
 ) => Variable;
 
+export type FilterEscape = (
+  T: Variable
+) => Variable;
+
 export type ParseFullFieldData = (
   fields: Variable[],
   sourceData: IDataSource | any

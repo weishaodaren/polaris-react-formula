@@ -1,6 +1,10 @@
+import escapeRegExp from 'lodash/escapeRegExp';
 import { Fields, FieldName } from '../enum';
 import type { IFields, IFieldName } from '../enum';
-import type { FilterFieldColumn, FilterFormulaField } from '../types';
+import type { FilterFieldColumn, FilterFormulaField, FilterEscape } from '../types';
+
+// 需要转义的字符串
+const escapeStrings = ['*', '?'];
 
 /**
  * Function
@@ -36,7 +40,48 @@ export const filterMarks = (input: string) => input
 
 /**
  * Function
+ * @description 过滤转义字符
+ * @param input 输入值
+ * @return string
+ */
+export const filterEscapedCharacters = (input: string) => input.replace(/[\\'\\"\\\\/\b\f\n\r\t]/g, '');
+
+/**
+ * Function
+ * @description 过滤特殊符号 转义
+ * @param field 单个字段
+ * @return Variable
+ */
+export const filterEscape: FilterEscape = (field) => {
+  for (let i = 0; i < escapeStrings.length; i += 1) {
+    if (field.label && field.label.indexOf(escapeStrings[i]) !== -1) {
+      field.label = escapeRegExp(field.label);
+    }
+  }
+  return field;
+};
+
+/**
+ * Function
+ * @description 过滤特殊符号 转义
+ * @param field 单个字段
+ * @return Variable
+ */
+export const getEscapedTimes = (field: any) => {
+  let times = 0;
+  for (let i = 0; i < escapeStrings.length; i += 1) {
+    if (field.label && field.label.indexOf(escapeStrings[i]) !== -1) {
+      times += 1;
+    }
+  }
+  return times;
+};
+
+/**
+ * Function
  * @description 过滤公式字段
+ * @param fields 单个字段
+ * @return Variable
  */
 export const filterFormulaField: FilterFormulaField = (fields) => {
   const {
@@ -66,7 +111,7 @@ export const filterFormulaField: FilterFormulaField = (fields) => {
     };
   }
 
-    return params;
+  return params;
 };
 
 /**

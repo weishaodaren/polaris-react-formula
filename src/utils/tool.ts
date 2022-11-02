@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-implied-eval */
+import escapeRegExp from 'lodash/escapeRegExp';
 import type {
   ReplaceVariable,
   InitLineTag,
@@ -23,6 +24,7 @@ import {
 } from './parse';
 import { braceReg } from './regexp';
 import { ConstantsMap } from '../config';
+import { getEscapedTimes } from './filter';
 
 // 特殊计算符号
 export const specialSymbols: string[] = ['=', '+', '-', '*', '/', '%'];
@@ -70,11 +72,19 @@ export const initLineTag: InitLineTag = (
   innerVariables,
 ) => {
   (innerVariables || []).forEach((variable) => {
-    const variableMark = `{${variable.label}}`;
+    const variableMark = `{${escapeRegExp(variable.label)}}`;
     const regex = new RegExp(variableMark, 'g');
     while (regex.exec(content) !== null) {
-      const begin = { line, ch: regex.lastIndex - variableMark.length };
+      const escapedTimes = getEscapedTimes(variable);
+      const begin = { line, ch: regex.lastIndex - variableMark.length + escapedTimes };
       const end = { line, ch: regex.lastIndex };
+      // const value = editor.getValue();
+      // console.log('value:', value);
+      // console.log('variableMark:', variableMark, variableMark.length);
+      // console.log('regex.lastIndex:', regex.lastIndex);
+      // console.log('begin:', begin);
+      // console.log('end:', end);
+      // console.log('variable:', variable);
       replaceVariable(editor, begin, end, variable);
     }
   });
@@ -93,7 +103,7 @@ export const initDocTag: InitDocTag = (
   innerVariables = [],
 ) => {
   const contents = code.split('\n');
-  contents.forEach((content, idx) => initLineTag(editor, content, idx, innerVariables));
+  contents.forEach((content, index) => initLineTag(editor, content, index, innerVariables));
 };
 
 /**
