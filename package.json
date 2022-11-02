@@ -11,7 +11,7 @@
   "publishConfig":{
     "registry": "https://www.npmjs.com/package/polaris-react-formula"
   },
-  "version": "4.1.7",
+  "version": "5.0.",
   "type": "module",
   "license": "MIT",
   "main": "./dist/index.js",

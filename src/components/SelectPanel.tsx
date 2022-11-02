@@ -131,8 +131,10 @@ const SelectPanel: FC = (): JSX.Element => {
      * 需要先替换掉中文字符
      * 方便统一获取敏感字段索引
      */
-    const _value = value.toString().replaceAll('，', ',').replaceAll('）', ')').slice(0, ch); // 光标前的值
+    const replacedValue = value.toString().replaceAll('，', ',').replaceAll('）', ')');
+    const _value = replacedValue.slice(0, ch); // 光标前的值
     const cursorValue = _value![ch - 1]; // 光标前一个字符
+    const behindCursorValue = replacedValue.slice(ch, ch + 1); // 光标后一个字符
 
     const leftIndex = _value.lastIndexOf('(');
     const commaIndex = _value.lastIndexOf(',');
@@ -149,6 +151,8 @@ const SelectPanel: FC = (): JSX.Element => {
       const isCommonOrEqual = _lastIndex > 0 && (index !== -1 || [',', ...specialSymbols].includes(cursorValue)) && !['}', '(', ')'].includes(cursorValue);
       // 是否是左侧括号
       const isLeft = (_lastIndex < 0 && (leftIndex !== -1 && !['}', '=', ')'].includes(cursorValue))) || cursorValue === '(';
+      // 是否右侧存在字段结尾
+      const isRightFieldEnd = behindCursorValue === '}';
 
       if (isCommonOrEqual) {
         /**
@@ -165,6 +169,7 @@ const SelectPanel: FC = (): JSX.Element => {
             line,
             name,
             pos,
+            isRightFieldEnd,
           });
           doc.replaceRange(`{${name}}`, pos1, pos2);
           pos.ch = _ch;
@@ -176,6 +181,7 @@ const SelectPanel: FC = (): JSX.Element => {
             line,
             name,
             pos,
+            isRightFieldEnd,
           });
 
           doc.replaceRange(`{${name}}`, pos1, pos2);
@@ -189,6 +195,7 @@ const SelectPanel: FC = (): JSX.Element => {
             line,
             name,
             pos,
+            isRightFieldEnd,
          });
 
         doc.replaceRange(`{${name}}`, pos1, pos2);
@@ -198,10 +205,11 @@ const SelectPanel: FC = (): JSX.Element => {
         editor!.focus();
         return;
       } else {
+        // 存在右侧字段结尾，需要默认在返回字段位置+1
         doc.replaceRange(
           `{${name}}`,
           { ch: 0, line },
-          pos,
+          isRightFieldEnd ? { ...pos, ch: pos.ch + 1 } : pos,
         );
         pos.ch += name.length + 2;
       }
@@ -273,7 +281,7 @@ const SelectPanel: FC = (): JSX.Element => {
                 className={[`${Style}-list-item`, selected === field.value && `${Style}-list-item-active`].join(' ')}
                 key={field.value}
                 onMouseEnter={selectItem(field)}
-                onClick={clickItem(field.value, true, field)}
+                onClick={clickItem(field.label, true, field)}
               >
                 <Icon type={(CustomFieldIcon as CustomFieldIconType as any)[field.type]} />
                 <span>{field.label}</span>

@@ -39,7 +39,7 @@ const replaceVariable = (
 ) => {
   const doc = editor.getDoc();
   const el = document.createElement('span');
-  el.innerText = val.label;
+  el.innerText = `{${val.label}}`;
   el.className = 'formula-tag';
   doc.markText(begin, end, {
     replacedWith: el,
@@ -62,8 +62,7 @@ export const initLineTag = (
   innerVariables: Variable[] = [],
 ) => {
   (innerVariables || []).forEach((variable) => {
-    const variableMark = `{${variable.value}}`;
-    // const variableMark = `{${variable.label}}`;
+    const variableMark = `{${variable.label}}`;
     const regex = new RegExp(variableMark, 'g');
     while (regex.exec(content) !== null) {
       const begin = { line, ch: regex.lastIndex - variableMark.length };
@@ -286,14 +285,32 @@ export const isValidField = (input: string, fields: string[]): boolean => {
  */
 export const reverseField = (input: string, fields: Variable[]) => {
   const content = parseKey(input);
+
   if (!content || !content.length) return input;
+
+  /**
+   * 因考虑改用中文匹配
+   * 在这里多做一层转换
+   * 标题 => title
+   */
+  const _content = [];
+  for (let i = 0; i < content.length; i += 1) {
+    for (let j = 0; j < fields.length; j += 1) {
+      const { label, value } = fields[j];
+      if (content[i] === label) {
+        _content.push(value);
+      }
+    }
+  }
+
+  if (!_content.length) return input;
 
   let output = input;
   // 拿{title}匹配字段，替换内容
   for (let i = 0; i < fields.length; i += 1) {
-    for (let j = 0; j < content.length; j += 1) {
-      if (fields[i].value === content[j]) {
-        output = output.replace(`{${content[j]}}`, fields[i].label);
+    for (let j = 0; j < _content.length; j += 1) {
+      if (fields[i].value === _content[j]) {
+        output = output.replace(fields[i].label, _content[j]);
       }
     }
   }
@@ -313,13 +330,16 @@ export const reverseField = (input: string, fields: Variable[]) => {
  * @return {}
  */
 export const getEditorPos: (P: GetEditorPosParams) => GetEditorPosReturns = ({
- value, index, ch, name, pos, line,
+ value, index, ch, name, pos, line, isRightFieldEnd,
 }) => {
   // 优先判断是否存在内部值(用户模糊查询手动输入部分)
   const innerValue = value.slice(index + 1, value.length);
 
+  // 存在右侧字段结尾，需要默认在返回字段位置+1
+  const _pos = isRightFieldEnd ? { ...pos, ch: pos.ch + 1 } : pos;
+
   // 替换范围
-  const range = [{ ch: index + 1, line }, pos];
+  const range = [{ ch: index + 1, line }, _pos];
 
   if (innerValue) {
     // 判断是否存在右侧括号
@@ -388,13 +408,11 @@ export const getNearestIndex = (
 export const getFieldBlock = (
   inputValue: string,
   endIndex: number,
-  fields: Variable[],
 ): string => {
   // 获取起始位置，不包含{}
   const startIndex = inputValue.lastIndexOf('{') + 1;
   const value = inputValue.slice(startIndex, endIndex);
-  const { label = '' } = fields?.find(({ value: _value }) => _value === value) || {};
-  return label;
+  return value;
 };
 
 /**
@@ -402,17 +420,15 @@ export const getFieldBlock = (
  * @description 获取代码块
  * @param inputValue 输入值
  * @param sign 标志位
- * @param fields 字段组
  * @return string
  */
 export const getCodeBlock = (
   inputValue: string,
   sign: string,
-  fields: Variable[] = [],
 ): string => {
   const index = blocks.map((_) => inputValue.lastIndexOf(_)).sort((a, b) => b - a)[0];
 
-  if (sign === '}') return getFieldBlock(inputValue, index, fields);
+  if (sign === '}') return getFieldBlock(inputValue, index);
 
   const endIndex = inputValue.lastIndexOf(sign);
   const block = inputValue.slice(index + 1, endIndex + 1).trim();

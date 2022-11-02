@@ -121,7 +121,7 @@ const Code: FC<IProps> = ({
     const currentValue = currentLineValue[ch - 1]; // 当前光标前一位值
 
     // 获取代码块
-    const block = getCodeBlock(frontValue, currentValue, fields);
+    const block = getCodeBlock(frontValue, currentValue);
     dispatch!({
       type: ActionType.SetCursorPosition,
       editorValue: block,

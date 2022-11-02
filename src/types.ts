@@ -27,6 +27,7 @@ export interface GetEditorPosParams {
   line: number;
   name: string;
   pos: Position
+  isRightFieldEnd: boolean
 }
 
 export interface GetEditorPosReturns {
