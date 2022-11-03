@@ -36,7 +36,17 @@ export const filterMarks = (input: string) => input
 
 /**
  * Function
+ * @description 过滤转义字符
+ * @param input 输入值
+ * @return string
+ */
+export const filterEscapedCharacters = (input: string) => input.replace(/[\\'\\"\\\\/\b\f\n\r\t]/g, '');
+
+/**
+ * Function
  * @description 过滤公式字段
+ * @param fields 单个字段
+ * @return Variable
  */
 export const filterFormulaField: FilterFormulaField = (fields) => {
   const {
@@ -66,7 +76,7 @@ export const filterFormulaField: FilterFormulaField = (fields) => {
     };
   }
 
-    return params;
+  return params;
 };
 
 /**

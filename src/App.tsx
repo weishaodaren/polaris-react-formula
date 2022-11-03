@@ -1,12 +1,13 @@
 import React, { useCallback, useState } from 'react';
 import FormulaEditor, { useFormula } from '.';
-import { column, dataSource } from './config';
+import { column, dataSource } from './mock';
 
 function App() {
   const [visible, setVisible] = useState(true);
-  // const [value, setValue] = useState('');
+  const [value, setValue] = useState('{7*2}-{7*2}');
+  // const [value, setValue] = useState('{7*2}-{负责人}');
   // const [value, setValue] = useState('IF({title} = "刘123建", {title}, {ownerId}) + SUM({title})');
-  const [value, setValue] = useState('IF({任务标题} = "刘123建", {任务标题}, {负责人}) + SUM({任务标题})');
+  // const [value, setValue] = useState('IF({任务标题} = "刘123建", {任务标题}, {负责人}) + SUM({任务标题})');
   // const [value, setValue] = useState('{title}+{ownerId}');
 
   const onCalc = useCallback((formulaField: string, formula: string) => {

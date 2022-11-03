@@ -11,8 +11,7 @@ import type {
   Dispatch,
 } from 'react';
 import type { InitialState } from './initialState';
-import type { IColumn } from '../config';
-import type { Variable } from '../types';
+import type { Variable, IColumn } from '../types';
 
 import { ErrorType } from '../enum';
 import { Functions, Sample } from '../config';
@@ -115,7 +114,7 @@ export const Store: FC<IStoreProps> = ({ children }) => {
         const { fields, editorValue } = action;
         const _fields = !fields?.length
           ? []
-          : parseField(fields as IColumn);
+          : parseField(fields as IColumn[]);
 
         return {
           ...originalState,

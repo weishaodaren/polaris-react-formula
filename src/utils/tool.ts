@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-implied-eval */
+import escapeRegExp from 'lodash/escapeRegExp';
 import type {
   ReplaceVariable,
   InitLineTag,
@@ -13,6 +14,7 @@ import type {
   GetNearestIndex,
   IsValidFunction,
   GetEditorPos,
+  GetEscapedTimes,
 } from '../types';
 import { ErrorType } from '../enum';
 import {
@@ -29,6 +31,25 @@ export const specialSymbols: string[] = ['=', '+', '-', '*', '/', '%'];
 
 // 代码块标志位
 export const blocks = ['(', ')', ',', '{', '}', ...specialSymbols];
+
+// 需要转义的字符串
+export const escapeStrings = ['*', '?'];
+
+/**
+ * Function
+ * @description 获取出现转义字符次数
+ * @param field 单个字段
+ * @return number
+ */
+export const getEscapedTimes: GetEscapedTimes = (field) => {
+  let times = 0;
+  for (let i = 0; i < escapeStrings.length; i += 1) {
+    if (field.label && field.label.indexOf(escapeStrings[i]) !== -1) {
+      times += 1;
+    }
+  }
+  return times;
+};
 
 /**
  * Function
@@ -70,10 +91,16 @@ export const initLineTag: InitLineTag = (
   innerVariables,
 ) => {
   (innerVariables || []).forEach((variable) => {
-    const variableMark = `{${variable.label}}`;
+    /**
+     * 优先转义特殊字符(可能会携带)
+     * 使用正则查找
+     */
+    const variableMark = `{${escapeRegExp(variable.label)}}`;
     const regex = new RegExp(variableMark, 'g');
     while (regex.exec(content) !== null) {
-      const begin = { line, ch: regex.lastIndex - variableMark.length };
+      // 计算特殊字符出现的次数
+      const escapedTimes = getEscapedTimes(variable);
+      const begin = { line, ch: regex.lastIndex - variableMark.length + escapedTimes };
       const end = { line, ch: regex.lastIndex };
       replaceVariable(editor, begin, end, variable);
     }
@@ -93,7 +120,7 @@ export const initDocTag: InitDocTag = (
   innerVariables = [],
 ) => {
   const contents = code.split('\n');
-  contents.forEach((content, idx) => initLineTag(editor, content, idx, innerVariables));
+  contents.forEach((content, index) => initLineTag(editor, content, index, innerVariables));
 };
 
 /**
