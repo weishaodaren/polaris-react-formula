@@ -18,6 +18,7 @@ const Description: FC = (): JSX.Element => {
   const {
     state: {
       currentFieldOrFunction,
+      isFunctionField,
     },
   } = useContext(store);
 
@@ -34,13 +35,16 @@ const Description: FC = (): JSX.Element => {
       <div className={`${Style}-description-useage`}>用法</div>
       <code>{useage ?? `{${label}}`}</code>
       <div className={`${Style}-description-example`}>举个例子</div>
-      <CodeMirror
+      {isFunctionField
+        ? <CodeMirror
         className={`${prefixCls}-code-mirror-sample`}
         options={{ readOnly: 'nocursor' }}
         value={example ?? `{${label}}`}
       />
+      : <code>{example ?? `{${label}}`}</code>
+      }
     </div>
-  ), [currentFieldOrFunction]);
+  ), [currentFieldOrFunction, isFunctionField]);
 };
 
 export default Description;

@@ -65,6 +65,11 @@ export const initialState = {
   isSelected: false,
 
   /**
+   * 选中的是否是函数字段
+   */
+  isFunctionField: false,
+
+  /**
    * 是否在光标滑动
    */
   isCursoring: false,

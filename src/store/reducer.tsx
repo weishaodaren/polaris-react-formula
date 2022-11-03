@@ -130,6 +130,7 @@ export const Store: FC<IStoreProps> = ({ children }) => {
         return {
           ...originalState,
           currentFieldOrFunction: action.currentFieldOrFunction,
+          isFunctionField: action.isFunctionField,
         };
       }
 
@@ -255,6 +256,7 @@ export const Store: FC<IStoreProps> = ({ children }) => {
               ...returnValues,
               fields: _fields,
               functions: [],
+              isFunctionField: false,
             };
           }
           return {
@@ -262,7 +264,7 @@ export const Store: FC<IStoreProps> = ({ children }) => {
             ...returnValues,
             fields,
             functions: Functions,
-
+            isFunctionField: true,
           };
         }
 
