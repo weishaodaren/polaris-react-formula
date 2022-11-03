@@ -8,7 +8,7 @@
     "type": "git",
     "url": "https://github.com/weishaodaren/polaris-react-formula.git"
   },
-  "version": "5.4.11",
+  "version": "6.0.0",
   "type": "module",
   "license": "MIT",
   "main": "./dist/index.js",

@@ -102,6 +102,9 @@ const SelectPanel: FC = (): JSX.Element => {
     const leftIndex = _value.lastIndexOf('(');
     const commaIndex = _value.lastIndexOf(',');
 
+    // 是否右侧存在函数结尾
+    const isRightFunction = cursorValue === ')';
+
     // 变量字段
     if (isField) {
       // 如果在计算符号 逗号之后有输入值，用户在下方选中函数，直接替换
@@ -151,15 +154,15 @@ const SelectPanel: FC = (): JSX.Element => {
           pos.ch = _ch;
         }
       } else if (isLeft) {
-         const { range: [pos1, pos2], ch: _ch } = getEditorPos({
-            value: _value,
-            index: leftIndex,
-            ch,
-            line,
-            name,
-            pos,
-            isRightFieldEnd,
-         });
+        const { range: [pos1, pos2], ch: _ch } = getEditorPos({
+          value: _value,
+          index: leftIndex,
+          ch,
+          line,
+          name,
+          pos,
+          isRightFieldEnd,
+        });
 
         doc.replaceRange(`{${name}}`, pos1, pos2);
         pos.ch = _ch;
@@ -167,6 +170,12 @@ const SelectPanel: FC = (): JSX.Element => {
         doc.setCursor(pos);
         editor!.focus();
         return;
+      } else if (isRightFunction) {
+        doc.replaceRange(
+          `{${name}}`,
+          pos,
+        );
+        pos.ch += name.length + 2;
       } else {
         // 存在右侧字段结尾，需要默认在返回字段位置+1
         doc.replaceRange(
@@ -195,14 +204,15 @@ const SelectPanel: FC = (): JSX.Element => {
        * 否则 使用 index
        */
       const lastIndex = Math.abs(leftIndex) - Math.abs(index);
-      if (lastIndex > 0) {
+
+      if (lastIndex > 0 && !isRightFunction) {
         doc.replaceRange(
           `${name}()`,
           { ch: leftIndex + 1, line },
           pos,
         );
         pos.ch = leftIndex + name.length + 2;
-      } else if (lastIndex < 0) {
+      } else if (lastIndex < 0 && !isRightFunction) {
         const endPosition = index + name.length + 1;
         doc.replaceRange(
           `${name}()`,
@@ -210,6 +220,12 @@ const SelectPanel: FC = (): JSX.Element => {
           pos,
         );
         pos.ch = endPosition + 1;
+      } else if (isRightFunction) {
+        doc.replaceRange(
+          `${name}()`,
+          pos,
+        );
+        pos.ch += name.length + 1;
       } else {
         const endPosition = index + name.length + 1;
         doc.replaceRange(
