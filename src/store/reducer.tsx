@@ -122,6 +122,7 @@ export const Store: FC<IStoreProps> = ({ children }) => {
           fields: _fields, // 修改字段
           originalFields: _fields.slice(0), // 字段(后续作为原始字段常量使用)
           fieldValues: _fields.map(({ value }) => `{${value}}`), // 字段(后续作为原始字段value常量使用)
+          fieldLabels: _fields.map(({ label }) => `{${label}}`), // 字段(后续作为原始字段label常量使用)
           disabled: !editorValue,
         };
       }
@@ -145,7 +146,7 @@ export const Store: FC<IStoreProps> = ({ children }) => {
         const {
           originalFields: fields,
           editorValue: originalEditorValue,
-          fieldValues,
+          fieldLabels,
           editor,
           currentFieldOrFunction: _currentFieldOrFunction,
           isSelected: _isSelected,
@@ -195,7 +196,7 @@ export const Store: FC<IStoreProps> = ({ children }) => {
           const { fields: searchedFields, functions } = getSearchedEditorValue(
             fields as Variable[],
             editorValue,
-            fieldValues,
+            fieldLabels,
             isSelected,
             '',
             String(ErrorType.Pass),
@@ -216,7 +217,6 @@ export const Store: FC<IStoreProps> = ({ children }) => {
           return {
           ...originalState,
           currentFieldOrFunction: currentContent,
-          disabled: false,
           isSelected: false,
           isCursoring: true,
           fields: searchedFields,
@@ -285,7 +285,7 @@ export const Store: FC<IStoreProps> = ({ children }) => {
             ...getSearchedEditorValue(
                 fields as Variable[],
                 _editorValue,
-                fieldValues,
+                fieldLabels,
                 isSelected,
                 errorText,
                 errorCode,
@@ -300,7 +300,7 @@ export const Store: FC<IStoreProps> = ({ children }) => {
           ...getSearchedEditorValue(
                 fields as Variable[],
                 editorValue,
-                fieldValues,
+                fieldLabels,
                 isSelected,
                 errorText,
                 errorCode,

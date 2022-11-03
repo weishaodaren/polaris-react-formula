@@ -80,6 +80,11 @@ export const initialState = {
   fieldValues: [] as string[],
 
   /**
+   * 字段值 [{标题}..]
+   */
+  fieldLabels: [] as string[],
+
+  /**
    * 函数值
    */
   FunctionNames,
