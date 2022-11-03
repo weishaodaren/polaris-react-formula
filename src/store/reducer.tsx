@@ -146,13 +146,17 @@ export const Store: FC<IStoreProps> = ({ children }) => {
           editorValue: originalEditorValue,
           fieldValues,
           editor,
+          currentFieldOrFunction: _currentFieldOrFunction,
+          isSelected: _isSelected,
         } = originalState;
 
         const {
           editorValue = '',
-          isSelected = false,
+          isSelected = _isSelected,
+          isCursoring = false,
           fields: _fields,
           isFunctionField = false, // 是否是函数字段
+          currentFieldOrFunction = _currentFieldOrFunction,
         } = action;
 
         // 引号内视为常量，需要替换掉
@@ -179,7 +183,44 @@ export const Store: FC<IStoreProps> = ({ children }) => {
             errorText,
             errorCode,
             disabled: Number(errorCode) > -1,
+            currentFieldOrFunction,
           };
+        }
+
+        /**
+         * 代码编辑输入框 光标是否在执行`onCursor`事件
+         */
+        if (isCursoring && !isSelected) {
+          const { fields: searchedFields, functions } = getSearchedEditorValue(
+            fields as Variable[],
+            editorValue,
+            fieldValues,
+            isSelected,
+            '',
+            String(ErrorType.Pass),
+          );
+
+          /**
+           * 判断光标前的字段和函数字段
+           */
+          let currentContent: any = Sample;
+          if (searchedFields && searchedFields?.length > 0 && searchedFields.length < 2) {
+            [currentContent] = searchedFields as Variable[];
+          } else if (functions.length > 0) {
+            const { functions: _fns } = functions[0];
+            if (_fns.length > 1) currentContent = currentFieldOrFunction;
+            else [currentContent] = _fns;
+          }
+
+          return {
+          ...originalState,
+          currentFieldOrFunction: currentContent,
+          disabled: false,
+          isSelected: false,
+          isCursoring: true,
+          fields: searchedFields,
+          functions,
+        };
         }
 
         /**
@@ -187,7 +228,7 @@ export const Store: FC<IStoreProps> = ({ children }) => {
          * 因为两个事件都在codemirror触发
          * 所以当选中时，返回内存中的旧的编辑值
          */
-        if (isSelected) {
+        if (isSelected && !isCursoring) {
           /**
            * 获取选中的函数字段
            * 映射必填参数，反馈UI
@@ -199,11 +240,14 @@ export const Store: FC<IStoreProps> = ({ children }) => {
 
           const returnValues = {
             isSelected,
+            isCursoring: false,
             editorValue: originalEditorValue,
             errorText: functionFieldValue || errorText,
             errorCode: functionFieldValue ? ErrorType.Pass : errorCode,
             disabled: Number(functionFieldValue ? ErrorType.Error : errorCode) > -1,
+            currentFieldOrFunction,
           };
+
           // 存在选中字段组
           if (_fields) {
             return {
@@ -235,6 +279,7 @@ export const Store: FC<IStoreProps> = ({ children }) => {
 
           return {
             ...originalState,
+            currentFieldOrFunction,
             ...getSearchedEditorValue(
                 fields as Variable[],
                 _editorValue,
@@ -249,6 +294,7 @@ export const Store: FC<IStoreProps> = ({ children }) => {
 
         return {
           ...originalState,
+          currentFieldOrFunction,
           ...getSearchedEditorValue(
                 fields as Variable[],
                 editorValue,
@@ -257,37 +303,6 @@ export const Store: FC<IStoreProps> = ({ children }) => {
                 errorText,
                 errorCode,
           ),
-        };
-      }
-
-      case ActionType.SetCursorPosition: {
-        const {
-          originalFields: fields,
-          fieldValues,
-        } = originalState;
-
-        const {
-          editorValue = '',
-          isSelected = false,
-        } = action;
-
-        const { fields: _fields, functions } = getSearchedEditorValue(
-          fields as Variable[],
-          editorValue,
-          fieldValues,
-          isSelected,
-          '',
-          String(ErrorType.Pass),
-        );
-
-        return {
-          ...originalState,
-          disabled: false,
-          isSelected: false,
-          errorCode: ErrorType.Pass,
-          errorText: '',
-          fields: _fields,
-          functions,
         };
       }
 

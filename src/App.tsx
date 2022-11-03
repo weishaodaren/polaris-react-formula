@@ -4,6 +4,7 @@ import { column, dataSource } from './mock';
 
 function App() {
   const [visible, setVisible] = useState(true);
+  // const [value, setValue] = useState('');
   // const [value, setValue] = useState('{7*2}-{7*2}');
   const [value, setValue] = useState('IF({标题}!="",{负责人},{截止时间})');
   // const [value, setValue] = useState('{7*2}-{负责人}');

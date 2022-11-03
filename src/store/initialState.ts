@@ -65,6 +65,11 @@ export const initialState = {
   isSelected: false,
 
   /**
+   * 是否在光标滑动
+   */
+  isCursoring: false,
+
+  /**
    * 字段值 [{code}..]
    */
   fieldValues: [] as string[],

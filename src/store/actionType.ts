@@ -23,9 +23,4 @@ export default Object.freeze({
    * 修改初始值
    */
   SetInitialState: 'setInitialState',
-
-  /**
-   * 修改光标位置
-   */
-  SetCursorPosition: 'setCursorPosition',
 });

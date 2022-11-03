@@ -4,9 +4,6 @@ import React, {
   useContext,
   useCallback,
   useMemo,
-  useState,
-  useEffect,
-  useRef,
 } from 'react';
 import { Icon } from 'polaris-react-component';
 
@@ -38,57 +35,12 @@ const SelectPanel: FC = (): JSX.Element => {
       editor,
       fields,
       functions,
+      currentFieldOrFunction,
     }, dispatch,
   } = useContext(store);
 
   const emptyField = !fields?.length; // 空字段
   const emptyFunctions = !functions.length; // 空函数
-
-  /**
-   * Ref
-   */
-  const mountedRef = useRef(false); // 用于判断当前DOM是否已经挂载
-
-  /**
-   * State
-   */
-  const [selected, setSelected] = useState(''); // 选中的字段
-
-  /**
-   * Effect
-   * @description 依赖变量字段，函数字段 匹配模糊查询默认选中第一项
-   * @return {Void}
-   */
-  useEffect(() => {
-    /**
-     * 第一次不执行副作用函数
-     * 等待依赖更新再执行
-     */
-    if (mountedRef.current) {
-      // 优先匹配变量字段
-      if (fields && fields?.length > 0) {
-        setSelected((fields[0] as Variable).value);
-        dispatch!({
-          type: ActionType.SetCurrentFieldOrFunction,
-          currentFieldOrFunction: fields[0] as Variable,
-        } as unknown as IActionType);
-        return undefined;
-      }
-
-      if (functions.length > 0) {
-        const { functions: _fns } = functions[0];
-        setSelected(_fns[0].name);
-        dispatch!({
-          type: ActionType.SetCurrentFieldOrFunction,
-          currentFieldOrFunction: _fns[0],
-        } as IActionType);
-      }
-    }
-
-    return () => {
-      mountedRef.current = true;
-    };
-  }, [fields, functions]);
 
   /**
    * Callback
@@ -102,7 +54,6 @@ const SelectPanel: FC = (): JSX.Element => {
     event: MouseEvent<HTMLDivElement>,
   ) => {
     event.stopPropagation();
-    setSelected((item as FunctionItem).name ?? (item as Variable).value);
     dispatch!({
       type: ActionType.SetCurrentFieldOrFunction,
       currentFieldOrFunction: item,
@@ -117,11 +68,17 @@ const SelectPanel: FC = (): JSX.Element => {
    * @param field 字段
    * @return void
    */
-  const clickItem = useCallback((name: string, isField: boolean, field?: Variable) => (
+  const clickItem = useCallback((
+    element: Variable | FunctionItem,
+    isField: boolean,
+    field?: Variable,
+  ) => (
     event: MouseEvent<HTMLDivElement>,
   ) => {
     event.stopPropagation();
     if (!editor) return;
+
+    const name = (element as Variable).label ?? (element as FunctionItem).name;
 
     /**
      * 编辑器信息
@@ -223,7 +180,9 @@ const SelectPanel: FC = (): JSX.Element => {
         editorValue: `{${name}}`,
         isSelected: true,
         fields: [field],
-      } as IActionType);
+        currentFieldOrFunction: element,
+        isCursoring: false,
+      } as unknown as IActionType);
     } else {
       // 函数字段
       // 如果在空格 逗号之后有输入值，用户在下方选中函数，直接替换
@@ -264,6 +223,8 @@ const SelectPanel: FC = (): JSX.Element => {
         editorValue: `${name}()`,
         isSelected: true,
         isFunctionField: true,
+        currentFieldOrFunction: element,
+        isCursoring: false,
       } as unknown as IActionType);
     }
 
@@ -282,10 +243,10 @@ const SelectPanel: FC = (): JSX.Element => {
             {/* 字段 */}
             {(fields as Variable[])?.map((field) => (
               <div
-                className={[`${Style}-list-item`, selected === field.value && `${Style}-list-item-active`].join(' ')}
+                className={[`${Style}-list-item`, (currentFieldOrFunction as unknown as Variable).value === field.value && `${Style}-list-item-active`].join(' ')}
                 key={field.value}
                 onMouseEnter={selectItem(field)}
-                onClick={clickItem(field.label, true, field)}
+                onClick={clickItem(field, true, field)}
               >
                 <Icon type={(CustomFieldIcon as CustomFieldIconType as any)[field.type]} />
                 <span>{field.label}</span>
@@ -296,10 +257,10 @@ const SelectPanel: FC = (): JSX.Element => {
               <Fragment key={index}>
                 <h3>{name}</h3>
                 {_functions.map((item) => <div
-                  className={[`${Style}-list-item`, selected === item.name && `${Style}-list-item-active`].join(' ')}
+                  className={[`${Style}-list-item`, currentFieldOrFunction.name === item.name && `${Style}-list-item-active`].join(' ')}
                   key={item.name}
                   onMouseEnter={selectItem(item)}
-                  onClick={clickItem(item.name, false)}
+                  onClick={clickItem(item, false)}
                 >
                   <Icon type={(CustomFieldIcon as CustomFieldIconType as any)[item.type]} />
                   <span>{item.name}</span>
@@ -311,7 +272,7 @@ const SelectPanel: FC = (): JSX.Element => {
         : <h3>暂无搜索结果</h3>
       }
     </div >
-  ), [editor, fields, functions, selected]);
+  ), [editor, fields, functions, currentFieldOrFunction]);
 };
 
 export default SelectPanel;
