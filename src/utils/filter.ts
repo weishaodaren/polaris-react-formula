@@ -8,11 +8,11 @@ import type { FilterFieldColumn, FilterFormulaField } from '../types';
  * @param fieldData 字段数据
  * @return []
  */
-export const filterFieldData = (fieldData: any[]): any[] => {
+export const filterFieldData = (fieldData: any[]): Array<string | number> => {
   if (!Array.isArray(fieldData) || !fieldData.length) return [];
   for (let i = 0; i < fieldData.length; i += 1) {
-    // 没有数据 默认给undefined
-    if (!fieldData[i]) fieldData[i] = undefined;
+    // 没有数据 默认给空字符
+    if (!fieldData[i]) fieldData[i] = '';
     // 存在数组的情况(成员) 取名称
     if (Array.isArray(fieldData[i]) && fieldData[i].length) {
       // 考虑存在多成员的情况
