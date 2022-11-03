@@ -3,7 +3,7 @@ import 'codemirror/lib/codemirror.css';
 import 'codemirror/mode/spreadsheet/spreadsheet.js';
 
 import type { FC } from 'react';
-import type { IColumn } from './config';
+import type { IColumn } from './types';
 
 import { injectWindowAPI } from './utils';
 import { Store } from './store';
@@ -39,7 +39,7 @@ export interface FormulaEditorProps {
   /**
    * 字段 列
    */
-  field: IColumn
+  field: IColumn[]
 
   /**
    * 关闭Modal

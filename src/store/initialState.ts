@@ -1,6 +1,5 @@
 import type { Editor } from 'codemirror';
-import type { IColumn } from '../config';
-import type { Variable, FunctionGroup } from '../types';
+import type { Variable, FunctionGroup, IColumn } from '../types';
 import type { IErrorType } from '../enum';
 import { Functions, Sample } from '../config';
 
@@ -43,12 +42,12 @@ export const initialState = {
   /**
    * 字段组
    */
-  fields: undefined as undefined | Variable[] | IColumn,
+  fields: undefined as undefined | Variable[] | IColumn[],
 
   /**
    * 字段组(原始)
    */
-  originalFields: undefined as undefined | Variable[] | IColumn,
+  originalFields: undefined as undefined | Variable[] | IColumn[],
 
   /**
    *  当前默认字段或函数

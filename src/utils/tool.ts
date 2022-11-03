@@ -14,6 +14,7 @@ import type {
   GetNearestIndex,
   IsValidFunction,
   GetEditorPos,
+  GetEscapedTimes,
 } from '../types';
 import { ErrorType } from '../enum';
 import {
@@ -24,13 +25,31 @@ import {
 } from './parse';
 import { braceReg } from './regexp';
 import { ConstantsMap } from '../config';
-import { getEscapedTimes } from './filter';
 
 // 特殊计算符号
 export const specialSymbols: string[] = ['=', '+', '-', '*', '/', '%'];
 
 // 代码块标志位
 export const blocks = ['(', ')', ',', '{', '}', ...specialSymbols];
+
+// 需要转义的字符串
+export const escapeStrings = ['*', '?'];
+
+/**
+ * Function
+ * @description 获取出现转义字符次数
+ * @param field 单个字段
+ * @return number
+ */
+export const getEscapedTimes: GetEscapedTimes = (field) => {
+  let times = 0;
+  for (let i = 0; i < escapeStrings.length; i += 1) {
+    if (field.label && field.label.indexOf(escapeStrings[i]) !== -1) {
+      times += 1;
+    }
+  }
+  return times;
+};
 
 /**
  * Function
@@ -72,19 +91,17 @@ export const initLineTag: InitLineTag = (
   innerVariables,
 ) => {
   (innerVariables || []).forEach((variable) => {
+    /**
+     * 优先转义特殊字符(可能会携带)
+     * 使用正则查找
+     */
     const variableMark = `{${escapeRegExp(variable.label)}}`;
     const regex = new RegExp(variableMark, 'g');
     while (regex.exec(content) !== null) {
+      // 计算特殊字符出现的次数
       const escapedTimes = getEscapedTimes(variable);
       const begin = { line, ch: regex.lastIndex - variableMark.length + escapedTimes };
       const end = { line, ch: regex.lastIndex };
-      // const value = editor.getValue();
-      // console.log('value:', value);
-      // console.log('variableMark:', variableMark, variableMark.length);
-      // console.log('regex.lastIndex:', regex.lastIndex);
-      // console.log('begin:', begin);
-      // console.log('end:', end);
-      // console.log('variable:', variable);
       replaceVariable(editor, begin, end, variable);
     }
   });

@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import FormulaEditor, { useFormula } from '.';
-import { column, dataSource } from './config';
+import { column, dataSource } from './mock';
 
 function App() {
   const [visible, setVisible] = useState(true);

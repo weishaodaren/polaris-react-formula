@@ -1,10 +1,6 @@
-import escapeRegExp from 'lodash/escapeRegExp';
 import { Fields, FieldName } from '../enum';
 import type { IFields, IFieldName } from '../enum';
-import type { FilterFieldColumn, FilterFormulaField, FilterEscape } from '../types';
-
-// 需要转义的字符串
-const escapeStrings = ['*', '?'];
+import type { FilterFieldColumn, FilterFormulaField } from '../types';
 
 /**
  * Function
@@ -45,37 +41,6 @@ export const filterMarks = (input: string) => input
  * @return string
  */
 export const filterEscapedCharacters = (input: string) => input.replace(/[\\'\\"\\\\/\b\f\n\r\t]/g, '');
-
-/**
- * Function
- * @description 过滤特殊符号 转义
- * @param field 单个字段
- * @return Variable
- */
-export const filterEscape: FilterEscape = (field) => {
-  for (let i = 0; i < escapeStrings.length; i += 1) {
-    if (field.label && field.label.indexOf(escapeStrings[i]) !== -1) {
-      field.label = escapeRegExp(field.label);
-    }
-  }
-  return field;
-};
-
-/**
- * Function
- * @description 过滤特殊符号 转义
- * @param field 单个字段
- * @return Variable
- */
-export const getEscapedTimes = (field: any) => {
-  let times = 0;
-  for (let i = 0; i < escapeStrings.length; i += 1) {
-    if (field.label && field.label.indexOf(escapeStrings[i]) !== -1) {
-      times += 1;
-    }
-  }
-  return times;
-};
 
 /**
  * Function

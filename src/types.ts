@@ -1,9 +1,94 @@
 import type { Position, Editor as CodemirrorEditor } from 'codemirror';
-import type { IColumn, IDataSource } from './config/mock.column';
 
 export type RewriteType<T> = {
   -readonly [key in keyof T]: T[key];
 };
+
+export interface IFieldProps {
+  attrDisabled?: boolean;
+  checked?: boolean;
+  aliasDisabled?: boolean;
+  required?: boolean;
+  isSearch?: boolean;
+  fieldSearch?: {
+    type: string;
+    sort: number;
+  },
+  titleDisabled?: boolean;
+  multiple?: boolean;
+  pushMsg?: boolean;
+  disabled?: boolean;
+  typeDisabled?: boolean;
+  hide?: boolean;
+  [x: string]: any
+}
+
+export interface IField {
+  type: string;
+  customType: string;
+  dataType: string;
+  props: IFieldProps;
+  refSetting: any,
+}
+
+export interface IColumn {
+  name: string;
+  label: string;
+  aliasTitle: string;
+  description: string;
+  isSys: boolean;
+  isOrg: boolean;
+  writable: boolean;
+  editable: boolean;
+  unique: boolean;
+  uniquePreHandler: string;
+  sensitiveStrategy: string;
+  sensitiveFlag: number;
+  field: IField;
+}
+
+export interface IMember {
+  id: string;
+  name: string;
+  avatar: string;
+  type: string;
+  status: number;
+  isDelete: number;
+}
+
+export interface IDataSource {
+  updateTime: string;
+  id: number | string;
+  code: string;
+  issueStatusType: number;
+  orgId: number | string;
+  [x: string]: any
+  auditStatusDetail: {},
+  issueId: number | string,
+  parentId: number | string,
+  appIds: string[];
+  createTime: string;
+  creator: IMember;
+  status: number;
+  followerIds: IMember[];
+  title: string;
+  issueStatus: number | string;
+  endTime: string;
+  ownerChangeTime: string;
+  order: number | string;
+  planStartTime: string;
+  updator: IMember;
+  delFlag: number;
+  ownerId: IMember[];
+  startTime: string;
+  planEndTime: string;
+  dataId: string;
+  tableId: string;
+  auditStatus: number;
+  path: string;
+  recycleFlag: number;
+  projectId: number | string;
+}
 
 export interface Variable {
   label: string;
@@ -40,109 +125,45 @@ export interface GetEditorPosReturns {
   ch: number
 }
 
-export type ReplaceVariable = (
-  editor: CodemirrorEditor,
-  begin: Position,
-  end: Position,
-  val: Variable
-) => void;
+export type ReplaceVariable = (A: CodemirrorEditor, B: Position, C: Position, D: Variable) => void;
 
-export type InitLineTag = (
-  editor: CodemirrorEditor,
-  content: string,
-  line: number,
-  innerVariables?: Variable[],
-) => void;
+export type InitLineTag = (A: CodemirrorEditor, B: string, C: number, D?: Variable[]) => void;
 
-export type InitDocTag = (
-  editor: CodemirrorEditor,
-  code: string,
-  innerVariables?: Variable[],
-) => void;
+export type InitDocTag = (A: CodemirrorEditor, B: string, C?: Variable[]) => void;
 
-export type FuzzySearchField = (
-  fields: Variable[],
-  inputValue: string,
-) => Variable[];
+export type FuzzySearchField = (V: Variable[], S: string) => Variable[];
 
-export type FuzzySearchFunctions = (
-  functionArray: FunctionGroup[],
-  inputValue: string
-) => Array<{
+export type FuzzySearchFunctions = (F: FunctionGroup[], S: string) => Array<{
   name: string;
   functions: FunctionItem[];
-  }>;
+}>;
 
-export type UseFormula = (
-  value: string,
-  dataSourceItem: {},
-) => string | string[] | undefined;
+export type UseFormula = (S: string, D: {}) => string | string[] | undefined;
 
-export type IsValidField = (
-  input: string,
-  fields: string[]
-) => boolean;
+export type IsValidField = (S: string, F: string[]) => boolean;
 
-export type ReverseField = (
-  input: string,
-  fields: Variable[]
-) => string;
+export type ReverseField = (S: string, T: Variable[]) => string;
 
-export type GetNearestIndex = (
-  inputValue: string,
-  extraSymbols?: string[],
-) => number;
+export type GetNearestIndex = (S: string, T?: string[]) => number;
 
-export type GetFieldBlock = (
-  inputValue: string,
-  endIndex: number,
-) => string;
+export type GetFieldBlock = (S: string, N: number) => string;
 
-export type GetCodeBlock = (
-  inputValue: string,
-  sign: string,
-) => string;
+export type GetCodeBlock = (S: string, T: string) => string;
 
-export type IsValidFunction = (
-  inputFunction: string
-) => string;
+export type IsValidFunction = (S: string) => string;
 
-export type GetEditorPos = (
-  P: GetEditorPosParams
-) => GetEditorPosReturns;
+export type GetEditorPos = (P: GetEditorPosParams) => GetEditorPosReturns;
 
-export type FilterFieldColumn = (
-  inputArray: {
-    label: string,
-    value: string,
-    type: string,
-  }[],
-) => Variable[];
+export type FilterFieldColumn = (T: Variable[]) => Variable[];
 
-export type FilterFormulaField = (
-  T: IColumn[number]
-) => Variable;
+export type FilterFormulaField = (T: IColumn) => Variable;
 
-export type FilterEscape = (
-  T: Variable
-) => Variable;
+export type GetEscapedTimes = (T: Variable) => number;
 
-export type ParseFullFieldData = (
-  fields: Variable[],
-  sourceData: IDataSource | any
-) => any;
+export type ParseFullFieldData = (F: Variable[], S: IDataSource | any) => any;
 
-export type ParseFieldData = (
-  key: string,
-  sourceData: IDataSource | any
-) => any[] | null;
+export type ParseFieldData = (K: string, S: IDataSource | any) => any[] | null;
 
-export type ParseField = (
-  c: IColumn
-) => Variable[];
+export type ParseField = (T: IColumn[]) => Variable[];
 
-export type ParseKeyReplaceField = (
-  fields: string[],
-  originalField: string,
-  replacedFields: string[],
-) => string;
+export type ParseKeyReplaceField = (F: string[], O: string, R: string[]) => string;
