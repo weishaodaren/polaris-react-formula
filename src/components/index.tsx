@@ -18,6 +18,7 @@ import { reverseField } from '../utils';
 import Code from './Code';
 import Content from './Content';
 import ErrorText from './ErrorText';
+import Version from './Version';
 
 /**
  * Component
@@ -118,6 +119,7 @@ const Editor: FC<FormulaEditorProps> = ({
           {/* <Tooltip title="点击了解公式技巧">
             <Icon type="icondoubt" onClick={onLink} />
           </Tooltip> */}
+          <Version />
           {fields && <Code value={value} fields={fields as Variable[]} />}
           <ErrorText />
           <h2>选择极星字段或函数</h2>
