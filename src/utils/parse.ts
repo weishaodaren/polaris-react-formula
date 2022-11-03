@@ -118,6 +118,19 @@ export const parseFieldData: ParseFieldData = (
   }
 
   // 存在单个值情况(对象)
+
+  /**
+   * 即使有表头字段key 但是值为空
+   * 后端就不会返回这个字段
+   * 需要优先插入原值，默认空字符串
+   */
+  for (let j = 0; j < fieldKey.length; j += 1) {
+    if (!(fieldKey[j] in sourceData)) {
+      sourceData[fieldKey[j]] = '';
+    }
+  }
+
+  // 遍历匹配值
   const sourceDataArray = Object.entries(sourceData);
   for (let j = 0; j < fieldKey.length; j += 1) {
     for (let k = 0; k < sourceDataArray.length; k += 1) {
