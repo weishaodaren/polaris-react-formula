@@ -674,28 +674,15 @@ DAY({完成日期})
 
 【date1】日期1
 【date2】日期2
-【units】计时单位，日期1与日期2差值的计算单位。比如按“天”计算也可以转换为按“年”计算。
-
-计时单位包括以下符号，两种格式都可以使用：「单位说明符 」→ 「缩写」
-毫秒："milliseconds" → "ms"
-秒："seconds" → "s"
-分钟："minutes" → "m"
-小时："hours" → "h"
-天："days" → "d"
-周："weeks" → "w"
-月："months" → "M"
-季度："quarters" → "Q"
-年："years" → "y"
-
-点击下方链接可查看全部计时单位。`,
-        useage: 'DAYS(date1, date2, [units])',
-        example: `DATETIME_DIFF( "2020-08-11"  ,"2020-08-10", "days")
+`,
+        useage: 'DAYS(date1, date2)',
+        example: `DAYS( "2020-08-11"  ,"2020-08-10")
 => 1
 
-DATETIME_DIFF( "2020-08-9" ,"2020-08-10", "days")
+DAYS( "2020-08-9" ,"2020-08-10")
 => -1
 
-DATETIME_DIFF( {截止时间} , TODAY(), "hours")
+DAYS( {截止时间} , TODAY())
 => 48`,
         type: 'inputnumber',
       },
@@ -760,6 +747,29 @@ MONTH({毕业时间})
         useage: 'MINUTE(date)',
         example: `MINUTE({打卡时间})
 =>30`,
+        type: 'inputnumber',
+      },
+      {
+        name: 'NETWORKDAYS',
+        description: `统计两个日期之间相隔多少个工作日（有正负）。
+
+【startDate】起始日期。
+【endDate】截止日期。如果起始日期比截止日期晚，则会出现负数。
+【holidays】非必填。是要从工作日历中去除的日期，例如节假日。其输入格式为「yyyy-mm-dd」，多个日期以逗号分隔的。
+
+本函数统计起止日期之间的工作日，不包括周末和你指定的特定日期。`,
+        useage: 'NETWORKDAYS(startDate, endDate, [holidays])',
+        example: `NETWORKDAYS("2020-10-01", "2020-10-02")
+=> 2
+
+NETWORKDAYS("2020-10-02", "2020-10-01")
+=> -2
+
+NETWORKDAYS("2020-10-01", "2020-10-05")
+=> 3
+
+NETWORKDAYS({产品启动日期}, {产品上线日期} , "2020-06-25, 2020-06-26, 2020-06-27")
+=> 100`,
         type: 'inputnumber',
       },
       {
