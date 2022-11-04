@@ -54,7 +54,10 @@ export const ConstantsMap = new Map()
   .set('TODAY', 0)
   .set('NOW', 0)
   .set('WEEKDAY', -1)
-  .set('WEEKNUM', -1);
+  .set('WEEKNUM', -1)
+  .set('WORKDAY', -2)
+  .set('COUNTIF', -2)
+  .set('NETWORKDAYS', -2);
 
 /**
  * 错误映射
