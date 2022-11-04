@@ -50,7 +50,6 @@ const SelectPanel: FC = (): JSX.Element => {
    */
   const selectItem = useCallback((
     item: FunctionItem | Variable,
-    isField: boolean,
   ) => (
     event: MouseEvent<HTMLDivElement>,
   ) => {
@@ -58,7 +57,6 @@ const SelectPanel: FC = (): JSX.Element => {
     dispatch!({
       type: ActionType.SetCurrentFieldOrFunction,
       currentFieldOrFunction: item,
-      isFunctionField: !isField,
     } as IActionType);
     }, []);
 
@@ -263,7 +261,7 @@ const SelectPanel: FC = (): JSX.Element => {
               <div
                 className={[`${Style}-list-item`, (currentFieldOrFunction as unknown as Variable).value === field.value && `${Style}-list-item-active`].join(' ')}
                 key={field.value}
-                onMouseEnter={selectItem(field, true)}
+                onMouseEnter={selectItem(field)}
                 onClick={clickItem(field, true, field)}
               >
                 <Icon type={(CustomFieldIcon as CustomFieldIconType as any)[field.type]} />
@@ -277,7 +275,7 @@ const SelectPanel: FC = (): JSX.Element => {
                 {_functions.map((item) => <div
                   className={[`${Style}-list-item`, currentFieldOrFunction.name === item.name && `${Style}-list-item-active`].join(' ')}
                   key={item.name}
-                  onMouseEnter={selectItem(item, false)}
+                  onMouseEnter={selectItem(item)}
                   onClick={clickItem(item, false)}
                 >
                   <Icon type={(CustomFieldIcon as CustomFieldIconType as any)[item.type]} />

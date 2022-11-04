@@ -131,7 +131,6 @@ export const Store: FC<IStoreProps> = ({ children }) => {
         return {
           ...originalState,
           currentFieldOrFunction: action.currentFieldOrFunction,
-          isFunctionField: action.isFunctionField,
         };
       }
 
