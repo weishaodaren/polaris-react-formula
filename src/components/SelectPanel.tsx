@@ -19,6 +19,7 @@ import {
   getNearestIndex,
   specialSymbols,
 } from '../utils';
+import { Locale } from '../locale';
 
 const Style = `${prefixCls}-select-panel-layout`;
 
@@ -255,7 +256,7 @@ const SelectPanel: FC = (): JSX.Element => {
         ? (
           <>
             {/* 只有字段为空 函数不为空 */}
-            {!emptyField && <h3>极星字段</h3>}
+            {!emptyField && <h3>{Locale![5]}</h3>}
             {/* 字段 */}
             {(fields as Variable[])?.map((field) => (
               <div
