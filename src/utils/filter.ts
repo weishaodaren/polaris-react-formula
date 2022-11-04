@@ -91,7 +91,7 @@ export const filterFieldColumn: FilterFieldColumn = (
   Array.isArray(inputArray) && inputArray.length
     /**
      * 暂不考虑 以下
-     * 类型： 附件 前后置 工时 多选 单选 编号 下拉选 富文本 分组单选 开关 引用 公式
+     * 类型： 附件 前后置 工时 多选 单选 编号 下拉选 富文本 分组单选 开关 引用 公式 启用状态
      * 名称： 编号 父任务id 所属项目
      */
     ? inputArray.filter(({ type, value }) => ![
@@ -105,6 +105,7 @@ export const filterFieldColumn: FilterFieldColumn = (
       Fields.Radio,
       Fields.Cascader,
       Fields.Switch,
+      Fields.Status,
       Fields.ConditionRef,
       Fields.Formula,
     ].includes(type as IFields['Annex'])

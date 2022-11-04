@@ -94,13 +94,20 @@ export const initLineTag: InitLineTag = (
     /**
      * 优先转义特殊字符(可能会携带)
      * 使用正则查找
+     * 当匹配{1}这种情况需要额外处理
      */
-    const variableMark = `{${escapeRegExp(variable.label)}}`;
+    const isNumberLike = /^\d+$/.test(variable.label);
+    const variableMark = isNumberLike ? escapeRegExp(`{${variable.label}}`) : `{${escapeRegExp(variable.label)}}`;
     const regex = new RegExp(variableMark, 'g');
     while (regex.exec(content) !== null) {
       // 计算特殊字符出现的次数
       const escapedTimes = getEscapedTimes(variable);
-      const begin = { line, ch: regex.lastIndex - variableMark.length + escapedTimes };
+      // 如果为纯数字 需要多加两个转义字符
+      const isNumberContent = isNumberLike ? 2 : 0;
+      const begin = {
+        line,
+        ch: regex.lastIndex - variableMark.length + escapedTimes + isNumberContent,
+      };
       const end = { line, ch: regex.lastIndex };
       replaceVariable(editor, begin, end, variable);
     }
