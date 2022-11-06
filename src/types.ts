@@ -27,7 +27,7 @@ export interface IField {
   type: string;
   customType: string;
   dataType: string;
-  props: IFieldProps;
+  props: IFieldProps | null;
   refSetting: any,
 }
 
