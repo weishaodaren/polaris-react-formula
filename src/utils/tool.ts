@@ -25,6 +25,7 @@ import {
 } from './parse';
 import { braceReg } from './regexp';
 import { ConstantsMap } from '../config';
+import { Locale } from '../locale';
 
 // 特殊计算符号
 export const specialSymbols: string[] = ['=', '+', '-', '*', '/', '%'];
@@ -180,22 +181,22 @@ export const isBracketError = (input: string): boolean => {
  */
 export const getFormulaError = (input: string) => {
   if (isBracketError(input)) {
-    return [ErrorType.Error, '( ) 不对称'];
+    return [ErrorType.Error, `( ) ${Locale[94]}`];
   }
   if (/^[\x\\÷\\+\-\\*\\/]/.test(input)) {
-    return [ErrorType.Error, '开头错误'];
+    return [ErrorType.Error, Locale[95]];
   }
   if (/[\x\\÷\\+\-\\*\\/]$/.test(input)) {
-    return [ErrorType.Error, '结尾错误'];
+    return [ErrorType.Error, Locale[96]];
   }
   if (/[\x\\÷\\+\-\\*\\/]{2,}/.test(input)) {
-    return [ErrorType.Error, '连续运算'];
+    return [ErrorType.Error, Locale[97]];
   }
   if (/\([\x\\÷\\+\-\\*\\/]/.test(input)) {
-    return [ErrorType.Error, '( 后非法运算'];
+    return [ErrorType.Error, `( ${Locale[98]}`];
   }
   if (/[\x\\÷\\+\-\\*\\/]\)/.test(input)) {
-    return [ErrorType.Error, ') 后非法运算'];
+    return [ErrorType.Error, `) ${Locale[98]}`];
   }
   if (/[@#\\$%\\^&\\]+/g.test(input)) {
     return [ErrorType.Unknown, input];
@@ -436,8 +437,8 @@ export const isValidFunction: IsValidFunction = (
    */
   const value = ConstantsMap.get(key);
   if (value === 0) return '';
-  if (value < 0) return `${key} 函数至少需要 ${Math.abs(value)} 个参数`;
-  if (value > 0) return `${key} 函数需要 ${value} 个参数`;
+  if (value < 0) return `${key} ${Locale[91]} ${Math.abs(value)} ${Locale[92]}`;
+  if (value > 0) return `${key} ${Locale[93]} ${value} ${Locale[92]}`;
 
   return '';
 };

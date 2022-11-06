@@ -10,7 +10,7 @@ const Description = lazy(() => import('./Description'));
  * @description 内容
  */
 const Content: FC = () => useMemo(() => (
-  <Suspense fallback={'加载中'}>
+  <Suspense fallback={'loading ...'}>
     <div className={`${prefixCls}-content-layout`}>
       <SelectPanel />
       <Description />

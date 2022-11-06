@@ -1,5 +1,9 @@
 import React, {
-  useCallback, useMemo, memo, useContext, useEffect,
+  useCallback,
+  useMemo,
+  memo,
+  useContext,
+  useEffect,
 } from 'react';
 import { Modal } from 'antd';
 import 'antd/lib/tooltip/style/index';
@@ -14,6 +18,7 @@ import { store, ActionType } from '../store';
 import { ErrorType } from '../enum';
 import { prefixCls } from '../config';
 import { reverseField } from '../utils';
+import { Locale } from '../locale';
 
 import Code from './Code';
 import Content from './Content';
@@ -105,8 +110,8 @@ const Editor: FC<FormulaEditorProps> = ({
       open={visible}
       closable={false}
       maskClosable={false}
-      okText="确认"
-      cancelText='取消'
+      okText={Locale[3]}
+      cancelText={Locale[4]}
       okButtonProps={{ disabled }}
       destroyOnClose
       onCancel={onClose}
@@ -114,7 +119,7 @@ const Editor: FC<FormulaEditorProps> = ({
     >
       <div className={classnames} style={style}>
         <div className={`${prefixCls}-layout`}>
-          <h2>请输入公式</h2>
+          <h2>{Locale[1]}</h2>
           {/* TODO: 暂时隐藏该功能 */}
           {/* <Tooltip title="点击了解公式技巧">
             <Icon type="icondoubt" onClick={onLink} />
@@ -122,7 +127,7 @@ const Editor: FC<FormulaEditorProps> = ({
           <Version />
           {fields && <Code value={value} fields={fields as Variable[]} />}
           <ErrorText />
-          <h2>选择极星字段或函数</h2>
+          <h2>{Locale[2]}</h2>
           <Content />
         </div>
       </div>
