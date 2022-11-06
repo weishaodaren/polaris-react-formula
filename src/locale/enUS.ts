@@ -217,4 +217,214 @@ Result: 1.50`,
 [number...] is the numeric parameter to perform the operation. You can enter a number or reference a column of numeric type. Numeric columns include numbers, currencies, percentages, ratings, and so on.
 
 If one of the parameters is a text value, such as "eight", it will be treated as 0 in the operation.`,
+  47: `AVERAGE(2, 4, "6", "eight")
+  =>(2 + 4 + 6 + 0) /4 =3
+  
+  AVERAGE({math grade}, {English grade}, {language grade}) `,
+  48: `Rounds the value up to the nearest multiple of the specified base.
+
+  [value] is the value to be rounded up.
+  [Significance] is not required, it is the base to be used for upward rounding, and the return value is a multiple of the base. If not provided, the default is 1.
+  [Upward rounding] means it returns a value greater than or equal to the original value, and is a multiple of the nearest base.`,
+  49: `Count the number of "number" type values.
+
+  [number] can be the parameter entered or the column referenced.
+  
+  This function can calculate how many values are contained in the input parameters or cells (numbers, currencies, percentages, ratings are all values).`,
+  50: `Count the number of non-null values.
+
+  [textOrNumber] can be the input parameters or reference to the column.
+  
+  This function can calculate how many non-null values are contained in the input parameters or cells.
+  For example, you can count how many options within a cell, how many pictures. How many members, etc.
+  Can also count the magical reference to the array of non-null values within the cell.`,
+  51: `Count the number of occurrences of keyword in values.
+
+  values: specify where to find the data from. Supports data of array type or text type.
+  keyword: the keyword to be looked up and counted.
+  operation: comparator, not required. You can fill in the condition symbols greater than ">", less than "<", equal to "=", not equal to "! =", if not filled in the default is equal to.
+  Example 1 does not fill in the comparison character, the default count is equal to the number of times the value of "A" appears.
+  Example 2 is filled with the comparator ">", which means that the number of times a value greater than "2" appears is counted.
+  
+  Usage scenarios.
+  1) You can count the number of occurrences of the character "A" in a string of text arrays [A, B , C , D, A] as 2, see example 1.
+  2) You can count the number of numbers greater than 3 in an array of numbers [1, 2, 3, 4, 5] as 2, see example 2.
+  3) You can count the number of occurrences of "grape" in a string of text "eat grapes without spitting out the skin" as 2, see example 3.`,
+  52: `COUNTIF({rating}, "A")
+  => 2
+  // Where {Rating} is a "magic quote" type wiggle column and the data format is an array.
+  
+  COUNTIF({Score}, 3, ">")
+  => 2
+  // where {Score} is the "magic quote" type of the dimension column, and the data format is an array.
+  
+  COUNTIF({snippets}, "grapes")
+  => 2
+  // where {jingle} is a dimension column of type "text", and the data format is text string.`,
+  53: `Returns the specified power of e.
+
+  [e] is a natural number, about 2.718282
+  [power] is the power. That is, how many powers of e are specified.`,
+  54: `Rounds the value down to the nearest multiple of the specified base.
+
+  [value] is the value to be rounded down.
+  [significance] is not required, it is the base to be rounded down, and the return value is a multiple of the base. If not provided, the default is 1.
+  [rounding down] means it returns a value less than or equal to the original value, and is the closest multiple of the base.`,
+  55: `Return the maximum value.
+
+  [number...] is the numeric parameter to perform the operation. You can enter a number or reference a column of numeric type. Columns of numeric type include numbers, currency, percentages, ratings, etc.
+  
+  In addition, when the input values of this function are in date format, you can compare the latest date among multiple dates.`,
+  56: `MAX(5, -5, 555, -55)
+  => 555
+  
+  MAX({math grade}, {English grade}, {language grade})`,
+  57: `Returns the smallest value.
+
+  [number...] is the numeric parameter to perform the operation. You can enter a number or reference a column of numeric type. Columns of numeric type include numbers, currency, percentages, ratings, etc.
+  
+  In addition, the input values of this function are in date format, you can compare the latest date among multiple dates.`,
+  58: 'MIN({Math score}, {English score}, {Language score})',
+  59: `Rounds the value down to the nearest integer.
+
+  [value] is the value to be rounded down.
+  [round down] means it returns a value that is less than or equal to the original value.`,
+  60: `Returns the remainder of the division of two values.
+
+  [value] is the divisor.
+  [divisor] is the number of divisors.
+  
+  The sign of the returned result is the same as the sign of the divisor.`,
+  61: `Add up all the values.
+
+  [number...] is the numeric parameter to perform the operation. You can enter a number or reference a column of numeric type. Columns of numeric type include number, currency, percentage, rating, etc.`,
+  62: `UM(1, 2, "3", "four")
+  => 1 + 2 + 3 = 6
+  
+  SUM({math grade}, {English grade}, {language grade})`,
+  63: `Rounds the value by the specified number of digits.
+
+  [value] is the value to be rounded
+  [precision] is not required, the number of bits to be rounded. The default is 1 when not filled.
+  
+  If the number of digits is greater than 0, it will be rounded to the specified decimal place.
+  If the number of digits is equal to 0, it will be rounded to the nearest integer.　
+  If the number of digits is less than 0, the number is rounded to the left of the decimal point.`,
+  64: `Rounds the value by the specified number of digits in the direction of increasing absolute value.
+
+  [value] is the value to be rounded.
+  [precision] is not required, the number of digits to be rounded to. The default is 1 when not filled.
+  [absolute value increasing] i.e. it returns the value in the direction away from 0 (zero).
+  
+  If the number of digits is greater than 0, it will be rounded to the specified decimal place.
+  If the number of digits is equal to 0, it will be rounded to the nearest integer.　
+  If the number of digits is less than 0, the number is rounded to the left of the decimal point.`,
+  65: `Rounds the value by the specified number of digits in the direction of absolute value reduction.
+
+  [value] is the value to be rounded.
+  [precision] is not required, the number of digits to be rounded to. The default is 1 when not filled.
+  [absolute value decrement] i.e. it returns a value close to 0 (zero) direction.
+  
+  If the number of digits is greater than 0, it will be rounded to the specified decimal place.
+  If the number of digits is equal to 0, it will be rounded to the nearest integer.　
+  If the number of digits is less than 0, the number is rounded to the left of the decimal point.`,
+  66: `Returns the power of the specified base. That is, how many powers of the specified base.
+
+  [base] is the base.
+  [power] is the power.`,
+  67: `Returns the logarithm of the value with the specified base.
+
+  [number] is the value whose logarithm you want to calculate.
+  [base] is the base of the logarithm (base), if no base is specified, the default is 10.`,
+  68: `Returns the square root of the value.
+
+  [value] is the value for which the square root is to be found.
+  
+  If the value is negative, SQRT returns Nan`,
+  69: `The output format is an integer between 1 and 31.
+
+  [date] is the specified date.
+  For example, the number 1 means the date belongs to the first number of the current month.`,
+  70: `DAY("2020.10.01")
+  =>1
+  
+  DAY({completion date})
+  =>5`,
+  71: `Returns the difference between two dates (with positive or negative), i.e., date1 minus date2.
+
+  [date1] date1
+  [date2] date2
+  `,
+  72: `Returns the four-digit year corresponding to the specified date.
+
+  [date] is the specified date.`,
+  73: `Returns the month corresponding to the specified date.
+
+  [date] is the specified date.
+  
+  The output value of this function is an integer between 1 (January) and 12 (December).`,
+  74: `The output format is an integer between 0 (12:00 am) and 23 (11:00 pm).
+
+  [date] is the specified date.
+  For example, 18 means 18:00`,
+  75: `Returns the number of minutes on the specified date, in the output format of an integer between 0 and 59.
+  `,
+  76: `Count how many working days (with plus or minus) are between two dates.
+
+  [startDate] The start date.
+  [endDate] Cutoff date. If the start date is later than the end date, the number will be negative.
+  [holidays] Not required. It is the date to be removed from the working calendar, such as a holiday. Its input format is "yyyy-mm-dd", and multiple dates separated by commas.
+  
+  This function counts the working days between the starting and ending dates, excluding weekends and the specific dates you specify.`,
+  77: `Returns the number of seconds of the specified date, and the output format is an integer between 0 and 59.
+
+  [date] is the specified date.`,
+  78: `Returns today's date (year, month and day), but not to the exact hour, minute and second (default is 00:00:00). If you want to be precise to the hour, minute and second, please use the function NOW.
+
+  can use this function directly to return the year, month and day, see example one.
+  Can also be used with functions such as DATEADD or DATETIME_DIFF, for example, to display the countdown to the project by subtracting the current time from {cutoff time}, see example two.
+  
+  Note: The result returned by this function is updated only when the calculation formula is refreshed or the table is refreshed.`,
+  79: `return today's date and time, will be accurate to the hour, minute and second.
+
+  can use this function directly to return the year, month and day, see example one.
+  
+  Can also be used with functions such as DATEADD or DATETIME_DIFF, for example, to display the countdown to the project by subtracting the current time from {cutoff time}, see example two.
+  
+   Note: The result returned by this function is updated only when the calculation formula is refreshed or the table is refreshed.`,
+  80: `Returns the date several business days after the start date.
+
+  [startDate] is the start date you specified.
+  [numDays] is the number of working days after the start date you specify, expressed as a positive number. For example, the number "1" represents the date one business day after the start date, see example 1.
+  [holidays] is not required. It is a specific date to be removed from the calendar, such as a holiday. The input format is "yyyy-mm-dd", with multiple dates separated by commas, see example 3.
+  
+  The working days of this function do not include weekends and specific dates you specify.`,
+  81: `Returns the day of the week for the specified date.
+
+  [date] is the specified date.
+  [startDayOfWeek] is not required, it is the start time of the week, by default the week starts on Sunday (i.e. Sunday is 0). You can also set the start time to "Monday" (Monday, see example two)
+  
+  The output value of this function is an integer between 0 and 6. `,
+  82: `Returns the specified date corresponding to the first week of the year.
+
+  [date] is the specified date.
+  [startDayOfWeek] is not required, it is the start time of the week, and by default, the week starts on Sunday (i.e. Sunday is 0). You can also set the start time to "Monday" (Monday)
+  
+  The output value of this function is an integer. For example, 6, representing the date belongs to the 6th week of the year.`,
+  83: 'Usage',
+  84: 'For example',
+  85: 'Return to',
+  86: 'column cell values',
+  87: 'No search results yet',
+  88: 'Invalid Polaris field or function name: ',
+  89: 'Incorrect formula: ',
+  90: 'Unknown operators: ',
+  91: 'function requires at least',
+  92: 'parameters',
+  93: 'function requires',
+  94: 'asymmetrical',
+  95: 'Beginning error',
+  96: 'Ending error',
+  97: 'Continuous Operations',
+  98: 'after the illegal operation',
 };

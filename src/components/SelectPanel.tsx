@@ -286,7 +286,7 @@ const SelectPanel: FC = (): JSX.Element => {
             ))}
           </>
         )
-        : <h3>暂无搜索结果</h3>
+        : <h3>{Locale[87]}</h3>
       }
     </div >
   ), [editor, fields, functions, currentFieldOrFunction]);

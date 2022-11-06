@@ -5,6 +5,7 @@ import type { EditorConfiguration } from 'codemirror';
 import type { FunctionItem, Variable } from '../types';
 import { prefixCls } from '../config';
 import { store } from '../store';
+import { Locale } from '../locale';
 
 const Style = `${prefixCls}-description-layout`;
 
@@ -36,11 +37,11 @@ const Description: FC = (): JSX.Element => {
     <div className={Style}>
       <h2>{name ?? label}</h2>
       <div className={`${Style}-description`}>
-        {description ?? `返回 ${label} 列单元格的值`}
+        {description ?? `${Locale[85]} ${label} ${Locale[86]}`}
       </div>
-      <div className={`${Style}-description-useage`}>用法</div>
+      <div className={`${Style}-description-useage`}>{Locale[83]}</div>
       <code>{useage ?? `{${label}}`}</code>
-      <div className={`${Style}-description-example`}>举个例子</div>
+      <div className={`${Style}-description-example`}>{Locale[84]}</div>
       <CodeMirror
         className={`${prefixCls}-code-mirror-sample`}
         options={Options}

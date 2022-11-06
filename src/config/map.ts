@@ -1,4 +1,5 @@
 import { ErrorType } from '../enum';
+import { Locale } from '../locale';
 
 /**
  * 常量映射(函数必填参数)
@@ -64,9 +65,9 @@ export const ConstantsMap = new Map()
  */
 export const ErrorMap = new Map()
   .set(ErrorType.Pass, '')
-  .set(ErrorType.Invalid, '无效的极星字段或函数名称：')
-  .set(ErrorType.Error, '错误的公式：')
-  .set(ErrorType.Unknown, '未知的运算符：');
+  .set(ErrorType.Invalid, Locale[88])
+  .set(ErrorType.Error, Locale[89])
+  .set(ErrorType.Unknown, Locale[90]);
 
 /**
  * Icon 映射 参照极星表格

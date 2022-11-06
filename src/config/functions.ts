@@ -180,19 +180,12 @@ export default [
         name: 'AVERAGE',
         description: Locale[46],
         useage: 'AVERAGE(number1, [number2, ...])',
-        example: `AVERAGE(2, 4, "6", "八")
-=>(2 + 4 + 6 + 0) /4 =3
-
-AVERAGE({数学成绩}, {英语成绩}, {语文成绩}) `,
+        example: Locale[47],
         type: 'inputnumber',
       },
       {
         name: 'CEILING',
-        description: `将数值向上舍入为最接近的指定基数的倍数。
-
-【value】是要向上舍入的值。
-【significance】非必填，是用于向上舍入的基数，返回值为基数的倍数。如果未提供，默认取1。
-【向上舍入】即它返回值是大于或等于原数值,且为最接近的基数的倍数。`,
+        description: Locale[48],
         useage: 'CEILING(value, [significance])',
         example: `CEILING(1.99)
 => 2
@@ -208,11 +201,7 @@ CEILING(-1.99, 0.1)
       // },
       {
         name: 'COUNT',
-        description: `统计「数字」类型值的数量。
-
-【number】可以是输入的参数或引用的列。
-
-本函数可以计算输入的参数或单元格内包含了多少个数值（数字、货币、百分比、评分都为数值）。`,
+        description: Locale[49],
         useage: 'COUNT(number1, [number2, ...])',
         example: `COUNT(1, 3, 5, "", "七")
 => 3`,
@@ -220,13 +209,7 @@ CEILING(-1.99, 0.1)
       },
       {
         name: 'COUNTA',
-        description: `统计非空值的数量。
-
-【textOrNumber】可以是输入的参数或引用的列。
-
-本函数可以计算输入的参数或单元格内包含了多少个非空值。
-比如，可以统计一个单元格内有多少个选项，多少个图片。多少个成员等。
-还可以统计神奇引用的单元格内的数组非空值。`,
+        description: Locale[50],
         useage: 'COUNTA(textOrNumber1, [number2, ...])',
         example: `COUNTA(1, 3, 5, "", "七")
 => 4`,
@@ -234,38 +217,14 @@ CEILING(-1.99, 0.1)
       },
       {
         name: 'COUNTIF',
-        description: `在values中统计keyword出现的次数。
-
-values：指定从哪里查找数据。支持数组类型或文本类型的数据。
-keyword：要查找并统计的关键词。
-operation：比较符，非必填项。你可以填入条件符号大于">"，小于"<"，等于"="，不等于"!="，如果不填写默认为等于。
-例子一中没有填写比较符，默认统计等于"A"的值出现的次数。
-例子二中填写了比较符">"，意味统计大于"2"的值出现的次数。
-
-使用场景：
-1）可以统计一串文本数组[A, B , C , D, A]中，字符"A"出现的数量为2，见例子一。
-2）可以统计一串数字数组[1, 2, 3, 4, 5]中，大于3的数字数量为2，见例子二。
-3)可以统计一串文本字符串"吃葡萄不吐葡萄皮"中，"葡萄"出现的次数为2，见例子三。`,
+        description: Locale[51],
         useage: 'COUNTIF(values, keyword, operation)',
-        example: `COUNTIF({评级}, "A")
-=> 2
-// 其中{评级}为”神奇引用“类型的维格列，数据格式为数组。
-
-COUNTIF({得分}, 3, ">")
-=> 2
-// 其中{得分}为”神奇引用“类型的维格列，数据格式为数组。
-
-COUNTIF({顺口溜}, "葡萄")
-=> 2
-// 其中{顺口溜}为”文本“类型的维格列，数据格式为文本字符串。`,
+        example: Locale[52],
         type: 'inputnumber',
       },
       {
         name: 'EXP',
-        description: `返回e的指定次方。
-
-【e】是自然数，约为2.718282
-【power】是幂。即指定e的多少次方。`,
+        description: Locale[53],
         useage: 'EXP(power)',
         example: `EXP(1)
 => 2.72
@@ -276,11 +235,7 @@ EXP(2)
       },
       {
         name: 'FLOOR',
-        description: `将数值向下舍入为最接近的指定基数的倍数。
-
-【value】是要向下舍入的值。
-【significance】非必填，是用于向下舍入的基数，返回值为基数的倍数。如果未提供，默认取1。
-【向下舍入】即它返回值是小于或等于原数值,且为最接近基数的倍数。`,
+        description: Locale[54],
         useage: 'FLOOR(value, [significance])',
         example: `FLOOR(1.01, 0.1)
 => 1.0
@@ -296,35 +251,21 @@ FLOOR(-1.99, 0.1)
       // },
       {
         name: 'MAX',
-        description: `返回最大的数值。
-
-【number...】是进行运算的数值参数，可以输入数字或引用数值类型的列。数值类型的列包括数字、货币、百分比、评分等。
-
-另外，本函数的输入值都为日期格式时，可以比较多个日期中最晚的日期。`,
+        description: Locale[55],
         useage: 'MAX(number1, [number2, ...])',
-        example: `MAX(5, -5, 555, -55)
-=> 555
-
-MAX({数学成绩}, {英语成绩}, {语文成绩})`,
+        example: Locale[56],
         type: 'inputnumber',
       },
       {
         name: 'MIN',
-        description: `返回最小的数值。
-
-【number…】是进行运算的数值参数，可以输入数字或引用数值类型的列。数值类型的列包括数字、货币、百分比、评分等。
-
-另外，本函数的输入值都为日期格式时，可以比较多个日期中最晚的日期。`,
+        description: Locale[57],
         useage: 'MIN(number1, [number2, ...])',
-        example: 'MIN({数学成绩}, {英语成绩}, {语文成绩})',
+        example: Locale[58],
         type: 'inputnumber',
       },
       {
         name: 'INT',
-        description: `将数值向下舍入为最接近的整数。
-
-【value】是要向下舍入的值。
-【向下舍入】即它返回值是小于或等于原数值。`,
+        description: Locale[59],
         useage: 'INT(value)',
         example: `INT(1.99)
 => 1
@@ -335,12 +276,7 @@ INT(-1.99)
       },
       {
         name: 'MOD',
-        description: `返回两数值相除的余数。
-
-【value】是被除数。
-【divisor】是除数。
-
-返回结果的符号与除数的符号相同。`,
+        description: Locale[60],
         useage: 'MOD(value, divisor)',
         example: `MOD(7, 2)
 => 1`,
@@ -353,14 +289,9 @@ INT(-1.99)
       // },
       {
         name: 'SUM',
-        description: `将所有数值相加。
-
-【number...】是进行运算的数值参数，可以输入数字或引用数值类型的列。数值类型的列包括数字、货币、百分比、评分等。`,
+        description: Locale[61],
         useage: 'SUM(number1, [number2, ...])',
-        example: `SUM(1, 2, "3", "四")
-=> 1 + 2 + 3 =6
-
-SUM({数学成绩}, {英语成绩}, {语文成绩})`,
+        example: Locale[62],
         type: 'inputnumber',
       },
       // {
@@ -375,14 +306,7 @@ SUM({数学成绩}, {英语成绩}, {语文成绩})`,
       // },
       {
         name: 'ROUND',
-        description: `按指定的位数对数值进行四舍五入。
-
-【value】是要四舍五入的值
-【precision】非必填，要进行四舍五入运算的位数。未填写时默认为1。
-
-如果位数大于 0，则四舍五入到指定的小数位。
-如果位数等于 0，则四舍五入到最接近的整数。　
-如果位数小于 0，则在小数点左侧进行四舍五入。`,
+        description: Locale[63],
         useage: 'ROUND(value, [precision])',
         example: `ROUND(1.99, 0)
 => 2
@@ -393,15 +317,7 @@ ROUND(18.8, -1)
       },
       {
         name: 'ROUNDUP',
-        description: `按指定的位数将数值延绝对值增大方向舍入。
-
-【value】是要舍入的值。
-【precision】非必填，要将数字舍入到的位数。未填写时默认为1。
-【绝对值增大】即它返回值是远离0（零）方向。
-
-如果位数大于 0，则四舍五入到指定的小数位。
-如果位数等于 0，则四舍五入到最接近的整数。　
-如果位数小于 0，则在小数点左侧进行四舍五入。`,
+        description: Locale[64],
         useage: 'ROUNDUP(value, [precision])',
         example: `ROUNDUP(1.1, 0)
 => 2
@@ -412,15 +328,7 @@ ROUNDUP(-1.1, 0)
       },
       {
         name: 'ROUNDDOWN',
-        description: `按指定的位数将数值延绝对值减小方向舍入。
-
-【value】是要舍入的值。
-【precision】非必填，要将数字舍入到的位数。未填写时默认为1。
-【绝对值减小】即它返回值是靠近0（零）方向。
-
-如果位数大于 0，则四舍五入到指定的小数位。
-如果位数等于 0，则四舍五入到最接近的整数。　
-如果位数小于 0，则在小数点左侧进行四舍五入。`,
+        description: Locale[65],
         useage: 'ROUNDDOWN(value, [precision])',
         example: `ROUNDDOWN(1.9, 0)
 => 1
@@ -431,10 +339,7 @@ ROUNDDOWN(-1.9, 0)
       },
       {
         name: 'POWER',
-        description: `返回指定基数的幂。即指定基数的多少次方。
-
-【base】是基数。
-【power】是幂。`,
+        description: Locale[66],
         useage: 'POWER(base, power)',
         example: `POWER(2, 5)
 => 32
@@ -450,10 +355,7 @@ POWER(-5, 3)
       // },
       {
         name: 'LOG',
-        description: `以指定基数为底，返回数值的对数。
-
-【number】是想要计算其对数的数值。
-【base】是对数的基数（底数），如果未指定基数，则默认为10。`,
+        description: Locale[67],
         useage: 'LOG(number, base=10))',
         example: `LOG(1024, 2)
 => 10
@@ -469,11 +371,7 @@ LOG(10000)
       // },
       {
         name: 'SQRT',
-        description: `返回数值的平方根。
-
-【value】是要对其求平方根的数值。
-
-如果数值为负数，则 SQRT 返回 Nan`,
+        description: Locale[68],
         useage: 'SQRT(value)',
         example: `SQRT(10000)
 => 100`,
@@ -492,25 +390,14 @@ LOG(10000)
       // },
       {
         name: 'DAY',
-        description: `返回指定日期属于当月的第几号，输出格式为1-31之间的整数。
-
-【date】是指定的日期。
-比如，数字1表示日期属于当月的第1号。`,
+        description: Locale[69],
         useage: 'DAY(date)',
-        example: `DAY("2020.10.01")
-=>1
-
-DAY({完成日期})
-=>5`,
+        example: Locale[70],
         type: 'inputnumber',
       },
       {
         name: 'DAYS',
-        description: `返回两个日期之间的差值（有正负），即日期1减去日期2。
-
-【date1】日期1
-【date2】日期2
-`,
+        description: Locale[71],
         useage: 'DAYS(date1, date2)',
         example: `DAYS( "2020-08-11"  ,"2020-08-10")
 => 1
@@ -539,9 +426,7 @@ DAYS( {截止时间} , TODAY())
       // },
       {
         name: 'YEAR',
-        description: `返回指定日期对应的四位数年份。
-
-【date】是指定的日期。`,
+        description: Locale[72],
         useage: 'YEAR(date)',
         example: `YEAR("2020/10/01")
 => 2020
@@ -552,11 +437,7 @@ YEAR({毕业时间})
       },
       {
         name: 'MONTH',
-        description: `返回指定日期对应的月份。
-
-【date】是指定的日期。
-
-本函数输出值为1（一月）至12（十二月）之间的整数。`,
+        description: Locale[73],
         useage: 'MONTH(date)',
         example: `MONTH("2020.10.01")
 => 10
@@ -567,10 +448,7 @@ MONTH({毕业时间})
       },
       {
         name: 'HOUR',
-        description: `返回指定日期的对应的时刻，输出格式为0（12:00 am）到23（11:00 pm）之间的整数。
-
-【date】是指定的日期。
-比如，18表示18:00`,
+        description: Locale[74],
         useage: 'HOUR(date)',
         example: `HOUR({打卡时间})
 => 9`,
@@ -578,8 +456,7 @@ MONTH({毕业时间})
       },
       {
         name: 'MINUTE',
-        description: `返回指定日期的分钟数，输出格式为0到59之间的整数。
-`,
+        description: Locale[75],
         useage: 'MINUTE(date)',
         example: `MINUTE({打卡时间})
 =>30`,
@@ -587,13 +464,7 @@ MONTH({毕业时间})
       },
       {
         name: 'NETWORKDAYS',
-        description: `统计两个日期之间相隔多少个工作日（有正负）。
-
-【startDate】起始日期。
-【endDate】截止日期。如果起始日期比截止日期晚，则会出现负数。
-【holidays】非必填。是要从工作日历中去除的日期，例如节假日。其输入格式为「yyyy-mm-dd」，多个日期以逗号分隔的。
-
-本函数统计起止日期之间的工作日，不包括周末和你指定的特定日期。`,
+        description: Locale[76],
         useage: 'NETWORKDAYS(startDate, endDate, [holidays])',
         example: `NETWORKDAYS("2020-10-01", "2020-10-02")
 => 2
@@ -610,9 +481,7 @@ NETWORKDAYS({产品启动日期}, {产品上线日期} , "2020-06-25, 2020-06-26
       },
       {
         name: 'SECOND',
-        description: `返回指定日期的秒种，输出格式为0到59之间的整数。
-
-【date】是指定的日期。`,
+        description: Locale[77],
         useage: 'SECOND(date)',
         example: `SECOND({打卡时间})
 => 1`,
@@ -620,12 +489,7 @@ NETWORKDAYS({产品启动日期}, {产品上线日期} , "2020-06-25, 2020-06-26
       },
       {
         name: 'TODAY',
-        description: `返回今天的日期（年月日），但不会精确到时分秒（默认为00:00:00）。如果想要精确到时分秒，请使用函数NOW。
-
-可以直接使用此函数返回年月日，见例子一；
-也可以和DATEADD或DATETIME_DIFF等函数一起使用，比如用{截止时间}减去当前时间，来显示项目的倒计时，见例子二。
-
-注意：仅当重新刷新计算公式或刷新表格时，这个函数返回的结果才会更新。`,
+        description: Locale[78],
         useage: 'TODAY()',
         example: `TODAY()
 => "2020/06/02 00:00"
@@ -636,13 +500,7 @@ DATETIME_DIFF( {截止时间} , TODAY(),"days")
       },
       {
         name: 'NOW',
-        description: `返回今天的日期和时间，会精确到时分秒。
-
-可以直接使用此函数返回年月日，见例子一；
-
-也可以和DATEADD或DATETIME_DIFF等函数一起使用，比如用{截止时间}减去当前时间，来显示项目的倒计时，见例子二。
-
- 注意：仅当重新刷新计算公式或刷新表格时，这个函数返回的结果才会更新。`,
+        description: Locale[79],
         useage: 'NOW()',
         example: `NOW()
 => "2020/06/02 07:12"
@@ -653,13 +511,7 @@ DATETIME_DIFF( {截止时间} , NOW(),"days")
       },
       {
         name: 'WORKDAY',
-        description: `返回起始日期若干个工作日之后的日期。
-
-【startDate】是你指定的起始日期。
-【numDays】是你指定的起始日期之后的工作日天数，用正数表示。比如，数字“1”代表起始日期一个工作日之后的日期，见例子一；
-【holidays】非必填。是要从日历中去除的特定日期，例如节假日。其输入格式为「yyyy-mm-dd」，多个日期以逗号分隔的，见例子三。
-
-本函数的工作日不包括周末和你指定的特定日期。`,
+        description: Locale[80],
         useage: 'WORKDAY(startDate, numDays, [holidays])',
         example: `WORKDAY("2020/10/01" , 1)
 => 2020/10/02
@@ -673,12 +525,7 @@ WORKDAY({启动日期}, 100, "2020-10-01, 2020-10-02, 2020-10-03, 2020-10-04, 20
       },
       {
         name: 'WEEKDAY',
-        description: `返回指定日期对应一周中的星期几。
-
-【date】是指定的日期。
-【startDayOfWeek】非必填，是一周的开始时间，默认情况下每周从星期日开始（即周日为0）。 你还可以将开始时间设置为"Monday"(星期一，见例子二)
-
-本函数输出值为0到6之间的整数。 `,
+        description: Locale[81],
         useage: 'WEEKDAY(date, [startDayOfWeek])',
         example: `WEEKDAY("2020.10.01")
 =>4
@@ -691,12 +538,7 @@ WEEKDAY(TODAY())`,
       },
       {
         name: 'WEEKNUM',
-        description: `返回指定日期对应为一年中的第几个星期。
-
-【date】是指定的日期。
-【startDayOfWeek】非必填，是一周的开始时间，默认情况下每周从星期日开始（即周日为0）。 你还可以将开始时间设置为"Monday"(星期一)
-
-本函数输出值为整数。比如6，代表该日期属于一年中的第6个星期。`,
+        description: Locale[82],
         useage: 'WEEKNUM(date, [startDayOfWeek])',
         example: `WEEKNUM("2020.10.01")
 =>40
