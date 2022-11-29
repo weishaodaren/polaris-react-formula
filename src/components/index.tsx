@@ -5,12 +5,13 @@ import React, {
   useContext,
   useEffect,
 } from 'react';
-import { Modal } from 'antd';
+import { Modal, Tooltip } from 'antd';
+import { Icon } from 'polaris-react-component';
 import 'antd/lib/tooltip/style/index';
 import 'antd/lib/modal/style/index';
 
 import type { FC } from 'react';
-import type{ Variable } from '../types';
+import type { Variable } from '../types';
 import type { FormulaEditorProps } from '../index';
 import type { IActionType } from '../store';
 
@@ -38,18 +39,15 @@ const Editor: FC<FormulaEditorProps> = ({
   field = [],
   onChange,
   onClose,
+  onLink,
 }): JSX.Element => {
   /**
    * Context
    */
   const {
     state: {
-      fields,
-      originalFields,
-      disabled,
-      editorValue,
-      editor,
-    },
+ fields, originalFields, disabled, editorValue, editor,
+},
     dispatch,
   } = useContext(store);
 
@@ -85,7 +83,12 @@ const Editor: FC<FormulaEditorProps> = ({
        */
       const _editorValue = editor?.getValue();
       if (!_editorValue) onChange?.('', '');
-      else onChange?.(editorValue, reverseField(editorValue, originalFields as Variable[]));
+      else {
+        onChange?.(
+          editorValue,
+          reverseField(editorValue, originalFields as Variable[]),
+        );
+      }
 
       onClose?.();
       dispatch!({
@@ -103,36 +106,38 @@ const Editor: FC<FormulaEditorProps> = ({
     }
   }, [editorValue, editor]);
 
-  return useMemo(() => (
-    <Modal
-      width={600}
-      centered
-      open={visible}
-      closable={false}
-      maskClosable={false}
-      okText={Locale[3]}
-      cancelText={Locale[4]}
-      okButtonProps={{ disabled }}
-      destroyOnClose
-      onCancel={onClose}
-      onOk={confirmModal}
-    >
-      <div className={classnames} style={style}>
-        <div className={`${prefixCls}-layout`}>
-          <h2>{Locale[1]}</h2>
-          {/* TODO: 暂时隐藏该功能 */}
-          {/* <Tooltip title="点击了解公式技巧">
-            <Icon type="icondoubt" onClick={onLink} />
-          </Tooltip> */}
-          <Version />
-          {fields && <Code value={value} fields={fields as Variable[]} />}
-          <ErrorText />
-          <h2>{Locale[2]}</h2>
-          <Content />
+  return useMemo(
+    () => (
+      <Modal
+        width={600}
+        centered
+        open={visible}
+        closable={false}
+        maskClosable={false}
+        okText={Locale[3]}
+        cancelText={Locale[4]}
+        okButtonProps={{ disabled }}
+        destroyOnClose
+        onCancel={onClose}
+        onOk={confirmModal}
+      >
+        <div className={classnames} style={style}>
+          <div className={`${prefixCls}-layout`}>
+            <h2>{Locale[1]}</h2>
+            <Tooltip title="点击了解公式技巧">
+              <Icon type="icondoubt" onClick={onLink} />
+            </Tooltip>
+            <Version />
+            {fields && <Code value={value} fields={fields as Variable[]} />}
+            <ErrorText />
+            <h2>{Locale[2]}</h2>
+            <Content />
+          </div>
         </div>
-      </div>
-    </Modal>
-  ), [visible, disabled, editorValue, fields, editor]);
+      </Modal>
+    ),
+    [visible, disabled, editorValue, fields, editor],
+  );
 };
 
 export default memo(Editor);
