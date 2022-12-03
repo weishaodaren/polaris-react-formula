@@ -46,7 +46,11 @@ const Editor: FC<FormulaEditorProps> = ({
    */
   const {
     state: {
- fields, originalFields, disabled, editorValue, editor,
+      fields,
+      originalFields,
+      disabled,
+      editorValue,
+      editor,
 },
     dispatch,
   } = useContext(store);
@@ -124,9 +128,11 @@ const Editor: FC<FormulaEditorProps> = ({
         <div className={classnames} style={style}>
           <div className={`${prefixCls}-layout`}>
             <h2>{Locale[1]}</h2>
-            <Tooltip title="点击了解公式技巧">
-              <Icon type="icondoubt" onClick={onLink} />
-            </Tooltip>
+            {onLink && (
+              <Tooltip title="点击了解公式技巧">
+                <Icon type="icondoubt" onClick={onLink} />
+              </Tooltip>
+            )}
             <Version />
             {fields && <Code value={value} fields={fields as Variable[]} />}
             <ErrorText />
