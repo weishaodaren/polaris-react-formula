@@ -22,7 +22,7 @@ specifiers:
   less: ^4.1.3
   lint-staged: ^13.0.3
   lodash: ^4.17.15
-  polaris-react-component: ^0.2.31
+  polaris-react-component: ^0.2.36
   react: ^18.2.0
   react-codemirror2: ^7.2.1
   react-dom: ^18.2.0
