@@ -34,8 +34,8 @@ function App() {
         field={column}
         onChange={onCalc}
         onClose={onClose}
-        />
-      </>
+      />
+    </>
   );
 }
 
