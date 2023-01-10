@@ -9,7 +9,7 @@ updates:
     directory: "/"
     schedule:
       interval: "daily"
-      time: "10:30"
+      time: "13:30"
       timezone: "Asia/Shanghai"
     assignees:
       - "weishaodaren"
@@ -17,8 +17,8 @@ updates:
   - package-ecosystem: "npm" # See documentation for possible values
     directory: "/" # Location of package manifests
     schedule:
-      interval: "daily"
-      time: "10:30"
+      interval: "weekly"
+      time: "13:30"
       timezone: "Asia/Shanghai"
     assignees:
       - "weishaodaren"
