@@ -55,7 +55,7 @@
   "dependencies": {
     "@formulajs/formulajs": "^3.1.7",
     "antd": "^4.23.6",
-    "codemirror": "5.65.8",
+    "codemirror": "6.0.1",
     "polaris-react-component": "^0.2.84",
     "react-codemirror2": "^7.2.1"
   },
