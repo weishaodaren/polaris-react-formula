@@ -11,8 +11,8 @@ dependencies:
     specifier: 5.65.8
     version: 5.65.8
   polaris-react-component:
-    specifier: ^0.5.0
-    version: 0.5.0(react-dom@18.2.0)(react@18.2.0)
+    specifier: ^0.5.1
+    version: 0.5.1(react-dom@18.2.0)(react@18.2.0)
   react-codemirror2:
     specifier: ^7.2.1
     version: 7.2.1(codemirror@5.65.8)(react@18.2.0)
@@ -2977,8 +2977,8 @@ packages:
     dev: true
     optional: true
 
-  /polaris-react-component@0.5.0(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-7hBKcEkVXWwIZEUAoMXKv5bXaoJm1Ey5+HcAY5W4eT9bhdwsdXcNbSOdEUabgLvLxpTgnn7N3iUPaiLbFnvRVg==}
+  /polaris-react-component@0.5.1(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-RYNeqaH4hagELiCcnAF9nWaCjLzaX+1ZKS4kWriweJcGIHp6ekFaK0bugTn5OETyZEx1c/HyaIYjO/dKi3eX6Q==}
     peerDependencies:
       react: ^16.13.1
     dependencies:
@@ -2989,7 +2989,7 @@ packages:
       lodash: 4.17.21
       moment: 2.29.1
       react: 18.2.0
-      react-virtualized: 9.22.3(react-dom@18.2.0)(react@18.2.0)
+      react-virtualized: gitea.startable.cn/LessCode/react-virtualized-fixed-import/36f015b38d6486328302580c896c66191d7c2218(react-dom@18.2.0)(react@18.2.0)
       react-window: 1.8.7(react-dom@18.2.0)(react@18.2.0)
     transitivePeerDependencies:
       - react-dom
@@ -3977,22 +3977,6 @@ packages:
     engines: {node: '>=0.10.0'}
     dev: true
 
-  /react-virtualized@9.22.3(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-MKovKMxWTcwPSxE1kK1HcheQTWfuCxAuBoSTf2gwyMM21NdX/PXUhnoP8Uc5dRKd+nKm8v41R36OellhdCpkrw==}
-    peerDependencies:
-      react: ^15.3.0 || ^16.0.0-alpha
-      react-dom: ^15.3.0 || ^16.0.0-alpha
-    dependencies:
-      '@babel/runtime': 7.21.0
-      clsx: 1.2.1
-      dom-helpers: 5.2.1
-      loose-envify: 1.4.0
-      prop-types: 15.8.1
-      react: 18.2.0
-      react-dom: 18.2.0(react@18.2.0)
-      react-lifecycles-compat: 3.0.4
-    dev: false
-
   /react-window@1.8.7(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-JHEZbPXBpKMmoNO1bNhoXOOLg/ujhL/BU4IqVU9r8eQPcy5KQnGHIHDRkJ0ns9IM5+Aq5LNwt3j8t3tIrePQzA==}
     engines: {node: '>8.0.0'}
@@ -4638,3 +4622,22 @@ packages:
     resolution: {integrity: sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==}
     engines: {node: '>=10'}
     dev: true
+
+  gitea.startable.cn/LessCode/react-virtualized-fixed-import/36f015b38d6486328302580c896c66191d7c2218(react-dom@18.2.0)(react@18.2.0):
+    resolution: {commit: 36f015b38d6486328302580c896c66191d7c2218, repo: https://gitea.startable.cn/LessCode/react-virtualized-fixed-import.git, type: git}
+    id: gitea.startable.cn/LessCode/react-virtualized-fixed-import/36f015b38d6486328302580c896c66191d7c2218
+    name: react-virtualized
+    version: 9.22.3
+    peerDependencies:
+      react: ^15.3.0 || ^16.0.0-alpha
+      react-dom: ^15.3.0 || ^16.0.0-alpha
+    dependencies:
+      '@babel/runtime': 7.21.0
+      clsx: 1.2.1
+      dom-helpers: 5.2.1
+      loose-envify: 1.4.0
+      prop-types: 15.8.1
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+      react-lifecycles-compat: 3.0.4
+    dev: false
